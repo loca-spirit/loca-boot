@@ -1,0 +1,31 @@
+{
+  "name": "loca-boot-srcs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "pkgs": "sh build/build-pkgs.sh",
+    "v": "sh build/v.sh",
+    "pub": "sh build/pub.sh",
+    "unit": "npm run test:unit",
+    "test:unit": "jest"
+  },
+  "workspaces": [
+    "packages/boot/packages/*"
+  ],
+  "dependencies": {
+  },
+  "devDependencies": {
+    "jest-cli": "28.1.3",
+    "ts-jest": "^28.0.8",
+    "@types/jest": "^28.1.7",
+    "@types/node": "12.20.6",
+    "jest": "28.1.3",
+    "ts-node": "8.10.2",
+    "tslib": "2.4.0",
+    "tslint": "5.12.0",
+    "typescript": "^4.5.5"
+  },
+  "volta": {
+    "node": "12.22.5"
+  }
+}

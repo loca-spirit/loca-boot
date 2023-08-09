@@ -1,0 +1,35 @@
+{
+  "name": "loca-boot-srcs",
+  "private": true,
+  "version": "0.0.0",
+  "description": "loca boot",
+  "main": "dist/main.common.js",
+  "module": "dist/main.umd.js",
+  "keywords": [
+    "loca",
+    "core"
+  ],
+  "files": [
+    "dist",
+    "src",
+    "types"
+  ],
+  "typings": "types/index.d.ts",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "pub": "sh build/pub.sh",
+    "v": "sh build/v.sh",
+    "build-pkgs": "sh build/build-pkgs.sh",
+    "test": "jest"
+  },
+  "dependencies": {
+    "reflect-metadata": "0.1.12"
+  },
+  "devDependencies": {
+  }
+}

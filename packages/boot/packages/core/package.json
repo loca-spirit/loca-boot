@@ -1,0 +1,33 @@
+{
+  "name": "loca-boot-core",
+  "version": "1.7.34",
+  "description": "loca boot core",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "sideEffects": false,
+  "keywords": [
+    "core"
+  ],
+  "files": [
+    "lib",
+    "src",
+    "types"
+  ],
+  "typings": "types/index.d.ts",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "sh build/build.sh",
+    "lint": "vue-cli-service lint",
+    "unit": "npm run test:unit",
+    "test:unit": "vue-cli-service test:unit"
+  },
+  "dependencies": {
+    "deepmerge": "^2.2.1",
+    "loca-boot-common": "^1.7.34",
+    "loca-boot-service": "^1.7.34",
+    "reflect-metadata": "^0.1.13"
+  }
+}

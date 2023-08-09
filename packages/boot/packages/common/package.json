@@ -1,0 +1,31 @@
+{
+  "name": "loca-boot-common",
+  "version": "1.7.34",
+  "description": "loca boot common",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "sideEffects": false,
+  "keywords": [
+    "common"
+  ],
+  "files": [
+    "lib",
+    "src",
+    "types"
+  ],
+  "typings": "types/index.d.ts",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "sh build/build.sh",
+    "lint": "vue-cli-service lint"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "author": "",
+  "license": "ISC"
+}

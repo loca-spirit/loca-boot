@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "target": "es2020",
+    "module": "esnext"
+  },
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

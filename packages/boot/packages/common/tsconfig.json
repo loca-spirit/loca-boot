@@ -1,0 +1,19 @@
+{
+  "files": [
+    "src/index.ts"
+  ],
+  "extends": "../../../../config/tsconfig.build.json",
+  "compilerOptions": {
+    "declarationDir": "types",
+    "outDir": "lib",
+    "rootDir": "src"
+  },
+  "references": [
+    { "path": "../core" }
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ]
+}

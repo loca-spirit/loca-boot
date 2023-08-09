@@ -1,0 +1,21 @@
+{
+  "extends": "../../config/tsconfig.build.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "rootDirs": [
+      "src",
+      "tests"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "tests/**/*.ts",
+    "tests/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
