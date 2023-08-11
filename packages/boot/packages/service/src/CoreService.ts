@@ -25,7 +25,7 @@ export interface IServiceParamRequest<T> extends IServiceParam<T> {
 }
 
 export class CoreService {
-  private driver!: Driver
+  public driver!: Driver
 
   constructor(adapter: Driver) {
     this.driver = adapter
