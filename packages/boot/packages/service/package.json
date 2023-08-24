@@ -1,6 +1,6 @@
 {
   "name": "loca-boot-service",
-  "version": "1.7.47",
+  "version": "1.7.51",
   "description": "loca boot service",
   "main": "lib/index.js",
   "module": "lib/index.js",
