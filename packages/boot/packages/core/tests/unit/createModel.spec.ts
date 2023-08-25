@@ -1,25 +1,16 @@
 import { ModelBase, createModel } from 'loca-boot-core'
 import { Consumer } from './model/Consumer'
-import { Digui } from './model/Digui'
 
 describe('create Model', () => {
   it('create Model test.', async () => {
-      const model = createModel(
+      const model = createModel(Consumer,
         {
           id: 1,
-          userName: '212',
-          ...{
-            aliseName: 1,
-            name: '212',
-          },
+          userName: 'mengyubo',
         },
-        Consumer)
-      const model1 = createModel(
-        {
-          id: 1,
-        },
-        Digui)
-      model.getChangedData()
+      )
+      expect(model.id).toBe(1)
+      expect(model.userName).toBe('mengyubo')
     },
   )
 })

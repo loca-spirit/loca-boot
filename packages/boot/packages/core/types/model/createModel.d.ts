@@ -9,8 +9,8 @@ type ModelSnakeCase<T> = {
 type Model<T> = {
     [K in keyof ExcludeFunction<T>]?: T[K];
 };
-export declare function createModel<T>(dto: ModelSnakeCase<T> & Model<T>, Model: new (dto: any) => T, params?: IDataModel): T;
-export declare function createDynamicModel(dto: any, columnObj: {
+export declare function createModel<T>(model: new (dto: any) => T, dto: ModelSnakeCase<T> & Model<T>, params?: IDataModel): T;
+export declare function createDynamicModel(columnObj: {
     [key: string]: IColumnDefined;
-}, params?: IDataModel): import("./ModelBase").ModelBase;
+}, dto: any, params?: IDataModel): import("./ModelBase").ModelBase;
 export {};
