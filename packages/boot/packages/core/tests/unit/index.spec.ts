@@ -10,7 +10,7 @@ describe('ModelBase', () => {
       resource_id: '1',
       resource_type: 'type1',
       is_online: false,
-      description: 'desc1'
+      description: 'desc1',
     }
 
     const instance1 = new ResourceInfo(createModelDTO)
@@ -23,8 +23,9 @@ describe('ModelBase', () => {
     })
 
     it('consumerList: ConsumerItem[], dto consumer_list set to undefined.', () => {
-      const c = new Consumer({ consumer_list: undefined })
+      const c = new Consumer({ consumer_list: undefined, consumer_object: { id: 3 } })
       expect(c.consumerList).toHaveLength(0)
+      expect(c.consumerObject.id).toEqual(3)
     })
   })
 
@@ -32,13 +33,13 @@ describe('ModelBase', () => {
     const createModelDTO = {
       resource_id: '1',
       resource_type: 'type1',
-      description: 'desc1'
+      description: 'desc1',
     }
 
     const updateModelDTO = {
       resource_id: '1',
       resource_type: 'type2',
-      description: 'desc2'
+      description: 'desc2',
     }
 
     const instance2 = new ResourceInfo(createModelDTO)
