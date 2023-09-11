@@ -59,7 +59,9 @@ export function genType(typeStr: string, column: IColumnDefined) {
   return designType
 }
 
-export function dynamicModelBase<T extends ModelBase>(columnObj: {
+type Model<T> = T extends ModelBase ? ModelBase : T
+
+export function dynamicModelBase<T = ModelBase>(columnObj: {
   [key: string]: IColumnDefined
 }, params?: IDataModel) {
   class CustomDefinedModel extends ModelBase {
@@ -91,5 +93,5 @@ export function dynamicModelBase<T extends ModelBase>(columnObj: {
       CustomDefinedModel.prototype.constructor,
     )
   }
-  return CustomDefinedModel as any as new(dto?: any, options?: IModelOptions) => T
+  return CustomDefinedModel as any as new(dto?: any, options?: IModelOptions) => Model<T>
 }

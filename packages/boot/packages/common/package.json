@@ -1,6 +1,6 @@
 {
   "name": "loca-boot-common",
-  "version": "1.71.53",
+  "version": "1.71.54",
   "description": "loca boot common",
   "main": "lib/index.js",
   "module": "lib/index.js",
