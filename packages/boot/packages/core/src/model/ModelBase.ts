@@ -635,6 +635,7 @@ export class ModelBase {
     return modelToSerializableObj(t_, {
       clean: CLEAN_ENUM.CLEAN_DIRTY,
       group: params && params.group,
+      excludeGroup: params?.excludeGroup,
       camelCase: params && params.camelCase,
       trim: params && params.trim,
     })
