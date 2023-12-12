@@ -276,7 +276,6 @@ export class ModelBase {
    * @description 还原数据到上一个保存点之前，初始化保存点为创建对象的时候。
    */
   public static revertChangedData(target: ModelBase | ModelBase[] | { [key: string]: ModelBase }) {
-    target = toRaw(target)
     if (target instanceof Array) {
       target.forEach((item) => {
         ModelBase.revertChangedDataObject(item)
@@ -327,6 +326,7 @@ export class ModelBase {
   }
 
   public static revertChangedDataObject(target: ModelBase) {
+    const orgTarget = target as any
     target = toRaw(target)
     const C = Object.getPrototypeOf(target).constructor as any
     const org = new C(target.getOriginalData())
@@ -335,6 +335,7 @@ export class ModelBase {
     const t = target as any
     for (const key in columns) {
       t[key] = org[key]
+      orgTarget[key] = org[key]
     }
     return this
   }
@@ -561,8 +562,7 @@ export class ModelBase {
    * @description 还原数据到上一个保存点之前，初始化保存点为创建对象的时候。
    */
   public revertChangedData() {
-    const t_ = toRaw(this)
-    ModelBase.revertChangedData(t_)
+    ModelBase.revertChangedData(this)
     return this
   }
 
