@@ -18,6 +18,7 @@ export interface IColumn {
   default?: any;
   autowired?: boolean;
   unformatter?: any;
+  extData?: any;
 }
 
 export interface IColumnDefined extends IColumn {
@@ -176,6 +177,7 @@ export function Column(col?: IColumn): PropertyDecorator {
       autowired: params.autowired,
       unformatter: params.unformatter,
       childType,
+      extData: params.extData,
     }
     Reflect.defineMetadata(
       LOCA_COLUMN_KEY,

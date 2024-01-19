@@ -15,6 +15,7 @@ export interface IColumn {
     default?: any;
     autowired?: boolean;
     unformatter?: any;
+    extData?: any;
 }
 export interface IColumnDefined extends IColumn {
     type?: any;
