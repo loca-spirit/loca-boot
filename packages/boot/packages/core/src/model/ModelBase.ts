@@ -332,10 +332,11 @@ export class ModelBase {
     const org = new C(target.getOriginalData())
     // const columns = (target as any).__target__.getColumns()
     const columns = (target as any).getColumns()
-    const t = target as any
+    // const t = target as any
     for (const key in columns) {
-      t[key] = org[key]
       orgTarget[key] = org[key]
+      // t[key] = org[key] 此处不需要更新代理对象原始对象的值，因为代理对象会帮你做这个事情。
+      // 也不要手动处理原始对象的值，否则代理对象不会更新。
     }
     return this
   }
