@@ -66,7 +66,7 @@ export class PageMemory {
     if (!name || !parent) {
       return false;
     }
-    if (!this.menuMap[name].parent) {
+    if (!this.menuMap[name] || !this.menuMap[name].parent) {
       return false;
     }
     const parentArr = [] as any[];

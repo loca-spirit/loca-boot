@@ -19,7 +19,7 @@ export interface IServiceParamRequest<T> extends IServiceParam<T> {
     type?: 'get' | 'post' | 'del' | 'put' | 'patch';
 }
 export declare class CoreService {
-    private driver;
+    driver: Driver;
     constructor(adapter: Driver);
     get<T>(url: string, data?: IServiceParam<T>): Promise<ServiceResponse<T>>;
     post<T>(url: string, data?: IServiceParam<T>): Promise<ServiceResponse<T>>;

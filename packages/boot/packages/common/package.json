@@ -1,6 +1,6 @@
 {
   "name": "loca-boot-common",
-  "version": "1.7.34",
+  "version": "1.72.5",
   "description": "loca boot common",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -27,5 +27,6 @@
     "test": "tests"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "gitHead": "efac011afbbd0dd2cdc5d6c012d8bbc32421287e"
 }

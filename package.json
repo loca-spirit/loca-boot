@@ -9,6 +9,10 @@
     "unit": "npm run test:unit",
     "test:unit": "jest"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loca-spirit/loca-boot"
+  },
   "workspaces": [
     "packages/boot/packages/*"
   ],

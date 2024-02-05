@@ -18,6 +18,7 @@ export interface IColumn {
   default?: any;
   autowired?: boolean;
   unformatter?: any;
+  extData?: any;
 }
 
 export interface IColumnDefined extends IColumn {
@@ -76,6 +77,7 @@ export function generateColumnsFromData(model: any, data: any) {
         columns_[key] = {
           camelCaseName: key, // model name
           type: genTypeByValue((data as any)[key]),
+          // 正常column是从name上获取值，但是因为是通过value进行推断，所以没法传入name，只能全局设置，否则默认就是下划线的column。
           column: m?.keepModelName ? key : genUnderlinePropName(key), // serialized name
         }
       })
@@ -136,6 +138,7 @@ export function Column(col?: IColumn): PropertyDecorator {
         }
         break
       case Object:
+      // 需要拓展能识别出来是不是{[key: ModelBase]}
       case Number:
       case String:
       case Boolean:
@@ -149,7 +152,8 @@ export function Column(col?: IColumn): PropertyDecorator {
         break
       default:
         // 除了基本类型之外，其他的复杂类型（class等）都是设置为 type
-        childType = type
+        // 如果优先传入的childType则用childType。
+        childType = params.childType ? params.childType : type
     }
     let g: any
     if (Array.isArray(params.group)) {
@@ -173,6 +177,7 @@ export function Column(col?: IColumn): PropertyDecorator {
       autowired: params.autowired,
       unformatter: params.unformatter,
       childType,
+      extData: params.extData,
     }
     Reflect.defineMetadata(
       LOCA_COLUMN_KEY,

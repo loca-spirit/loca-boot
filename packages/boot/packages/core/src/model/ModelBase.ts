@@ -276,7 +276,6 @@ export class ModelBase {
    * @description 还原数据到上一个保存点之前，初始化保存点为创建对象的时候。
    */
   public static revertChangedData(target: ModelBase | ModelBase[] | { [key: string]: ModelBase }) {
-    target = toRaw(target)
     if (target instanceof Array) {
       target.forEach((item) => {
         ModelBase.revertChangedDataObject(item)
@@ -327,14 +326,17 @@ export class ModelBase {
   }
 
   public static revertChangedDataObject(target: ModelBase) {
+    const orgTarget = target as any
     target = toRaw(target)
     const C = Object.getPrototypeOf(target).constructor as any
     const org = new C(target.getOriginalData())
     // const columns = (target as any).__target__.getColumns()
     const columns = (target as any).getColumns()
-    const t = target as any
+    // const t = target as any
     for (const key in columns) {
-      t[key] = org[key]
+      orgTarget[key] = org[key]
+      // t[key] = org[key] 此处不需要更新代理对象原始对象的值，因为代理对象会帮你做这个事情。
+      // 也不要手动处理原始对象的值，否则代理对象不会更新。
     }
     return this
   }
@@ -561,8 +563,7 @@ export class ModelBase {
    * @description 还原数据到上一个保存点之前，初始化保存点为创建对象的时候。
    */
   public revertChangedData() {
-    const t_ = toRaw(this)
-    ModelBase.revertChangedData(t_)
+    ModelBase.revertChangedData(this)
     return this
   }
 
@@ -635,6 +636,7 @@ export class ModelBase {
     return modelToSerializableObj(t_, {
       clean: CLEAN_ENUM.CLEAN_DIRTY,
       group: params && params.group,
+      excludeGroup: params?.excludeGroup,
       camelCase: params && params.camelCase,
       trim: params && params.trim,
     })

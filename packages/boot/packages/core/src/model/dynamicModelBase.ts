@@ -4,54 +4,66 @@ import { IModelOptions } from '../utils/ModelBaseUtil'
 
 
 export function genType(typeStr: string, column: IColumnDefined) {
-  let type
+  let designType
   switch (typeStr) {
     case 'array':
-      if (column.model) {
+      // 如果model传入的是class，不需要二次转换model为dynamicModelBase了。
+      if (column.model && typeof column.model !== 'function') {
         column.model = dynamicModelBase(column.model)
       }
-      type = Array
+      designType = Array
       break
     case 'object':
-      type = dynamicModelBase(column.model)
+      // 如果model传入的是class，不需要二次转换model为dynamicModelBase了。
+      if (column.model && typeof column.model !== 'function') {
+        column.model = dynamicModelBase(column.model)
+      }
+      // 如果传入的数据是普通的Object。
+      if (!column.model) {
+        designType = Object
+      }
       break
     case 'number':
-      type = Number
+      designType = Number
       break
     case 'string':
-      type = String
+      designType = String
       break
     case 'boolean':
-      type = Boolean
+      designType = Boolean
       break
     case 'map':
-      type = Map
+      designType = Map
       break
     case 'weakMap':
-      type = WeakMap
+      designType = WeakMap
       break
     case 'set':
-      type = Set
+      designType = Set
       break
     case 'weakSet':
-      type = WeakSet
+      designType = WeakSet
       break
     case 'symbol':
-      type = Symbol
+      designType = Symbol
       break
     case 'function':
-      type = Function
+      designType = Function
       break
     case 'file':
-      type = File
+      designType = File
       break
     default:
-      type = column.model
+      designType = column.model
   }
-  return type
+  return designType
 }
 
-export function dynamicModelBase(columnObj: { [key: string]: IColumnDefined }, params?: IDataModel) {
+type Model<T> = T extends ModelBase ? ModelBase : T
+
+export function dynamicModelBase<T = ModelBase>(columnObj: {
+  [key: string]: IColumnDefined
+}, params?: IDataModel) {
   class CustomDefinedModel extends ModelBase {
     constructor(dto?: any, options?: IModelOptions) {
       super(dto, options)
@@ -67,9 +79,9 @@ export function dynamicModelBase(columnObj: { [key: string]: IColumnDefined }, p
       'design:type',
       type,
       CustomDefinedModel.prototype,
-      column.name as string,
+      key,
     )
-    Column(column)(CustomDefinedModel.prototype, column.name as string)
+    Column(column)(CustomDefinedModel.prototype, key)
   })
   if (params?.methods) {
     const model = {
@@ -81,5 +93,5 @@ export function dynamicModelBase(columnObj: { [key: string]: IColumnDefined }, p
       CustomDefinedModel.prototype.constructor,
     )
   }
-  return CustomDefinedModel as any as new(dto?: any, options?: IModelOptions) => ModelBase
+  return CustomDefinedModel as any as new(dto?: any, options?: IModelOptions) => Model<T>
 }

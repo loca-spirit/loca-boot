@@ -26,7 +26,7 @@ export class Consumer extends ModelBase {
   @Column({ model: ConsumerItem, autowired: true })
   public consumerList!: ConsumerItem[]
 
-  @Column({ model: ConsumerItem })
+  @Column()
   public consumerObject!: ConsumerItem
 
   init() {
