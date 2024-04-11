@@ -1,6 +1,6 @@
 {
   "name": "loca-boot-core",
-  "version": "1.72.5",
+  "version": "1.73.1",
   "description": "loca boot core",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -26,9 +26,9 @@
   },
   "dependencies": {
     "deepmerge": "^2.2.1",
-    "loca-boot-common": "^1.72.5",
-    "loca-boot-service": "^1.72.5",
-    "reflect-metadata": "^0.1.13"
+    "loca-boot-common": "^1.73.1",
+    "loca-boot-service": "^1.73.1",
+    "reflect-metadata": "^0.2.2"
   },
   "gitHead": "efac011afbbd0dd2cdc5d6c012d8bbc32421287e"
 }

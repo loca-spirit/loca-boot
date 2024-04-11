@@ -28,7 +28,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "reflect-metadata": "0.1.12"
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
   }
