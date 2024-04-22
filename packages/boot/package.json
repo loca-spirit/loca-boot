@@ -27,9 +27,6 @@
     "build-pkgs": "sh build/build-pkgs.sh",
     "test": "jest"
   },
-  "dependencies": {
-    "reflect-metadata": "^0.2.2"
-  },
   "devDependencies": {
   }
 }
