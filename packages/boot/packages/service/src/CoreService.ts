@@ -107,6 +107,7 @@ export class CoreService {
           result_code: 'service_error',
         })
         serviceResponse.serviceError = e
+        console.error('service_error', e)
         throw serviceResponse
       }
     }
