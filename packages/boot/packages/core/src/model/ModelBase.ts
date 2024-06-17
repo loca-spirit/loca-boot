@@ -774,8 +774,7 @@ export class ModelBase {
    */
   public extendModel(model: ModelBase, options?: any) {
     model = toRaw(model)
-    const C = Object.getPrototypeOf(model).constructor as any
-    const newModel = new C(model)
+    const newModel = deepCopy(model)
     const t_ = toRaw(this)
     const props = (t_ as any).getColumns()
     for (const key in props) {
