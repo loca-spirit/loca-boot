@@ -101,13 +101,14 @@ export class CoreService {
       return serviceResponse
     } catch (e: any) {
       if (e.result_code) {
-        throw new ServiceResponse<T>(e)
+        return new ServiceResponse<T>(e)
       } else {
         const serviceResponse = new ServiceResponse<T>({
           result_code: 'service_error',
         })
         serviceResponse.serviceError = e
-        throw serviceResponse
+        console.error('service_error', e)
+        return serviceResponse
       }
     }
   }

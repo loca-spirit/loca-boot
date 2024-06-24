@@ -1,6 +1,6 @@
 {
   "name": "loca-boot-common",
-  "version": "1.73.2",
+  "version": "1.73.4",
   "description": "loca boot common",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -17,6 +17,11 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loca-spirit/loca-boot"
+  },
+  "homepage": "https://github.com/loca-spirit/loca-boot",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "sh build/build.sh",

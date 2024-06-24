@@ -747,7 +747,7 @@ export class ModelBase {
   }
 
   /**
-   * @description
+   * @description 当前模型的key存在，就会覆盖，仅支持第一级level的覆盖。如果key是对象，或者数组，覆盖暂时不支持，建议用extendModel。
    * @param model
    */
   public extend(model: any) {
@@ -768,17 +768,19 @@ export class ModelBase {
 
   /**
    * deep: 默认是false，后续实现。
+   * @description 当前模型的key对应的值存在，就会覆盖。
    * @param model
-   * @param options
+   * @param options 待拓展
    */
-  public extendModel(model: ModelBase, options?: { deep: boolean }) {
+  public extendModel(model: ModelBase, options?: any) {
     model = toRaw(model)
+    const newModel = deepCopy(model)
     const t_ = toRaw(this)
     const props = (t_ as any).getColumns()
     for (const key in props) {
-      if (typeof (model as any)[key] !== 'undefined') {
+      if (typeof (newModel as any)[key] !== 'undefined') {
         // 此处应该用this，不能用toRaw后的对象，会引起vue对象丢失响应的问题。
-        (this as any)[key] = (model as any)[key]
+        (this as any)[key] = (newModel as any)[key]
       }
     }
     return this

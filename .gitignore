@@ -17,7 +17,6 @@ yarn-error.log*
 .vscode
 *.suo
 .npmrc
-*.lock
 *.ntvs*
 *.njsproj
 *.sln

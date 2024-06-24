@@ -161,18 +161,17 @@ export declare class ModelBase {
         [key: string]: any;
     };
     /**
-     * @description
+     * @description 当前模型的key存在，就会覆盖，仅支持第一级level的覆盖。如果key是对象，或者数组，覆盖暂时不支持，建议用extendModel。
      * @param model
      */
     extend(model: any): this;
     /**
      * deep: 默认是false，后续实现。
+     * @description 当前模型的key对应的值存在，就会覆盖。
      * @param model
-     * @param options
+     * @param options 待拓展
      */
-    extendModel(model: ModelBase, options?: {
-        deep: boolean;
-    }): this;
+    extendModel(model: ModelBase, options?: any): this;
     /**
      * @description 获得 model 的主键集合。
      */
