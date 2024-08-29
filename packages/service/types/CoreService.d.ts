@@ -1,4 +1,4 @@
-import { DataWrapper, Driver, ModelBase, ServiceResponse } from 'packages/packages/core';
+import { DataWrapper, Driver, ModelBase, ServiceResponse } from 'loca-boot-core';
 /**
  * options: {
  *   allowEmptyData: 是否允许提交空数据 前提是params为ModelBase类型

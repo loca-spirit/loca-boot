@@ -34,7 +34,7 @@ export interface IColumnInner extends IColumn {
 
 export function genTypeByValue(value: any) {
   let type = Object as any
-  let typeOfValue = typeof value
+  const typeOfValue = typeof value
   if (typeOfValue === 'number') {
     type = Number
   }
@@ -69,7 +69,7 @@ export function generateColumnsFromData(model: any, data: any) {
     model.constructor,
   )
 
-  let keys = Object.keys(data)
+  const keys = Object.keys(data)
   const columns_ = {} as { [key: string]: IColumnInner }
 
   if (keys.length) {
@@ -140,15 +140,25 @@ export function Column(col?: IColumn): PropertyDecorator {
         break
       case Object:
       // 需要拓展能识别出来是不是{[key: ModelBase]}
+        break
       case Number:
+        break
       case String:
+        break
       case Boolean:
+        break
       case Map:
+        break
       case WeakMap:
+        break
       case Set:
+        break
       case WeakSet:
+        break
       case Symbol:
+        break
       case Function:
+        break
       case File:
         break
       default:

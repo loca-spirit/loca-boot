@@ -13,21 +13,18 @@ function isObjectObject(o: any) {
 }
 
 function isPlainObject(o: any) {
-  let ctor
-  let prot
-
   if (isObjectObject(o) === false) {
     return false
   }
 
   // If has modified constructor
-  ctor = o.constructor
+  const ctor = o.constructor
   if (typeof ctor !== 'function') {
     return false
   }
 
   // If has modified prototype
-  prot = ctor.prototype
+  const prot = ctor.prototype
   if (isObjectObject(prot) === false) {
     return false
   }

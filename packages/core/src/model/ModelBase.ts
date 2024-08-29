@@ -285,7 +285,6 @@ export class ModelBase {
       ModelBase.revertChangedDataObject(target)
     } else {
       Object.keys(target).forEach((key) => {
-        // @ts-ignore
         ModelBase.revertChangedDataObject(target[key])
       })
     }
@@ -302,8 +301,7 @@ export class ModelBase {
       ModelBase.resetDefaultObject(target)
     } else {
       Object.keys(target).forEach((key) => {
-        // @ts-ignore
-        ModelBase.resetDefaultObject(target[key])
+        ModelBase.resetDefaultObject((target as any)[key])
       })
     }
     return this
