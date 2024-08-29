@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "useDefineForClassFields": false,
     "esModuleInterop": true,
     "strict": true,
     "downlevelIteration": true,
@@ -12,17 +9,21 @@
     "importHelpers": true,
     "moduleResolution": "node",
     "composite": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "baseUrl": ".",
+    "baseUrl": "./",
     "rootDir": ".",
     "types": [
       "reflect-metadata",
       "node",
+      "jest"
     ],
     "lib": [
       "es2015",
       "es2020",
+      "esnext",
       "dom",
       "dom.iterable",
       "scripthost"
@@ -30,7 +31,6 @@
   },
   "exclude": [
     "node_modules",
-    "dist",
-    "lib"
+    "dist"
   ]
 }
