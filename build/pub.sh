@@ -1,5 +1,8 @@
 #!/bin/sh
 
-cd packages/$1 || exit
+cd packages/common/lib || exit
+mkdir config
+cd ../../../
+cp -av packages/common/src/config/** packages/common/lib/config
 
-yarn run pub --registry https://registry.npmjs.org
+lerna publish --no-git-tag-version --registry https://registry.npmjs.org

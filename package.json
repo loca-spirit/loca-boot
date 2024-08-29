@@ -1,8 +1,9 @@
 {
-  "name": "loca-boot-srcs",
+  "name": "@workspace/loca-boot-srcs",
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "lint": "eslint .",
     "pkgs": "sh build/build-pkgs.sh",
     "v": "sh build/v.sh",
     "pub": "sh build/pub.sh",
@@ -15,20 +16,28 @@
   },
   "homepage": "https://github.com/loca-spirit/loca-boot",
   "workspaces": [
-    "packages/boot/packages/*"
+    "packages/*"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "loca-boot-common": "workspace:*",
+    "loca-boot-core": "workspace:*",
+    "loca-boot-service": "workspace:*"
+  },
   "devDependencies": {
+    "@eslint/js": "^9.9.1",
     "@types/jest": "^28.1.7",
     "@types/node": "^18.19.39",
+    "eslint": "^9.9.1",
+    "globals": "^15.9.0",
     "jest": "28.1.3",
     "jest-cli": "28.1.3",
     "ts-jest": "^28.0.8",
     "tslib": "^2.6.3",
-    "tslint": "5.12.0",
-    "typescript": "^5.5.2"
+    "typescript": "^4.9.5",
+    "typescript-eslint": "^8.3.0"
   },
   "volta": {
+    "yarn": "3.8.2",
     "node": "18.17.0"
   }
 }

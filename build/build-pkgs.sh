@@ -1,5 +1,7 @@
 #!/bin/sh
 
-cd packages/$1 || exit
+mkdir 'packages/common/lib'
+mkdir 'packages/common/lib/config'
+cp -av packages/common/src/config/** packages/common/lib/config
 
-yarn run build-pkgs
+tsc -b packages/common packages/core packages/service -w
