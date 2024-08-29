@@ -54,7 +54,7 @@ function modelToSerializableObj(
     camelCase?: boolean
   }) {
   const dto: { [index: string]: any } = {}
-  const columns = (this_ as any).getColumns() as { [key: string]: IColumnInner }
+  const columns = (this_ as any).getColumns?.() as { [key: string]: IColumnInner } || {}
   const target = this_ as any
   for (const key in columns) {
     if (columns.hasOwnProperty(key)) {
@@ -151,7 +151,6 @@ function callMethod(
     method: string
     camelCase?: boolean
   }) {
-  // const columns = this_.__target__.getColumns() as { [key: string]: IColumnInner }
   const columns = this_.getColumns() as { [key: string]: IColumnInner }
   const target = this_ as any
   const dataModel: IDataModel = Reflect.getOwnMetadata(
@@ -269,6 +268,8 @@ export enum CLEAN_ENUM {
 }
 
 export class ModelBase {
+  // 做标记用，判断当前class是不是继承ModelBase
+  public static isModelBase = true
   public static columnNamingMethod: string
   public static dtoNamingMethod: string = 'mix'
 
@@ -320,7 +321,6 @@ export class ModelBase {
         this,
       )
     }
-    // createModelByDTO(target, (target as any).__target__.getColumns(), {}, options)
     createModelByDTO(target, (target as any).getColumns(), {}, options)
     return this
   }
@@ -330,7 +330,6 @@ export class ModelBase {
     target = toRaw(target)
     const C = Object.getPrototypeOf(target).constructor as any
     const org = new C(target.getOriginalData())
-    // const columns = (target as any).__target__.getColumns()
     const columns = (target as any).getColumns()
     // const t = target as any
     for (const key in columns) {
@@ -417,39 +416,6 @@ export class ModelBase {
       modelColumnsMap.set(t_.constructor, columns_)
     }
     createModelByDTO(t_, columns_, dto, options)
-    // const p = new Proxy(t_, {})
-    // ;(p as any).__target__ = t_
-    // return p
-    // new Proxy(t_, {
-    //   get(target, prop) {
-    //     if (Reflect.hasOwnMetadata(prop.toString() + '__', target)) {
-    //       const temp = Reflect.getOwnMetadata(prop.toString() + '__', target)
-    //       ;(target as any)[prop] = temp
-    //       // 需要批量处理，先放入缓存里面。
-    //       setTimeout(() => { Reflect.deleteMetadata([prop.toString() + '__'], target)})
-    //       return temp
-    //     }
-    //     if (prop in target) {
-    //       return (target as any)[prop]
-    //     } else {
-    //       return undefined // 默认值
-    //     }
-    //   },
-    //   set(target, property, value, receiver) {
-    //     const columns = t_.getColumns()
-    //     const field = columns[property as keyof typeof columns]
-    //     if (value && !Array.isArray(value) && typeof value?.isChange !== 'function') {
-    //       Reflect.defineMetadata(
-    //         property.toString() + '__',
-    //         createChildField(target, field, property.toString(), {
-    //           [property.toString()]: value,
-    //         }, options),
-    //         target,
-    //       )
-    //     }
-    //     return true
-    //   },
-    // })
   }
 
   public callMethod(params: {
@@ -461,7 +427,6 @@ export class ModelBase {
 
   public update(dto: any) {
     const t_ = toRaw(this)
-    // updateModelByDTO(t_, (t_ as any).__target__.getColumns(), dto)
     updateModelByDTO(t_, (t_ as any).getColumns({ dto }), dto)
     return this
   }
@@ -469,10 +434,8 @@ export class ModelBase {
   public setDataByOriginal(dto: any, options?: IDataByOriginalOption) {
     const t_ = toRaw(this)
     if (options?.keepBackUp) {
-      // extendModelByDTO(t_, (t_ as any).__target__.getColumns(), dto)
       extendModelByDTO(t_, (t_ as any).getColumns({ dto }), dto)
     } else {
-      // createModelByDTO(t_, (t_ as any).__target__.getColumns(), dto)
       createModelByDTO(t_, (t_ as any).getColumns({ dto }), dto)
     }
     return this
@@ -494,7 +457,6 @@ export class ModelBase {
   public isModelEqual(targetData: ModelBase, params?: { ignoreEmptyString?: boolean }) {
     targetData = toRaw(targetData)
     const t_ = toRaw(this)
-    // const columns = (t_ as any).__target__.getColumns()
     const columns = (t_ as any).getColumns()
     const target = t_ as ModelBase
     let flag = true
@@ -530,7 +492,6 @@ export class ModelBase {
   public isContainsModel(targetData: ModelBase, params?: { ignoreEmptyString?: boolean }) {
     targetData = toRaw(targetData)
     const t_ = toRaw(this)
-    // const columns = (t_ as any).__target__.getColumns()
     const columns = (t_ as any).getColumns()
     const target = t_ as ModelBase
     let flag = true
@@ -712,7 +673,6 @@ export class ModelBase {
     emptyValueScope?: any[]
   }) {
     const t_ = toRaw(this)
-    // const columns = (t_ as any).__target__.getColumns()
 
     const columns = (t_ as any).getColumns()
     const target = t_ as ModelBase
@@ -793,7 +753,6 @@ export class ModelBase {
     const t_ = toRaw(this)
     const primary = []
     const columns = (t_ as any).getColumns()
-    // const columns = (t_ as any).__target__.getColumns()
     for (const columnName in columns) {
       if (columns.hasOwnProperty(columnName)) {
         const column = columns[columnName]

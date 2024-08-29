@@ -12,6 +12,7 @@ export declare enum CLEAN_ENUM {
     CLEAN_DIRTY = "cleanDirty"
 }
 export declare class ModelBase {
+    static isModelBase: boolean;
     static columnNamingMethod: string;
     static dtoNamingMethod: string;
     /**

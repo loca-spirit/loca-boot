@@ -6,4 +6,4 @@
  * @param emptyValue
  * @param columnType
  */
-export declare function setEmpty(targetValue: any, emptyValueScope: any, emptyValue: any, columnType: any): boolean;
+export declare function setEmpty(targetValue: any, emptyValueScope: any | undefined, emptyValue: any, columnType: any): boolean;

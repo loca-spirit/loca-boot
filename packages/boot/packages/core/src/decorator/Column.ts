@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import { ModelBase } from '../model'
 import { LOCA_DATA_MODEL_KEY, IDataModel } from './DataModel'
 
 export const LOCA_COLUMN_KEY = Symbol('locaColumnKey')
@@ -152,8 +153,11 @@ export function Column(col?: IColumn): PropertyDecorator {
         break
       default:
         // 除了基本类型之外，其他的复杂类型（class等）都是设置为 type
-        // 如果优先传入的childType则用childType。
-        childType = params.childType ? params.childType : type
+        if (params.childType) {
+          childType = params.childType
+        } else if (type.isModelBase) {
+          childType = type
+        }
     }
     let g: any
     if (Array.isArray(params.group)) {
