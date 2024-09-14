@@ -165,7 +165,7 @@ export function Column(col?: IColumn): PropertyDecorator {
         // 除了基本类型之外，其他的复杂类型（class等）都是设置为 type
         if (params.childType) {
           childType = params.childType
-        } else if (type.isModelBase) {
+        } else if (type?.isModelBase) {
           childType = type
         }
     }

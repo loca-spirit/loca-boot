@@ -3,5 +3,5 @@
     "packages/*"
   ],
   "npmClient": "yarn",
-  "version": "1.73.6"
+  "version": "1.73.7"
 }
