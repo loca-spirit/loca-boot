@@ -5,9 +5,13 @@ import tseslint from 'typescript-eslint'
 
 export default [
   {
-    ignores: ['packages/**/lib/*', 'packages/**/tests/*', '*.js'],
+    ignores: [
+      'packages/**/lib/*',
+      'packages/**/tests/*',
+      'jest.config.js',
+    ],
   },
-  { files: ['packages/**/*.ts'] },
+  { files: ['packages/**/*'] },
   { languageOptions: { globals: globals.browser } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
