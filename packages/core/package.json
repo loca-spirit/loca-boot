@@ -3,37 +3,37 @@
   "version": "1.73.6",
   "description": "loca boot core",
   "main": "lib/index.js",
-  "module": "lib/index.js",
-  "sideEffects": false,
-  "keywords": [
-    "core"
-  ],
-  "files": [
-    "lib",
-    "src",
-    "types"
-  ],
-  "typings": "types/index.d.ts",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/loca-spirit/loca-boot"
-  },
-  "homepage": "https://github.com/loca-spirit/loca-boot",
+  "module": "es/index.mjs",
+  "types": "es/index.d.ts",
+  "style": "dist/index.css",
+  "unpkg": "dist/index.min.js",
+  "jsdelivr": "dist/index.min.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "sh build/build.sh",
-    "lint": "vue-cli-service lint",
-    "unit": "npm run test:unit",
-    "test:unit": "vue-cli-service test:unit"
+    "build:lib": "gulp --require @esbuild-kit/cjs-loader -f scripts/build/index.ts",
+    "postinstall": "patch-package"
   },
+  "keywords": [
+    ""
+  ],
+  "author": "",
   "dependencies": {
+    "patch-package": "^6.4.7"
+  },
+  "directories": {
     "deepmerge": "^2.2.1",
+    "tslib": "^2.8.0",
+    "core-js": "^3.38.1",
     "loca-boot-common": "^1.73.6",
-    "loca-boot-service": "^1.73.6",
     "reflect-metadata": "^0.1.13"
   },
-  "gitHead": "efac011afbbd0dd2cdc5d6c012d8bbc32421287e"
+  "engineStrict": true,
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "es",
+    "lib"
+  ],
+  "devDependencies": {
+    "@types/reflect-metadata": "^0.1.0"
+  }
 }

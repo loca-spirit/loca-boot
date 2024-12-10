@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./lib",
+    "types": ["@vuepress/client/types", "vite/client"],
+    "paths": {
+      "@internal/*": ["./src/client-internal/*.d.ts"]
+    }
+  },
+  "include": ["./src"]
+}

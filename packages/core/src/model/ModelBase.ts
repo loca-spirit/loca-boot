@@ -273,6 +273,70 @@ export class ModelBase {
   public static columnNamingMethod: string
   public static dtoNamingMethod: string = 'mix'
 
+  constructor(dto?: any, options?: IModelOptions) {
+    const t_ = toRaw(this)
+
+    /**
+     * TODO:
+     * 针对 LOCA_DATA_MODEL_KEY 上面的属性定义分为两种。t_.constructor 和 t_
+     * 因为存在动态模型，所以针对 LOCA_DATA_MODEL_KEY 的归属只能通过 current 这个参数来区分。
+     */
+    if (typeof options?.columnsInValue !== 'undefined') {
+      const m = Reflect.getOwnMetadata(
+        LOCA_DATA_MODEL_KEY,
+        t_.constructor,
+      ) || {}
+      m.columnsInValue = options?.columnsInValue
+      Reflect.defineMetadata(
+        LOCA_DATA_MODEL_KEY,
+        m,
+        t_.constructor,
+      )
+    }
+    if (typeof options?.keepModelName !== 'undefined') {
+      const m = Reflect.getOwnMetadata(
+        LOCA_DATA_MODEL_KEY,
+        t_.constructor,
+      ) || {}
+      m.keepModelName = options?.keepModelName
+      Reflect.defineMetadata(
+        LOCA_DATA_MODEL_KEY,
+        m,
+        t_.constructor,
+      )
+    }
+    if (typeof options?.current?.enableDataState === 'undefined' &&
+      typeof options?.enableDataState !== 'undefined'
+    ) {
+      const m = Reflect.getOwnMetadata(
+        LOCA_DATA_MODEL_KEY,
+        t_.constructor,
+      ) || {}
+      m.enableDataState = options?.enableDataState
+      Reflect.defineMetadata(
+        LOCA_DATA_MODEL_KEY,
+        m,
+        t_.constructor,
+      )
+    }
+    if (!Reflect.getOwnMetadata(
+      LOCA_COLUMN_KEY,
+      t_,
+    )) {
+      Reflect.defineMetadata(
+        LOCA_COLUMN_KEY,
+        {},
+        t_,
+      )
+    }
+    let columns_ = modelColumnsMap.get(t_.constructor)
+    if (!columns_) {
+      columns_ = (t_ as any).getColumns({ dto })
+      modelColumnsMap.set(t_.constructor, columns_)
+    }
+    createModelByDTO(t_, columns_, dto, options)
+  }
+
   /**
    * @description 还原数据到上一个保存点之前，初始化保存点为创建对象的时候。
    */
@@ -350,70 +414,6 @@ export class ModelBase {
     } else {
       data.callMethod(params)
     }
-  }
-
-  constructor(dto?: any, options?: IModelOptions) {
-    const t_ = toRaw(this)
-
-    /**
-     * TODO:
-     * 针对 LOCA_DATA_MODEL_KEY 上面的属性定义分为两种。t_.constructor 和 t_
-     * 因为存在动态模型，所以针对 LOCA_DATA_MODEL_KEY 的归属只能通过 current 这个参数来区分。
-     */
-    if (typeof options?.columnsInValue !== 'undefined') {
-      const m = Reflect.getOwnMetadata(
-        LOCA_DATA_MODEL_KEY,
-        t_.constructor,
-      ) || {}
-      m.columnsInValue = options?.columnsInValue
-      Reflect.defineMetadata(
-        LOCA_DATA_MODEL_KEY,
-        m,
-        t_.constructor,
-      )
-    }
-    if (typeof options?.keepModelName !== 'undefined') {
-      const m = Reflect.getOwnMetadata(
-        LOCA_DATA_MODEL_KEY,
-        t_.constructor,
-      ) || {}
-      m.keepModelName = options?.keepModelName
-      Reflect.defineMetadata(
-        LOCA_DATA_MODEL_KEY,
-        m,
-        t_.constructor,
-      )
-    }
-    if (typeof options?.current?.enableDataState === 'undefined' &&
-      typeof options?.enableDataState !== 'undefined'
-    ) {
-      const m = Reflect.getOwnMetadata(
-        LOCA_DATA_MODEL_KEY,
-        t_.constructor,
-      ) || {}
-      m.enableDataState = options?.enableDataState
-      Reflect.defineMetadata(
-        LOCA_DATA_MODEL_KEY,
-        m,
-        t_.constructor,
-      )
-    }
-    if (!Reflect.getOwnMetadata(
-      LOCA_COLUMN_KEY,
-      t_,
-    )) {
-      Reflect.defineMetadata(
-        LOCA_COLUMN_KEY,
-        {},
-        t_,
-      )
-    }
-    let columns_ = modelColumnsMap.get(t_.constructor)
-    if (!columns_) {
-      columns_ = (t_ as any).getColumns({ dto })
-      modelColumnsMap.set(t_.constructor, columns_)
-    }
-    createModelByDTO(t_, columns_, dto, options)
   }
 
   public callMethod(params: {
@@ -749,7 +749,7 @@ export class ModelBase {
    */
   public getPrimaryKey() {
     const t_ = toRaw(this)
-    const primary = []
+    const primary: any[] = []
     const columns = (t_ as any).getColumns()
     for (const columnName in columns) {
       if (columns.hasOwnProperty(columnName)) {

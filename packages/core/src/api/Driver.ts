@@ -1,5 +1,5 @@
-import {IDriver} from './IDriver';
-import {IApi} from './IApi';
+import { IDriver } from './IDriver'
+import { IApi } from './IApi'
 
 export class Driver implements IDriver {
   public adapter: {
@@ -8,22 +8,22 @@ export class Driver implements IDriver {
   } = {
     api: {} as IApi,
     url: '',
-  };
+  }
 
   constructor(adapter: {
     api: IApi,
     url: string,
   }) {
-    this.adapter.url = adapter.url;
-    this.adapter.api = adapter.api;
+    this.adapter.url = adapter.url
+    this.adapter.api = adapter.api
   }
 
   public getApi() {
-    return this.adapter.api;
+    return this.adapter.api
   }
 
   public getUrl() {
-    return this.adapter.url;
+    return this.adapter.url
   }
 }
 
