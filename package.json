@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vuepress dev docs",
-    "test:unit": "jest",
+    "test": "jest",
     "build:lib": "yarn workspaces foreach --no-private -A -v run build:lib",
     "build:doc": "vuepress build docs --dest dist",
     "clean-cache": "rm -rf docs/.vuepress/.cache && rm -rf docs/.vuepress/.temp && rm -rf node_modules/.vite",

@@ -43,7 +43,7 @@
     // Contains the specified types
     "types": [
       "reflect-metadata",
-      "vitest/globals",
+      "jest",
       "node",
       "unplugin-vue-define-options"
     ],
