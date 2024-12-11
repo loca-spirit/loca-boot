@@ -32,10 +32,8 @@ export const generateExternal = (options: { full: boolean }) => {
 }
 
 export const generatePaths = (isEsBuild = false) => {
-  const pathsEs = [
-  ]
-  let paths = [
-  ]
+  const pathsEs = []
+  let paths = []
 
   return (id: string) => {
     if (isEsBuild) {

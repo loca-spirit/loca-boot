@@ -5,6 +5,6 @@ export const clean = async () => {
   await Promise.all([
     fs.remove(output),
     fs.remove(outputEsm),
-    fs.remove(outputCjs)
+    fs.remove(outputCjs),
   ])
 }

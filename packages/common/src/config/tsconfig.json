@@ -2,7 +2,7 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "composite": false,
-    "target": "es2020",
+    "target": "es5",
     "module": "esnext"
   },
   "exclude": [

@@ -1,14 +1,17 @@
 import { DataWrapper } from './DataWrapper'
 
-
 export class DataListWrapper extends DataWrapper {
   static className = 'DataListWrapper'
 
   protected itemType!: any
 
-  constructor(data?: {
-    itemType: any,
-  } | any) {
+  constructor(
+    data?:
+      | {
+          itemType: any
+        }
+      | any
+  ) {
     super()
     if (data) {
       if (data.itemType) {
@@ -33,4 +36,3 @@ export class DataListWrapper extends DataWrapper {
     return arr
   }
 }
-

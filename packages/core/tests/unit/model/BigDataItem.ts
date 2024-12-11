@@ -1,9 +1,8 @@
 import { Column, DataModel, ModelBase } from 'loca-boot-core'
 
 @DataModel({
-    enableDataState: false,
-  },
-)
+  enableDataState: false,
+})
 export class BigDataItem extends ModelBase {
   @Column({ primary: true })
   public id!: string

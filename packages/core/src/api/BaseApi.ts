@@ -1,12 +1,12 @@
-import {Driver} from './Driver';
+import { Driver } from './Driver'
 
 /**
  * @description BaseApi
  */
 export class BaseApi {
-  public driver!: Driver;
+  public driver!: Driver
 
   constructor(adapter: Driver) {
-    this.driver = adapter;
+    this.driver = adapter
   }
 }

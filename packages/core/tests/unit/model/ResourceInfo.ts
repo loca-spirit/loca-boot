@@ -1,15 +1,15 @@
-import {Column, ModelBase} from 'loca-boot-core';
+import { Column, ModelBase } from 'loca-boot-core'
 
 export class ResourceInfo extends ModelBase {
   @Column()
-  public resourceId!: string;
+  public resourceId!: string
 
   @Column()
-  public isOnline!: boolean;
+  public isOnline!: boolean
 
   @Column()
-  public resourceType!: string;
+  public resourceType!: string
 
   @Column()
-  public description!: string;
+  public description!: string
 }

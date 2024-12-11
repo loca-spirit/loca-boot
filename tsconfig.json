@@ -10,7 +10,7 @@
     //   So don't change the `target` field here. It has to be
     //   at least `ES2020` for dynamic `import()`s and `import.meta` to work correctly.
     // - If you are not using Vite, feel free to override the `target` field.
-    "target": "ESNext",
+    "target": "es5",
     "outDir": "dist",
     "declaration": true,
     "emitDeclarationOnly": true,

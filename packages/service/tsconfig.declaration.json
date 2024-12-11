@@ -12,8 +12,8 @@
     "./src"
   ],
   "exclude": [
-    "tests",
     "node_modules",
+    "tests",
     "**/__tests__/**",
     "**/__demos__/**",
     "**/*.md"

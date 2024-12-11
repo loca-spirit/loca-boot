@@ -1,7 +1,11 @@
 import { ModelBase } from './ModelBase'
-import { Column, IColumnDefined, IDataModel, LOCA_DATA_MODEL_KEY } from '../decorator'
+import {
+  Column,
+  IColumnDefined,
+  IDataModel,
+  LOCA_DATA_MODEL_KEY,
+} from '../decorator'
 import { IModelOptions } from '../utils/ModelBaseUtil'
-
 
 export function genType(typeStr: string, column: IColumnDefined) {
   let designType
@@ -61,9 +65,12 @@ export function genType(typeStr: string, column: IColumnDefined) {
 
 type Model<T> = T extends ModelBase ? ModelBase : T
 
-export function dynamicModelBase<T = ModelBase>(columnObj: {
-  [key: string]: IColumnDefined
-}, params?: IDataModel) {
+export function dynamicModelBase<T = ModelBase>(
+  columnObj: {
+    [key: string]: IColumnDefined
+  },
+  params?: IDataModel
+) {
   class CustomDefinedModel extends ModelBase {
     constructor(dto?: any, options?: IModelOptions) {
       super(dto, options)
@@ -79,7 +86,7 @@ export function dynamicModelBase<T = ModelBase>(columnObj: {
       'design:type',
       type,
       CustomDefinedModel.prototype,
-      key,
+      key
     )
     Column(column)(CustomDefinedModel.prototype, key)
   })
@@ -90,8 +97,11 @@ export function dynamicModelBase<T = ModelBase>(columnObj: {
     Reflect.defineMetadata(
       LOCA_DATA_MODEL_KEY,
       model,
-      CustomDefinedModel.prototype.constructor,
+      CustomDefinedModel.prototype.constructor
     )
   }
-  return CustomDefinedModel as any as new(dto?: any, options?: IModelOptions) => Model<T>
+  return CustomDefinedModel as any as new (
+    dto?: any,
+    options?: IModelOptions
+  ) => Model<T>
 }

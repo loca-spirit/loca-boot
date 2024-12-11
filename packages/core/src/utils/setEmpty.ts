@@ -6,16 +6,27 @@
  * @param emptyValue
  * @param columnType
  */
-export function setEmpty(targetValue: any, emptyValueScope: any = [Number, Boolean], emptyValue: any, columnType: any) {
+export function setEmpty(
+  targetValue: any,
+  emptyValueScope: any = [Number, Boolean],
+  emptyValue: any,
+  columnType: any
+) {
   let isEmptyValueSet = false
   // 支持1：支持 emptyValueScope 指定的类型。
   // 支持2：TODO 通过设置emptyValueScope为 'all' 的情况来对所有类型的数据进行处理。all的场景过于复杂，尤其是array和有childType类型的。
   // 支持3：TODO 或者指定单个字段的值的。
-  if (emptyValueScope?.length &&
+  if (
+    emptyValueScope?.length &&
     typeof emptyValue !== 'undefined' &&
-    (emptyValueScope as any[]).findIndex((type) => columnType === type) !== -1) {
+    (emptyValueScope as any[]).findIndex((type) => columnType === type) !== -1
+  ) {
     // 默认对 'undefined'、null、''都进行处理，后续可以考虑指定对哪些值进行转换（目前暂不考虑这么复杂的应用）。
-    if (typeof targetValue === 'undefined' || targetValue === null || targetValue === '') {
+    if (
+      typeof targetValue === 'undefined' ||
+      targetValue === null ||
+      targetValue === ''
+    ) {
       isEmptyValueSet = true
     }
   }

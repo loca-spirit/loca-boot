@@ -9,38 +9,38 @@ describe('ModelBase', () => {
           primaryChangeDescriptor: {
             create: {
               id: 'obj2',
-              name: 'sname'
+              name: 'sname',
             },
             delete: {
               id: 'obj1',
               message: 'mes1',
-              name: 'sname'
-            }
+              name: 'sname',
+            },
           },
           dataKey: 'consumer_object',
           currentValue: {
             id: 'obj2',
-            name: 'sname'
+            name: 'sname',
           },
           oldValue: {
             id: 'obj1',
             message: 'mes1',
-            name: 'sname'
+            name: 'sname',
           },
           changeDescriptor: {
             update: {
               id: 'obj2',
-              name: 'sname'
-            }
+              name: 'sname',
+            },
           },
-          action: 'UPDATE'
-        }
+          action: 'UPDATE',
+        },
       }
       const c = new Consumer({ userName: 'shuai' })
       c.consumerObject = new ConsumerItem({
         id: 'obj1',
         message: 'mes1',
-        name: 'sname'
+        name: 'sname',
       })
 
       c.saveChangedData()

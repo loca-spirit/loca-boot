@@ -7,7 +7,4 @@ import {
   generateTypes,
 } from './task'
 
-export default series(
-  clean,
-  parallel(buildModules)
-)
+export default series(clean, parallel(buildModules))

@@ -2,11 +2,10 @@ import { Column, DataModel, ModelBase } from 'loca-boot-core'
 import { ConsumerItem } from './ConsumerItem'
 
 @DataModel({
-    methods: {
-      changeUserName: '{{$model.userName = "new Name"}}',
-    },
+  methods: {
+    changeUserName: '{{$model.userName = "new Name"}}',
   },
-)
+})
 export class Consumer extends ModelBase {
   @Column()
   public id?: number

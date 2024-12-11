@@ -8,14 +8,15 @@ export class ColumnCamelCase extends ModelBase {
   @Column({
     default: () => {
       return []
-    }
+    },
   })
   public list!: string[]
 
   @Column({
-    model: ColumnCamelCaseItem, default: () => {
+    model: ColumnCamelCaseItem,
+    default: () => {
       return []
-    }
+    },
   })
   public consumerList!: ColumnCamelCaseItem[]
 }
