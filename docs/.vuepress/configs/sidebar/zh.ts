@@ -11,6 +11,10 @@ export const zhSideBar: SidebarOptions = {
           link: '/guide/start/',
         },
         {
+          text: '为什么选择它',
+          link: '/guide/why/',
+        },
+        {
           text: '常见问题',
           link: '/guide/faq/',
         },
@@ -40,31 +44,31 @@ export const zhSideBar: SidebarOptions = {
       children: [
         {
           text: 'aliasName 别名',
-          link: '/column/aliasName',
+          link: '/column/aliasName/',
         },
         {
           text: 'autowired 默认初始化',
-          link: '/column/autowired',
+          link: '/column/autowired/',
         },
         {
           text: 'default 默认值',
-          link: '/column/default',
+          link: '/column/default/',
         },
         {
           text: 'foreign 外键',
-          link: '/column/foreign',
+          link: '/column/foreign/',
         },
         {
           text: 'formatter 格式化',
-          link: '/column/formatter',
+          link: '/column/formatter/',
         },
         {
           text: 'group 分组',
-          link: '/column/group',
+          link: '/column/group/',
         },
         {
           text: 'model 模型',
-          link: '/column/model',
+          link: '/column/model/',
         },
         {
           text: 'name 名字',
@@ -88,7 +92,7 @@ export const zhSideBar: SidebarOptions = {
         },
         {
           text: 'default 默认值',
-          link: '/column/default',
+          link: '/column/default/',
         },
       ],
     },
