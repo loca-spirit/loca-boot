@@ -1,0 +1,5 @@
+---
+permalink: /group/
+---
+
+# ModelBase group

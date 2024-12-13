@@ -11,14 +11,13 @@ export default defineUserConfig({
   base: (process.env.FX_BASE || '/') as any,
   port: 8080,
   theme: hopeTheme,
-  plugins: [
-    codeBlockPlugin
-  ],
+  plugins: [codeBlockPlugin],
   pagePatterns: [
     '**/*.md',
     '!.vuepress',
     '!node_modules',
-    '../src/**/*.md',
+    '../packages/**/tests/**/*.md',
+    '../README.md',
   ],
   locales: {
     '/': {
@@ -36,8 +35,8 @@ export default defineUserConfig({
         preprocessorOptions: {
           scss: {
             silenceDeprecations: ['legacy-js-api'],
-          }
-        }
+          },
+        },
       },
       resolve: {
         alias: [],

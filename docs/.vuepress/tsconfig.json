@@ -29,7 +29,6 @@
   },
   "include": [
     "../.vuepress/**/*",
-    "../components/**/*.vue",
-    "../../packages/vue3/src/**/*.vue"
+    "../components/**/*.vue"
   ]
 }
