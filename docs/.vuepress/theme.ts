@@ -15,7 +15,7 @@ export default hopeTheme(
 
     iconAssets: 'fontawesome-with-brands',
 
-    logo: '',
+    logo: 'https://vuepress.vuejs.org/images/hero.png',
 
     repo: 'https://github.com/loca-spirit/loca-boot',
 
