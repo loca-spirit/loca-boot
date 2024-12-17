@@ -1,4 +1,4 @@
-import type { App } from '@vuepress/core'
+import type { App } from 'vuepress'
 import type { PageCodeDep, PageCodeDepsHelper } from '../utils/index.js'
 import { setCache, isCacheChange } from '../utils/index.js'
 

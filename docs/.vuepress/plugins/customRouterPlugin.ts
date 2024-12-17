@@ -1,4 +1,4 @@
-import { Plugin } from '@vuepress/core'
+import { Plugin } from 'vuepress'
 import { path } from '@vuepress/utils'
 
 const customRouterPlugin: Plugin = (options, app) => {

@@ -1,5 +1,5 @@
 import { handlePageChange as handleVuePressPageChange } from '@vuepress/cli'
-import type { App } from '@vuepress/core'
+import type { App } from 'vuepress'
 import type { Plugin, HmrContext } from 'vite'
 
 // https://cn.vitejs.dev/guide/api-plugin.html#handlehotupdate

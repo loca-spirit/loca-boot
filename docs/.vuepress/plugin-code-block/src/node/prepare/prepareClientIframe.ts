@@ -1,5 +1,5 @@
 import { fs, path } from '@vuepress/utils'
-import type { App } from '@vuepress/core'
+import type { App } from 'vuepress'
 
 /**
  * Generate iframe client temp file

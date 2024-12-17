@@ -1,4 +1,4 @@
-import type { App } from '@vuepress/core'
+import type { App } from 'vuepress'
 import type { Markdown, MarkdownEnv } from '@vuepress/markdown'
 import type { CodeBlockPluginOptions } from '../index.js'
 import type { PageCodeDepsHelper } from '../utils/index.js'

@@ -1,4 +1,4 @@
-import type { Page } from '@vuepress/core'
+import type { Page } from 'vuepress'
 import type { PageCodeDep, PageCodeDepsHelper } from '../utils/index.js'
 
 const scriptRegExp = /<script\s(.*\s)?setup(\s.*)?>([\s\S]*)<\/script>/

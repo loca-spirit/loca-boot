@@ -1,5 +1,5 @@
 import { fs, path } from '@vuepress/utils'
-import type { App } from '@vuepress/core'
+import type { App } from 'vuepress'
 import type { Plugin } from 'vite'
 const iframePath = path.resolve(__dirname, '../../client-iframe/app.ts')
 
@@ -7,9 +7,9 @@ export const vitePageIframe = (app: App): Plugin => {
   return {
     name: '@bfehub/vuepress-plugin-code-block:iframe',
     async config(config) {
-      if (config.build.ssr) return
+      if (config.build?.ssr) return
 
-      const input = config.build.rollupOptions.input
+      const input = config.build?.rollupOptions?.input
       const inputs: string[] = []
 
       if (typeof input === 'string') {

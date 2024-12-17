@@ -11,6 +11,13 @@ export const zhSideBar: SidebarOptions = {
           link: '/guide/start/',
         },
         {
+<<<<<<< Updated upstream
+=======
+          text: '认识ModelBase',
+          link: '/guide/know/',
+        },
+        {
+>>>>>>> Stashed changes
           text: '为什么选择它',
           link: '/guide/why/',
         },

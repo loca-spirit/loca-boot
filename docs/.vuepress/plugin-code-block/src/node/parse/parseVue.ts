@@ -1,4 +1,4 @@
-import type { App } from '@vuepress/core'
+import type { App } from 'vuepress'
 import type { Node } from 'posthtml-parser'
 import type { PageCodeDep } from '../utils/index.js'
 import { slugify } from '@mdit-vue/shared'

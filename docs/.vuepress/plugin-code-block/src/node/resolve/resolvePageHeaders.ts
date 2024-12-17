@@ -1,4 +1,4 @@
-import type { Page } from '@vuepress/core'
+import type { Page } from 'vuepress'
 import type { PageHeader } from '@vuepress/shared'
 import type { PageCodeDepsHelper } from '../utils/index.js'
 import { slugify } from '@mdit-vue/shared'

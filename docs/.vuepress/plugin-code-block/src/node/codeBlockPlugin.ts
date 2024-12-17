@@ -1,5 +1,5 @@
 import { path, getDirname } from '@vuepress/utils'
-import type { Plugin } from '@vuepress/core'
+import type { Plugin } from 'vuepress'
 import type { CodeUserConfig, CodeLocaleConfig } from '../shared/index.js'
 import { createPageCodeDepsHelper } from './utils/index.js'
 import { prepareClientIframe, prepareVmiComponents } from './prepare/index.js'

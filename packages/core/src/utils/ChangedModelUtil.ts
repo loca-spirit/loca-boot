@@ -137,20 +137,20 @@ export function getChange(
             insChild.getPrimaryValueFromData(oldValue).join(',')
         ) {
           // primary value changed
-          descriptorObj[columnName] = descriptorObj[columnName] || {}
+          descriptorObj[columnName] = descriptorObj[columnName] || ({} as any)
           descriptorObj[columnName].primaryChangeDescriptor = {
             create: currentValue,
             delete: oldValue,
             update: undefined,
-          }
+          } as any
         } else {
           if (oldValueStr !== currentValueStr) {
-            descriptorObj[columnName] = descriptorObj[columnName] || {}
+            descriptorObj[columnName] = descriptorObj[columnName] || ({} as any)
             descriptorObj[columnName].primaryChangeDescriptor = {
               create: undefined,
               delete: undefined,
               update: currentValue,
-            }
+            } as any
           }
         }
       } else if (Array.isArray(oldValue)) {
@@ -228,7 +228,8 @@ export function getChange(
               primaryChangeDescriptor.update.length ||
               primaryChangeDescriptor.create.length
             ) {
-              descriptorObj[columnName] = descriptorObj[columnName] || {}
+              descriptorObj[columnName] =
+                descriptorObj[columnName] || ({} as any)
               descriptorObj[columnName].primaryChangeDescriptor =
                 primaryChangeDescriptor
             }
@@ -237,7 +238,7 @@ export function getChange(
       }
       if (JSON.stringify(oldValue) !== JSON.stringify(currentValue)) {
         changedObj[orgColumn] = currentValue
-        descriptorObj[columnName] = descriptorObj[columnName] || {}
+        descriptorObj[columnName] = descriptorObj[columnName] || ({} as any)
         Object.assign(descriptorObj[columnName], {
           dataKey: orgColumn,
           currentValue,

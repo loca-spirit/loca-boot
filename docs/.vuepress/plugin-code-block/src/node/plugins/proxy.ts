@@ -1,4 +1,4 @@
-import type { App } from '@vuepress/core'
+import type { App } from 'vuepress'
 import type { Plugin } from 'vite'
 
 export const vitePageProxy = (app: App): Plugin => {

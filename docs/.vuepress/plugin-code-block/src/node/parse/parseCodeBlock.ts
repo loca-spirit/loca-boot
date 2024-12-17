@@ -1,7 +1,7 @@
 import { path, hash } from '@vuepress/utils'
 import { Node, parser } from 'posthtml-parser'
 import { render } from 'posthtml-render'
-import type { App } from '@vuepress/core'
+import type { App } from 'vuepress'
 import type { CodeBlockPluginOptions } from '../index.js'
 import type { PageCodeDep, PageCodeDepsHelper } from '../utils/index.js'
 import type { CodeNodeConfig } from '../../shared/index.js'

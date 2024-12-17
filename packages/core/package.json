@@ -1,13 +1,10 @@
 {
   "name": "loca-boot-core",
-  "version": "1.73.6",
+  "version": "1.73.9",
   "description": "loca boot core",
   "main": "lib/index.js",
-  "module": "es/index.mjs",
-  "types": "es/index.d.ts",
-  "style": "dist/index.css",
-  "unpkg": "dist/index.min.js",
-  "jsdelivr": "dist/index.min.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "build:lib": "gulp --require @esbuild-kit/cjs-loader -f scripts/build/index.ts",
     "postinstall": "patch-package"
