@@ -81,12 +81,12 @@ function getColumnDto(model: any, dto: any, field: IColumnInner) {
   let retData
   if (m.dtoNamingMethod === 'mix' || ModelBase.dtoNamingMethod === 'mix') {
     if (
-      dto.hasOwnProperty(field.column) &&
+      Object.prototype.hasOwnProperty.call(dto, field.column) &&
       typeof dto[field.column] !== 'undefined'
     ) {
       retData = dto[field.column]
     } else if (
-      dto.hasOwnProperty(field.camelCaseName) &&
+      Object.prototype.hasOwnProperty.call(dto, field.camelCaseName) &&
       typeof dto[field.camelCaseName] !== 'undefined'
     ) {
       retData = dto[field.camelCaseName]
@@ -96,7 +96,7 @@ function getColumnDto(model: any, dto: any, field: IColumnInner) {
     ModelBase.dtoNamingMethod === 'camelCase'
   ) {
     if (
-      dto.hasOwnProperty(field.camelCaseName) &&
+      Object.prototype.hasOwnProperty.call(dto, field.camelCaseName) &&
       typeof dto[field.camelCaseName] !== 'undefined'
     ) {
       retData = dto[field.camelCaseName]
