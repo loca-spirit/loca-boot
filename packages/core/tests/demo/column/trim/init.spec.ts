@@ -1,50 +1,23 @@
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from "loca-boot-core"
 
-describe('init', () => {
-  class Consumer extends ModelBase {
-    @Column()
-    public id?: number
+describe("trim", () => {
+  class Test extends ModelBase {
+    @Column({ trim: true })
+    public name?: string
 
     @Column()
-    public userName?: string
+    public id?: string
   }
 
-  it('should create a consumer with a valid username', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'John Doe',
-    })
-
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('John Doe')
+  const test = new Test({
+    name: " Tongyu Liu ",
+    id: " 123 ",
   })
-  it('should trim whitespace from the username when saving', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'Alice Smith',
-    })
-
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('Alice Smith')
-  })
-  it('should store the username as null if an empty string is provided', () => {
-    const consumer = new Consumer({
-      id: 2,
-      userName: '',
-    })
-
-    expect(consumer.id).toBe(2)
-    expect(consumer.userName).toEqual('')
-  })
-  it('should allow updating the username of an existing consumer', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'John Doe',
-    })
-
-    consumer.userName = 'Jane Smith'
-
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('Jane Smith')
+  console.log(test.getSerializableObject().name)
+  it("前后去空格", () => {
+    expect(test.getSerializableObject({ trim: true })).toEqual({
+      name: "Tongyu Liu",
+      id: " 123 ",
+    }) // PASS
   })
 })
