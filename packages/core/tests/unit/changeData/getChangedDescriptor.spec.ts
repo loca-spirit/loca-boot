@@ -7,69 +7,91 @@ describe('ModelBase', () => {
       const expectData = {
         consumerList: {
           primaryChangeDescriptor: {
-            create: [{
-              id: '3',
-              message: 'message3'
-            }],
-            delete: [{
-              id: '4',
-              message: 'message4'
-            }],
-            update: [{
-              id: '2',
-              name: 'newName'
-            }],
-            noChange: [{
-              id: '1'
-            }]
+            create: [
+              {
+                id: '3',
+                message: 'message3',
+              },
+            ],
+            delete: [
+              {
+                id: '4',
+                message: 'message4',
+              },
+            ],
+            update: [
+              {
+                id: '2',
+                name: 'newName',
+              },
+            ],
+            noChange: [
+              {
+                id: '1',
+              },
+            ],
           },
           dataKey: 'consumer_list',
           currentValue: [
             {
-              id: '1'
-            }, {
+              id: '1',
+            },
+            {
               id: '2',
-              name: 'newName'
-            }, {
+              name: 'newName',
+            },
+            {
               id: '3',
-              message: 'message3'
-            }],
+              message: 'message3',
+            },
+          ],
           oldValue: [
             {
-              id: '1'
-            }, {
+              id: '1',
+            },
+            {
               id: '2',
-              message: 'message2'
-            }, {
+              message: 'message2',
+            },
+            {
               id: '4',
-              message: 'message4'
-            }],
+              message: 'message4',
+            },
+          ],
           changeDescriptor: {
-            update: [{
-              id: '1'
-            }, {
-              id: '2',
-              name: 'newName'
-            }, {
-              id: '3',
-              message: 'message3'
-            }]
+            update: [
+              {
+                id: '1',
+              },
+              {
+                id: '2',
+                name: 'newName',
+              },
+              {
+                id: '3',
+                message: 'message3',
+              },
+            ],
           },
-          action: 'UPDATE'
-        }
+          action: 'UPDATE',
+        },
       }
 
       // init data
       const c = new Consumer({
-        consumerList: [{
-          id: '1'
-        }, {
-          id: '2',
-          message: 'message2'
-        }, {
-          id: '4',
-          message: 'message4'
-        }]
+        consumerList: [
+          {
+            id: '1',
+          },
+          {
+            id: '2',
+            message: 'message2',
+          },
+          {
+            id: '4',
+            message: 'message4',
+          },
+        ],
       })
       c.saveChangedData()
 

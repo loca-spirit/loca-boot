@@ -1,11 +1,10 @@
 import { Column, DataModel, ModelBase } from 'loca-boot-core'
 
 @DataModel({
-    methods: {
-      init: () => {},
-    },
+  methods: {
+    init: () => {},
   },
-)
+})
 export class ConsumerItem extends ModelBase {
   @Column({ primary: true })
   public id!: string

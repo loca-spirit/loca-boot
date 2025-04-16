@@ -1,0 +1,49 @@
+:root {
+  --c-brand: rgb(0 190 190);
+  --c-brand-light: rgb(0 190 190);
+}
+
+html.dark {
+  --c-brand: rgb(0 190 190);
+  --c-brand-light: rgb(0 190 190);
+}
+
+code,
+kbd,
+samp {
+  font-size: 0.85em;
+}
+
+th,
+td {
+  padding: 0;
+  border: 0 none;
+}
+
+.theme-hope-content {
+  table {
+    display: table;
+    width: 100%;
+
+    th,
+    td {
+      max-width: 250px;
+      text-align: left;
+      //white-space: nowrap;
+    }
+  }
+
+  th:not(.arco-table-th),
+  td:not(.arco-table-td) {
+    padding: 0.6em 1em;
+    border: 1px solid var(--c-border-dark);
+  }
+}
+
+.page {
+  .page-meta,
+  .page-nav,
+  .theme-hope-content {
+    max-width: 100%;
+  }
+}

@@ -7,29 +7,29 @@ export const MODEL_COLUMN_KEY = Symbol('modelColumnKey')
 export const CLONE_KEY = Symbol('__CLONE__')
 
 export interface IColumn {
-  name?: string;
-  aliasName?: string | symbol;
-  childType?: any;
-  group?: string | string[];
-  model?: any;
-  formatter?: any;
-  trim?: boolean;
-  primary?: boolean;
-  foreign?: boolean;
-  default?: any;
-  autowired?: boolean;
-  unformatter?: any;
-  extData?: any;
+  name?: string
+  aliasName?: string | symbol
+  childType?: any
+  group?: string | string[]
+  model?: any
+  formatter?: any
+  trim?: boolean
+  primary?: boolean
+  foreign?: boolean
+  default?: any
+  autowired?: boolean
+  unformatter?: any
+  extData?: any
 }
 
 export interface IColumnDefined extends IColumn {
-  type?: any;
+  type?: any
 }
 
 export interface IColumnInner extends IColumn {
-  camelCaseName: string | symbol;
-  type: any;
-  column: any;
+  camelCaseName: string | symbol
+  type: any
+  column: any
 }
 
 export function genTypeByValue(value: any) {
@@ -64,10 +64,7 @@ function genUnderlinePropName(property: string) {
 }
 
 export function generateColumnsFromData(model: any, data: any) {
-  const m = Reflect.getOwnMetadata(
-    LOCA_DATA_MODEL_KEY,
-    model.constructor,
-  )
+  const m = Reflect.getOwnMetadata(LOCA_DATA_MODEL_KEY, model.constructor)
 
   const keys = Object.keys(data)
   const columns_ = {} as { [key: string]: IColumnInner }
@@ -110,10 +107,7 @@ export function generateColumnsFromData(model: any, data: any) {
 export function Column(col?: IColumn): PropertyDecorator {
   let params = col as IColumnInner
   return (target: any, property: string | symbol) => {
-    let columns = Reflect.getOwnMetadata(
-      LOCA_COLUMN_KEY,
-      target,
-    )
+    let columns = Reflect.getOwnMetadata(LOCA_COLUMN_KEY, target)
     columns = columns || {}
     if (!params) {
       params = { camelCaseName: property, column: undefined, type: undefined }
@@ -121,7 +115,8 @@ export function Column(col?: IColumn): PropertyDecorator {
     // 兼容childType，新的名字为model
     params.childType = params.childType || params.model
     if (params && !params.hasOwnProperty('name')) {
-      if (typeof property === 'symbol') { // symbol是可以作为属性key的
+      if (typeof property === 'symbol') {
+        // symbol是可以作为属性key的
         property = property.toString()
       }
       params.name = genUnderlinePropName(property)
@@ -139,7 +134,7 @@ export function Column(col?: IColumn): PropertyDecorator {
         }
         break
       case Object:
-      // 需要拓展能识别出来是不是{[key: ModelBase]}
+        // 需要拓展能识别出来是不是{[key: ModelBase]}
         break
       case Number:
         break
@@ -193,10 +188,6 @@ export function Column(col?: IColumn): PropertyDecorator {
       childType,
       extData: params.extData,
     }
-    Reflect.defineMetadata(
-      LOCA_COLUMN_KEY,
-      columns,
-      target,
-    )
+    Reflect.defineMetadata(LOCA_COLUMN_KEY, columns, target)
   }
 }

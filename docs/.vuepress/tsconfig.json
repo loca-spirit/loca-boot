@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "outDir": "dist/types",
+    "module": "esnext",
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "moduleResolution": "Node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false,
+    "lib": [
+      "ESNext",
+      "DOM",
+      "ES2016"
+    ],
+    "skipLibCheck": true,
+    "allowJs": true,
+    "strictNullChecks": true,
+    "downlevelIteration": true,
+    "declaration": true,
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "../.vuepress/**/*",
+    "../components/**/*.vue"
+  ]
+}

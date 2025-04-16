@@ -1,26 +1,29 @@
 {
   "name": "loca-boot-service",
-  "version": "1.73.6",
+  "version": "1.73.9",
   "description": "loca boot service",
   "main": "lib/index.js",
   "module": "lib/index.js",
-  "sideEffects": false,
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build:lib": "gulp --require @esbuild-kit/cjs-loader -f scripts/build/index.ts",
+    "postinstall": "patch-package"
+  },
   "keywords": [
-    "common"
+    ""
   ],
+  "author": "",
+  "dependencies": {
+    "core-js": "^3.38.1",
+    "loca-boot-core": "^1.73.7",
+    "patch-package": "^6.4.7",
+    "tslib": "^2.8.0"
+  },
+  "engineStrict": true,
+  "sideEffects": false,
   "files": [
-    "lib",
-    "src",
-    "types"
-  ],
-  "typings": "types/index.d.ts",
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/loca-spirit/loca-boot"
-  },
-  "homepage": "https://github.com/loca-spirit/loca-boot",
-  "gitHead": "efac011afbbd0dd2cdc5d6c012d8bbc32421287e"
+    "dist",
+    "es",
+    "lib"
+  ]
 }

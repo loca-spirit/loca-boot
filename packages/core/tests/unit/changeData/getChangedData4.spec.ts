@@ -10,9 +10,9 @@ describe('ModelBase', () => {
           oldValue: 'shuai',
           action: 'DELETE',
           changeDescriptor: {
-            delete: 'shuai'
-          }
-        }
+            delete: 'shuai',
+          },
+        },
       }
       const c = new Consumer({ userName: 'shuai' })
       c.setColumnData('userName', undefined)

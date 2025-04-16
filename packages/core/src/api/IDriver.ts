@@ -1,8 +1,7 @@
-import {IApi} from './IApi';
+import { IApi } from './IApi'
 
 export interface IDriver {
-  getApi(): IApi;
+  getApi(): IApi
 
-  getUrl(): string;
+  getUrl(): string
 }
-

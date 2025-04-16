@@ -6,7 +6,6 @@ export class VueChildModel extends ModelBase {
 
   @Column()
   public userName?: string
-
 }
 
 export class VueModel extends ModelBase {

@@ -7,54 +7,73 @@ describe('ModelBase', () => {
       const expectData = {
         consumerList: {
           primaryChangeDescriptor: {
-            create: [{
-              id: '3',
-              message: 'test'
-            }],
-            delete: [{
-              id: '4',
-              message: 'msg4'
-            }],
+            create: [
+              {
+                id: '3',
+                message: 'test',
+              },
+            ],
+            delete: [
+              {
+                id: '4',
+                message: 'msg4',
+              },
+            ],
             update: [],
-            noChange: [{
-              id: '1'
-            }, {
-              id: '2',
-              message: 'msg2'
-            }]
+            noChange: [
+              {
+                id: '1',
+              },
+              {
+                id: '2',
+                message: 'msg2',
+              },
+            ],
           },
           dataKey: 'consumer_list',
-          currentValue: [{
-            id: '3',
-            message: 'test'
-          }, {
-            id: '1'
-          }, {
-            id: '2',
-            message: 'msg2'
-          }],
-          oldValue: [{
-            id: '1'
-          }, {
-            id: '2',
-            message: 'msg2'
-          }, {
-            id: '4',
-            message: 'msg4'
-          }],
-          changeDescriptor: {
-            update: [{
+          currentValue: [
+            {
               id: '3',
-              message: 'test'
-            }, {
-              id: '1'
-            }, {
+              message: 'test',
+            },
+            {
+              id: '1',
+            },
+            {
               id: '2',
-              message: 'msg2'
-            }]
+              message: 'msg2',
+            },
+          ],
+          oldValue: [
+            {
+              id: '1',
+            },
+            {
+              id: '2',
+              message: 'msg2',
+            },
+            {
+              id: '4',
+              message: 'msg4',
+            },
+          ],
+          changeDescriptor: {
+            update: [
+              {
+                id: '3',
+                message: 'test',
+              },
+              {
+                id: '1',
+              },
+              {
+                id: '2',
+                message: 'msg2',
+              },
+            ],
           },
-          action: 'UPDATE'
-        }
+          action: 'UPDATE',
+        },
       }
       const c = new Consumer({ userName: 'shuai' })
       const cItemId1 = new ConsumerItem({ id: '1' })

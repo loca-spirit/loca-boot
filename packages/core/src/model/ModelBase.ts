@@ -28,7 +28,7 @@ export const ModelColumns = {} as { [key: string]: any[] }
 export const modelColumnsMap = new WeakMap()
 
 export interface IDataByOriginalOption extends IModelOptions {
-  keepBackUp?: boolean;
+  keepBackUp?: boolean
 }
 
 /**
@@ -52,14 +52,21 @@ function modelToSerializableObj(
     emptyValueScope?: any[]
     trim?: boolean
     camelCase?: boolean
-  }) {
+  }
+) {
   const dto: { [index: string]: any } = {}
-  const columns = (this_ as any).getColumns?.() as { [key: string]: IColumnInner } || {}
+  const columns =
+    ((this_ as any).getColumns?.() as { [key: string]: IColumnInner }) || {}
   const target = this_ as any
   for (const key in columns) {
     if (columns.hasOwnProperty(key)) {
       const columnName = getColumnByKey(this_, key, columns, param)
-      const isEmptyValueSet = setEmpty(target[key], param.emptyValueScope, param.emptyValue, columns[key].type)
+      const isEmptyValueSet = setEmpty(
+        target[key],
+        param.emptyValueScope,
+        param.emptyValue,
+        columns[key].type
+      )
       if (isEmptyValueSet) {
         dto[columnName] = param.emptyValue
       } else {
@@ -79,7 +86,10 @@ function modelToSerializableObj(
             } else {
               dto[columnName] = modelToSerializableObj(target[key], param)
               if (param.clean === CLEAN_ENUM.CLEAN_DIRTY) {
-                if (dto[columnName] && Object.keys(dto[columnName]).length === 0) {
+                if (
+                  dto[columnName] &&
+                  Object.keys(dto[columnName]).length === 0
+                ) {
                   delete dto[columnName]
                 }
               }
@@ -88,16 +98,22 @@ function modelToSerializableObj(
         } else {
           let value = target[key]
           // 处理any类型的数据，解除对普通对象的数据的引用。
-          if (typeof value !== 'undefined' && value !== null && (getTag(value) == '[object Object]' || Array.isArray(value))) {
+          if (
+            typeof value !== 'undefined' &&
+            value !== null &&
+            (getTag(value) == '[object Object]' || Array.isArray(value))
+          ) {
             value = JSON.parse(JSON.stringify(value))
           }
           if (typeof columns[key].unformatter === 'function') {
-            value = columns[key].unformatter.apply(target, [{
-              value: target[key],
-              key,
-              data: this_,
-              columns,
-            }])
+            value = columns[key].unformatter.apply(target, [
+              {
+                value: target[key],
+                key,
+                data: this_,
+                columns,
+              },
+            ])
           }
           if (param.clean === CLEAN_ENUM.CLEAN_DIRTY) {
             cleanDirty(this_, key, dto, columnName, value, param)
@@ -114,7 +130,11 @@ function modelToSerializableObj(
           } else {
             dto[columnName] = value
           }
-          if (columns[key].trim && param.trim && typeof dto[columnName] === 'string') {
+          if (
+            columns[key].trim &&
+            param.trim &&
+            typeof dto[columnName] === 'string'
+          ) {
             dto[columnName] = (dto[columnName] as string).trim()
           }
         }
@@ -134,7 +154,10 @@ function modelToSerializableObj(
           delete dto[columnName]
         }
       } else if (typeof param.excludeGroup !== 'undefined') {
-        if (columns[key].group && (columns[key].group?.indexOf(param.excludeGroup as string) !== -1)) {
+        if (
+          columns[key].group &&
+          columns[key].group?.indexOf(param.excludeGroup as string) !== -1
+        ) {
           // console.log('delete', columns[key].group, param.group)
           delete dto[columnName]
         }
@@ -150,13 +173,12 @@ function callMethod(
   param: {
     method: string
     camelCase?: boolean
-  }) {
+  }
+) {
   const columns = this_.getColumns() as { [key: string]: IColumnInner }
   const target = this_ as any
-  const dataModel: IDataModel = Reflect.getOwnMetadata(
-    LOCA_DATA_MODEL_KEY,
-    target.constructor,
-  ) || {}
+  const dataModel: IDataModel =
+    Reflect.getOwnMetadata(LOCA_DATA_MODEL_KEY, target.constructor) || {}
   dataModel.methods = dataModel.methods || {}
   for (const key in columns) {
     if (columns.hasOwnProperty(key)) {
@@ -173,31 +195,43 @@ function callMethod(
   }
 
   if ((this_ as any)[param.method]) {
-    (this_ as any)[param.method]({ data: this_ })
+    ;(this_ as any)[param.method]({ data: this_ })
   }
-  if ((dataModel as any).methods[param.method] && typeof (dataModel as any).methods[param.method] === 'string') {
+  if (
+    (dataModel as any).methods[param.method] &&
+    typeof (dataModel as any).methods[param.method] === 'string'
+  ) {
     try {
       const str = (dataModel as any).methods[param.method]
       const reg = /^\{\{(.*)\}\}$/
       const res = str.match(reg)
       if (res.length > 1) {
-        return new Function('$model', 'with($model) { return ('.concat(res[1], '); }'))(this_)
+        return new Function(
+          '$model',
+          'with($model) { return ('.concat(res[1], '); }')
+        )(this_)
       }
     } catch (err) {
       // console.log(err)
     }
   }
   if ((dataModel as any).methods[param.method]) {
-    (dataModel as any).methods[param.method]({ data: this_ })
+    ;(dataModel as any).methods[param.method]({ data: this_ })
   }
 }
 
 function cleanDirty(
-  this_: any, key: string, dto: { [index: string]: any }, columnName: string, value: any, params: {
+  this_: any,
+  key: string,
+  dto: { [index: string]: any },
+  columnName: string,
+  value: any,
+  params: {
     clean: CLEAN_ENUM
     emptyValue?: any
     camelCase?: boolean
-  }) {
+  }
+) {
   const target = this_ as any
   // 默认null或者undefined的字段会包含在返回的对象中，如果需要返回对象不返回null、空和undefined的值，调用方法时传 'cleanDirty'
   if (typeof target[key] === 'string') {
@@ -223,7 +257,11 @@ function cleanDirty(
   }
 }
 
-function setColumnToTarget(columns: { [key: string]: IColumnInner }, target: ModelBase, curProto: any) {
+function setColumnToTarget(
+  columns: { [key: string]: IColumnInner },
+  target: ModelBase,
+  curProto: any
+) {
   // let modelColumn
   // if (Reflect.hasOwnMetadata(MODEL_COLUMN_KEY, target)) {
   //   modelColumn = Reflect.getOwnMetadata(MODEL_COLUMN_KEY, target) || {}
@@ -247,7 +285,10 @@ function setColumnToTarget(columns: { [key: string]: IColumnInner }, target: Mod
   return columns
 }
 
-function getColumnsUtil(columns: { [key: string]: IColumnInner }, target: ModelBase): { [key: string]: IColumnInner } {
+function getColumnsUtil(
+  columns: { [key: string]: IColumnInner },
+  target: ModelBase
+): { [key: string]: IColumnInner } {
   const curProto = Object.getPrototypeOf(target)
   if (Object.getPrototypeOf(curProto)?.getColumns) {
     columns = merge(columns, getColumnsUtil(columns, curProto) || {}, {
@@ -273,10 +314,52 @@ export class ModelBase {
   public static columnNamingMethod: string
   public static dtoNamingMethod: string = 'mix'
 
+  constructor(dto?: any, options?: IModelOptions) {
+    const t_ = toRaw(this)
+
+    /**
+     * TODO:
+     * 针对 LOCA_DATA_MODEL_KEY 上面的属性定义分为两种。t_.constructor 和 t_
+     * 因为存在动态模型，所以针对 LOCA_DATA_MODEL_KEY 的归属只能通过 current 这个参数来区分。
+     */
+    if (typeof options?.columnsInValue !== 'undefined') {
+      const m =
+        Reflect.getOwnMetadata(LOCA_DATA_MODEL_KEY, t_.constructor) || {}
+      m.columnsInValue = options?.columnsInValue
+      Reflect.defineMetadata(LOCA_DATA_MODEL_KEY, m, t_.constructor)
+    }
+    if (typeof options?.keepModelName !== 'undefined') {
+      const m =
+        Reflect.getOwnMetadata(LOCA_DATA_MODEL_KEY, t_.constructor) || {}
+      m.keepModelName = options?.keepModelName
+      Reflect.defineMetadata(LOCA_DATA_MODEL_KEY, m, t_.constructor)
+    }
+    if (
+      typeof options?.current?.enableDataState === 'undefined' &&
+      typeof options?.enableDataState !== 'undefined'
+    ) {
+      const m =
+        Reflect.getOwnMetadata(LOCA_DATA_MODEL_KEY, t_.constructor) || {}
+      m.enableDataState = options?.enableDataState
+      Reflect.defineMetadata(LOCA_DATA_MODEL_KEY, m, t_.constructor)
+    }
+    if (!Reflect.getOwnMetadata(LOCA_COLUMN_KEY, t_)) {
+      Reflect.defineMetadata(LOCA_COLUMN_KEY, {}, t_)
+    }
+    let columns_ = modelColumnsMap.get(t_.constructor)
+    if (!columns_) {
+      columns_ = (t_ as any).getColumns({ dto })
+      modelColumnsMap.set(t_.constructor, columns_)
+    }
+    createModelByDTO(t_, columns_, dto, options)
+  }
+
   /**
    * @description 还原数据到上一个保存点之前，初始化保存点为创建对象的时候。
    */
-  public static revertChangedData(target: ModelBase | ModelBase[] | { [key: string]: ModelBase }) {
+  public static revertChangedData(
+    target: ModelBase | ModelBase[] | { [key: string]: ModelBase }
+  ) {
     if (target instanceof Array) {
       target.forEach((item) => {
         ModelBase.revertChangedDataObject(item)
@@ -291,7 +374,9 @@ export class ModelBase {
     return this
   }
 
-  public static resetDefault(target: ModelBase | ModelBase[] | { [key: string]: ModelBase }) {
+  public static resetDefault(
+    target: ModelBase | ModelBase[] | { [key: string]: ModelBase }
+  ) {
     target = toRaw(target)
     if (target instanceof Array) {
       target.forEach((item) => {
@@ -309,15 +394,8 @@ export class ModelBase {
 
   public static resetDefaultObject(target: ModelBase, options?: IModelOptions) {
     target = toRaw(target)
-    if (!Reflect.getOwnMetadata(
-      LOCA_COLUMN_KEY,
-      this,
-    )) {
-      Reflect.defineMetadata(
-        LOCA_COLUMN_KEY,
-        {},
-        this,
-      )
+    if (!Reflect.getOwnMetadata(LOCA_COLUMN_KEY, this)) {
+      Reflect.defineMetadata(LOCA_COLUMN_KEY, {}, this)
     }
     createModelByDTO(target, (target as any).getColumns(), {}, options)
     return this
@@ -338,10 +416,13 @@ export class ModelBase {
     return this
   }
 
-  public static callMethod(data: ModelBase | ModelBase[], params: {
-    method: string
-    camelCase?: boolean
-  }) {
+  public static callMethod(
+    data: ModelBase | ModelBase[],
+    params: {
+      method: string
+      camelCase?: boolean
+    }
+  ) {
     data = toRaw(data)
     if (Array.isArray(data)) {
       data.forEach((d) => {
@@ -352,74 +433,7 @@ export class ModelBase {
     }
   }
 
-  constructor(dto?: any, options?: IModelOptions) {
-    const t_ = toRaw(this)
-
-    /**
-     * TODO:
-     * 针对 LOCA_DATA_MODEL_KEY 上面的属性定义分为两种。t_.constructor 和 t_
-     * 因为存在动态模型，所以针对 LOCA_DATA_MODEL_KEY 的归属只能通过 current 这个参数来区分。
-     */
-    if (typeof options?.columnsInValue !== 'undefined') {
-      const m = Reflect.getOwnMetadata(
-        LOCA_DATA_MODEL_KEY,
-        t_.constructor,
-      ) || {}
-      m.columnsInValue = options?.columnsInValue
-      Reflect.defineMetadata(
-        LOCA_DATA_MODEL_KEY,
-        m,
-        t_.constructor,
-      )
-    }
-    if (typeof options?.keepModelName !== 'undefined') {
-      const m = Reflect.getOwnMetadata(
-        LOCA_DATA_MODEL_KEY,
-        t_.constructor,
-      ) || {}
-      m.keepModelName = options?.keepModelName
-      Reflect.defineMetadata(
-        LOCA_DATA_MODEL_KEY,
-        m,
-        t_.constructor,
-      )
-    }
-    if (typeof options?.current?.enableDataState === 'undefined' &&
-      typeof options?.enableDataState !== 'undefined'
-    ) {
-      const m = Reflect.getOwnMetadata(
-        LOCA_DATA_MODEL_KEY,
-        t_.constructor,
-      ) || {}
-      m.enableDataState = options?.enableDataState
-      Reflect.defineMetadata(
-        LOCA_DATA_MODEL_KEY,
-        m,
-        t_.constructor,
-      )
-    }
-    if (!Reflect.getOwnMetadata(
-      LOCA_COLUMN_KEY,
-      t_,
-    )) {
-      Reflect.defineMetadata(
-        LOCA_COLUMN_KEY,
-        {},
-        t_,
-      )
-    }
-    let columns_ = modelColumnsMap.get(t_.constructor)
-    if (!columns_) {
-      columns_ = (t_ as any).getColumns({ dto })
-      modelColumnsMap.set(t_.constructor, columns_)
-    }
-    createModelByDTO(t_, columns_, dto, options)
-  }
-
-  public callMethod(params: {
-    method: string
-    camelCase?: boolean
-  }) {
+  public callMethod(params: { method: string; camelCase?: boolean }) {
     callMethod(toRaw(this), params)
   }
 
@@ -452,7 +466,10 @@ export class ModelBase {
    * @description 判断所有 column 对应的值是相等的。
    * ignoreEmptyString undefined 与 '' 比较视为相等
    */
-  public isModelEqual(targetData: ModelBase, params?: { ignoreEmptyString?: boolean }) {
+  public isModelEqual(
+    targetData: ModelBase,
+    params?: { ignoreEmptyString?: boolean }
+  ) {
     targetData = toRaw(targetData)
     const t_ = toRaw(this)
     const columns = (t_ as any).getColumns()
@@ -469,10 +486,24 @@ export class ModelBase {
         // 如果发现不相等的值，则停止
         return
       }
-      if (typeof targetValue === 'undefined' && typeof currentValue !== 'undefined') {
-        flag = !!(params?.ignoreEmptyString && typeof currentValue === 'string' && currentValue === '')
-      } else if (typeof currentValue === 'undefined' && typeof targetValue !== 'undefined') {
-        flag = !!(params?.ignoreEmptyString && typeof targetValue === 'string' && targetValue === '')
+      if (
+        typeof targetValue === 'undefined' &&
+        typeof currentValue !== 'undefined'
+      ) {
+        flag = !!(
+          params?.ignoreEmptyString &&
+          typeof currentValue === 'string' &&
+          currentValue === ''
+        )
+      } else if (
+        typeof currentValue === 'undefined' &&
+        typeof targetValue !== 'undefined'
+      ) {
+        flag = !!(
+          params?.ignoreEmptyString &&
+          typeof targetValue === 'string' &&
+          targetValue === ''
+        )
       } else {
         if (JSON.stringify(targetValue) !== JSON.stringify(currentValue)) {
           flag = false
@@ -487,7 +518,10 @@ export class ModelBase {
    * @description 判断所有 column 对应的值是相等的。
    * ignoreEmptyString undefined 与 '' 比较视为相等
    */
-  public isContainsModel(targetData: ModelBase, params?: { ignoreEmptyString?: boolean }) {
+  public isContainsModel(
+    targetData: ModelBase,
+    params?: { ignoreEmptyString?: boolean }
+  ) {
     targetData = toRaw(targetData)
     const t_ = toRaw(this)
     const columns = (t_ as any).getColumns()
@@ -507,8 +541,15 @@ export class ModelBase {
       if (typeof targetValue === 'undefined') {
         // 目标值为空，不比较
         flag = true
-      } else if (typeof currentValue === 'undefined' && typeof targetValue !== 'undefined') {
-        flag = !!(params?.ignoreEmptyString && typeof targetValue === 'string' && targetValue === '')
+      } else if (
+        typeof currentValue === 'undefined' &&
+        typeof targetValue !== 'undefined'
+      ) {
+        flag = !!(
+          params?.ignoreEmptyString &&
+          typeof targetValue === 'string' &&
+          targetValue === ''
+        )
       } else {
         if (JSON.stringify(targetValue) !== JSON.stringify(currentValue)) {
           flag = false
@@ -550,10 +591,7 @@ export class ModelBase {
   }) {
     const t_ = toRaw(this)
     let dto_ = {}
-    const m = Reflect.getOwnMetadata(
-      LOCA_DATA_MODEL_KEY,
-      t_.constructor,
-    ) || {}
+    const m = Reflect.getOwnMetadata(LOCA_DATA_MODEL_KEY, t_.constructor) || {}
     const enableDataState = param?.enableDataState ?? m.enableDataState ?? true
     if (enableDataState) {
       dto_ = modelToSerializableObj(t_, {
@@ -561,11 +599,7 @@ export class ModelBase {
         excludeGroup: param?.excludeGroup,
         clean: CLEAN_ENUM.CLEAN_UNDEFINED_AND_NULL,
       })
-      Reflect.defineMetadata(
-        CLONE_KEY,
-        deepCopy(dto_),
-        t_,
-      )
+      Reflect.defineMetadata(CLONE_KEY, deepCopy(dto_), t_)
     }
     return this
   }
@@ -578,7 +612,7 @@ export class ModelBase {
     return Reflect.getOwnMetadata(
       CLONE_KEY,
       // (t_ as any).__target__,
-      (t_ as any),
+      t_ as any
     )
   }
 
@@ -635,7 +669,7 @@ export class ModelBase {
     group?: string
     excludeGroup?: string
     trim?: boolean
-    camelCase?: boolean,
+    camelCase?: boolean
   }) {
     const t_ = toRaw(this)
     return JSON.stringify(t_.getCleanSerializableObject(param))
@@ -648,7 +682,7 @@ export class ModelBase {
     group?: string
     excludeGroup?: string
     trim?: boolean
-    camelCase?: boolean,
+    camelCase?: boolean
   }) {
     const t_ = toRaw(this)
     return JSON.stringify(t_.getSerializableObject(param))
@@ -692,7 +726,7 @@ export class ModelBase {
     ignoreEmptyString?: boolean
     emptyValue?: any
   }) {
-    const t_ = (toRaw(this) as any)
+    const t_ = toRaw(this) as any
     const columns = (t_ as any).getColumns()
     const target = t_ as ModelBase
     const targetData = t_.getSerializableObject(params)
@@ -718,7 +752,7 @@ export class ModelBase {
     for (const key in props) {
       if (data.hasOwnProperty(key)) {
         // 此处应该用this，不能用toRaw后的对象，会引起vue对象丢失响应的问题。
-        (this as any)[key] = data[key]
+        ;(this as any)[key] = data[key]
       }
     }
     return this
@@ -738,7 +772,7 @@ export class ModelBase {
     for (const key in props) {
       if (typeof (newModel as any)[key] !== 'undefined') {
         // 此处应该用this，不能用toRaw后的对象，会引起vue对象丢失响应的问题。
-        (this as any)[key] = (newModel as any)[key]
+        ;(this as any)[key] = (newModel as any)[key]
       }
     }
     return this
@@ -749,7 +783,7 @@ export class ModelBase {
    */
   public getPrimaryKey() {
     const t_ = toRaw(this)
-    const primary = []
+    const primary: any[] = []
     const columns = (t_ as any).getColumns()
     for (const columnName in columns) {
       if (columns.hasOwnProperty(columnName)) {
@@ -800,10 +834,7 @@ export class ModelBase {
   public getColumns(data?: { dto?: any }) {
     const t_ = toRaw(this)
     let columns_ = {} as { [key: string]: IColumnInner }
-    const m = Reflect.getOwnMetadata(
-      LOCA_DATA_MODEL_KEY,
-      t_.constructor,
-    )
+    const m = Reflect.getOwnMetadata(LOCA_DATA_MODEL_KEY, t_.constructor)
     if (m?.columnsInValue) {
       if (data?.dto) {
         columns_ = generateColumnsFromData(t_, data?.dto)
@@ -814,10 +845,7 @@ export class ModelBase {
 
     // let keys = Object.keys(t_)
     // const columns_ = {} as { [key: string]: IColumnInner }
-    if (!Reflect.getOwnMetadata(
-      LOCA_COLUMN_KEY,
-      t_,
-    )) {
+    if (!Reflect.getOwnMetadata(LOCA_COLUMN_KEY, t_)) {
       return {}
     }
     if (modelColumnsMap.has(t_.constructor)) {
@@ -826,9 +854,13 @@ export class ModelBase {
       })
     }
     let columns = {} as { [key: string]: IColumnInner }
-    columns = merge(columns_, getColumnsUtil(columns, Object.getPrototypeOf(t_)) || {}, {
-      clone: true,
-    })
+    columns = merge(
+      columns_,
+      getColumnsUtil(columns, Object.getPrototypeOf(t_)) || {},
+      {
+        clone: true,
+      }
+    )
     return columns
   }
 

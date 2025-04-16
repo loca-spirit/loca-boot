@@ -1,6 +1,6 @@
-import {Column, DataModel, ModelBase} from 'loca-boot-core';
+import { Column, DataModel, ModelBase } from 'loca-boot-core'
 
 export class ColumnCamelCaseItem extends ModelBase {
   @Column()
-  public message!: string;
+  public message!: string
 }

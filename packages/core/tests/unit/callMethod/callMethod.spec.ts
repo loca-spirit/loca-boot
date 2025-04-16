@@ -5,15 +5,19 @@ describe('inject dataModel callMethod', () => {
   describe('method: changeUserName', () => {
     it('method: changeUserName', () => {
       const c = new Consumer({
-        consumerList: [{
-          id: '1',
-        }, {
-          id: '2',
-          message: 'message2',
-        }, {
-          id: '4',
-          message: 'message4',
-        }],
+        consumerList: [
+          {
+            id: '1',
+          },
+          {
+            id: '2',
+            message: 'message2',
+          },
+          {
+            id: '4',
+            message: 'message4',
+          },
+        ],
         consumerObject: {
           id: '1',
         },

@@ -23,7 +23,10 @@ describe('ModelBase', () => {
     })
 
     it('consumerList: ConsumerItem[], dto consumer_list set to undefined.', () => {
-      const c = new Consumer({ consumer_list: undefined, consumer_object: { id: 3 } })
+      const c = new Consumer({
+        consumer_list: undefined,
+        consumer_object: { id: 3 },
+      })
       expect(c.consumerList).toHaveLength(0)
       expect(c.consumerObject.id).toEqual(3)
     })
@@ -82,7 +85,11 @@ describe('ModelBase', () => {
     it('getColumnNames: ConsumerItem[], push one item to list, then save changed.', () => {
       ModelBase.columnNamingMethod = 'camelCase'
       const c = new ColumnCamelCase({ userName: 'mengshuai' })
-      expect(c.getSerializableObject()).toEqual({ userName: 'mengshuai', list: [], consumerList: [] })
+      expect(c.getSerializableObject()).toEqual({
+        userName: 'mengshuai',
+        list: [],
+        consumerList: [],
+      })
       ModelBase.columnNamingMethod = ''
     })
   })
@@ -104,7 +111,10 @@ describe('ModelBase', () => {
       expect(c.getOriginalData()).toEqual({ list: [], consumer_list: [] })
       c.saveChangedData()
       expect(c.getChangedData()).toEqual({})
-      expect(c.getOriginalData()).toEqual({ list: [], consumer_list: [{ message: 1 }] })
+      expect(c.getOriginalData()).toEqual({
+        list: [],
+        consumer_list: [{ message: 1 }],
+      })
     })
   })
 })

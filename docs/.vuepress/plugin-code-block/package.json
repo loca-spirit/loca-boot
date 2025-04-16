@@ -1,0 +1,45 @@
+{
+  "name": "@bfehub/vuepress-plugin-code-block",
+  "type": "module",
+  "version": "1.60.3",
+  "description": "VuePress plugin - code-block",
+  "files": [
+    "lib"
+  ],
+  "keywords": [
+    "vuepress-plugin",
+    "vuepress",
+    "plugin",
+    "code-block"
+  ],
+  "license": "MIT",
+  "author": "haiweilian",
+  "main": "lib/node/index.js",
+  "types": "lib/node/index.d.ts",
+  "homepage": "https://github.com/bfehub/vmi",
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "clean": "rimraf lib *.tsbuildinfo",
+    "copy": "cpx \"src/**/*.{d.ts,vue,scss}\" lib"
+  },
+  "dependencies": {
+    "@mdit-vue/shared": "^0.7.0",
+    "@types/markdown-it": "^12.2.3",
+    "@vuepress/cli": "2.0.0-rc.9",
+    "@vuepress/client": "2.0.0-rc.9",
+    "@vuepress/core": "2.0.0-rc.9",
+    "@vuepress/markdown": "2.0.0-rc.9",
+    "@vuepress/plugin-prismjs": "2.0.0-rc.61",
+    "@vuepress/shared": "2.0.0-rc.9",
+    "@vuepress/utils": "2.0.0-rc.9",
+    "@vueuse/core": "^8.2.1",
+    "markdown-it": "^14.1.0",
+    "posthtml-parser": "^0.11.0",
+    "posthtml-render": "^3.0.0",
+    "vue": "^3.2.47",
+    "vue-router": "^4.0.15"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

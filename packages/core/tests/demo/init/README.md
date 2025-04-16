@@ -1,0 +1,5 @@
+---
+permalink: /init/
+---
+
+# ModelBase init
