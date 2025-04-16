@@ -13135,7 +13135,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loca-boot-common@npm:^1.73.6, loca-boot-common@workspace:packages/common":
+"loca-boot-common@npm:^1.73.10, loca-boot-common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "loca-boot-common@workspace:packages/common"
   dependencies:
@@ -13145,52 +13145,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"loca-boot-common@npm:^1.73.7":
-  version: 1.73.7
-  resolution: "loca-boot-common@npm:1.73.7"
-  checksum: 10/c89fd25e28f6c06a61903260cdd831d1d5c07858a941080935032988932a071fe2294d5dc553d0aa934875f77f22a6574bd04a0ffd21d1dca258dd8150c2a384
-  languageName: node
-  linkType: hard
-
-"loca-boot-core@npm:^1.73.7":
-  version: 1.73.7
-  resolution: "loca-boot-core@npm:1.73.7"
-  dependencies:
-    deepmerge: "npm:^2.2.1"
-    loca-boot-common: "npm:^1.73.7"
-    loca-boot-service: "npm:^1.73.7"
-    reflect-metadata: "npm:^0.1.13"
-  checksum: 10/f25dbab2ee6c4143bb12683277916fbde1ce8f1f63924ee338617eae53c8d605a3a4d74023c7c88e2d5b4a3e23bcc0bde834bad4771c289d66ec33592378dfc7
-  languageName: node
-  linkType: hard
-
-"loca-boot-core@workspace:packages/core":
+"loca-boot-core@npm:^1.73.10, loca-boot-core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "loca-boot-core@workspace:packages/core"
   dependencies:
     "@types/reflect-metadata": "npm:^0.1.0"
     core-js: "npm:^3.38.1"
     deepmerge: "npm:^2.2.1"
-    loca-boot-common: "npm:^1.73.6"
+    loca-boot-common: "npm:^1.73.10"
     patch-package: "npm:^6.4.7"
     reflect-metadata: "npm:^0.1.13"
     tslib: "npm:^2.8.0"
   languageName: unknown
   linkType: soft
 
-"loca-boot-service@npm:^1.73.7":
-  version: 1.73.7
-  resolution: "loca-boot-service@npm:1.73.7"
-  checksum: 10/cd90937e974973f36ba3028569bdbc1d3bd21458640e99484785ea043ef59d6bd8573af42365d2b53eeda16bf00fd8f8777a3c7ccf732fbf0f3e1f838985f5b6
-  languageName: node
-  linkType: hard
-
 "loca-boot-service@workspace:packages/service":
   version: 0.0.0-use.local
   resolution: "loca-boot-service@workspace:packages/service"
   dependencies:
     core-js: "npm:^3.38.1"
-    loca-boot-core: "npm:^1.73.7"
+    loca-boot-core: "npm:^1.73.10"
     patch-package: "npm:^6.4.7"
     tslib: "npm:^2.8.0"
   languageName: unknown
