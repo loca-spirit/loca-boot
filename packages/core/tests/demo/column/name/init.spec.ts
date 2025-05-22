@@ -1,50 +1,42 @@
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from "loca-boot-core"
+// region model
+class Test extends ModelBase {
+  @Column({ name: "user_age" })
+  public age?: string
 
-describe('init', () => {
-  class Consumer extends ModelBase {
-    @Column()
-    public id?: number
+  @Column({ name: "user_name" })
+  public name?: string
+}
+// endregion model
 
-    @Column()
-    public userName?: string
-  }
+// region instance
+const test = new Test({
+  user_age: "19",
+  user_name: "Luffy",
+})
+// endregion instance
 
-  it('should create a consumer with a valid username', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'John Doe',
-    })
-
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('John Doe')
+describe("name", () => {
+  it("自定义字段名", () => {
+    expect(test.age).toBe("19") // PASS
+    expect(test.name).toBe("Luffy") // PASS
   })
-  it('should trim whitespace from the username when saving', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'Alice Smith',
-    })
 
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('Alice Smith')
-  })
-  it('should store the username as null if an empty string is provided', () => {
-    const consumer = new Consumer({
-      id: 2,
-      userName: '',
-    })
-
-    expect(consumer.id).toBe(2)
-    expect(consumer.userName).toEqual('')
-  })
-  it('should allow updating the username of an existing consumer', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'John Doe',
-    })
-
-    consumer.userName = 'Jane Smith'
-
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('Jane Smith')
+  it("output流向数据会使用原来的key", () => {
+    expect(test.getSerializableObject()).toEqual({
+      user_age: "19",
+      user_name: "Luffy",
+    }) // PASS
   })
 })
+
+// region log
+console.log(test.age)
+// "19"
+
+console.log(test.name)
+// "Luffy"
+
+console.log(test.getSerializableObject())
+// { user_age: "19", user_name: "Luffy" }
+// endregion log

@@ -9,7 +9,8 @@
     "build:doc": "vuepress build docs --dest dist",
     "clean-cache": "rm -rf docs/.vuepress/.cache && rm -rf docs/.vuepress/.temp && rm -rf node_modules/.vite",
     "postinstall": "patch-package",
-    "pub": "lerna publish --no-git-tag-version --no-private --registry=https://registry.npmjs.org"
+    "pub": "lerna publish --no-git-tag-version --no-private --registry=https://registry.npmjs.org",
+    "v": "lerna version --no-git-tag-version --no-private"
   },
   "author": "",
   "workspaces": [

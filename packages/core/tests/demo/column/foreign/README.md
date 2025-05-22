@@ -2,4 +2,4 @@
 permalink: /column/foreign/
 ---
 
-# ModelBase group
+# foreign 外键

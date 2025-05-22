@@ -1,50 +1,42 @@
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from "loca-boot-core"
+// region model
+class Test extends ModelBase {
+  @Column()
+  public a?: string
 
-describe('init', () => {
-  class Consumer extends ModelBase {
-    @Column()
-    public id?: number
+  @Column()
+  public b?: string
 
-    @Column()
-    public userName?: string
-  }
+  @Column()
+  public c?: string
 
-  it('should create a consumer with a valid username', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'John Doe',
-    })
+  @Column()
+  public empty?: string
+}
+// endregion model
 
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('John Doe')
-  })
-  it('should trim whitespace from the username when saving', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'Alice Smith',
-    })
+// region instance
+const test = new Test({ a: "1", b: "1", c: "1" })
+// endregion instance
 
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('Alice Smith')
-  })
-  it('should store the username as null if an empty string is provided', () => {
-    const consumer = new Consumer({
-      id: 2,
-      userName: '',
-    })
+// region change
+// 修改a，c属性，添加empty属性，b属性不变
+test.a = "2"
+test.c = "2"
+test.empty = "2"
+// endregion change
 
-    expect(consumer.id).toBe(2)
-    expect(consumer.userName).toEqual('')
-  })
-  it('should allow updating the username of an existing consumer', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'John Doe',
-    })
-
-    consumer.userName = 'Jane Smith'
-
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('Jane Smith')
+describe("getChangeData", () => {
+  it("getChangedData()", () => {
+    expect(test.getChangedData()).toEqual({
+      a: "2",
+      c: "2",
+      empty: "2",
+    }) // PASS
   })
 })
+
+// region log
+console.log(test.getChangedData())
+// { a: "2", c: "2", empty: "2" }
+// endregion log

@@ -1,50 +1,37 @@
 import { Column, ModelBase } from 'loca-boot-core'
+// region fn
+interface formatter {
+  value: any // 当前值
+  key: string // 当前key
+  data: any // 所有数据
+  columns: any[] // 所有的column的定义
+}
 
-describe('init', () => {
-  class Consumer extends ModelBase {
-    @Column()
-    public id?: number
+function unfNumber3({ value, key, data, columns }: formatter) {
+  return value?.toFixed(2).toString()
+}
+// endregion fn
 
-    @Column()
-    public userName?: string
-  }
+// region model
+class Test extends ModelBase {
+  @Column({ unformatter: unfNumber3 }) 
+  public a?: number
+}
+// endregion model
 
-  it('should create a consumer with a valid username', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'John Doe',
-    })
+// region instance
+const test = new Test({
+  a: 123.456,
+})
+// endregion instance
 
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('John Doe')
-  })
-  it('should trim whitespace from the username when saving', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'Alice Smith',
-    })
-
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('Alice Smith')
-  })
-  it('should store the username as null if an empty string is provided', () => {
-    const consumer = new Consumer({
-      id: 2,
-      userName: '',
-    })
-
-    expect(consumer.id).toBe(2)
-    expect(consumer.userName).toEqual('')
-  })
-  it('should allow updating the username of an existing consumer', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'John Doe',
-    })
-
-    consumer.userName = 'Jane Smith'
-
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('Jane Smith')
+describe('unformatter', () => {
+  it('将给后端的数据转换为精度是两位小数的字符串', () => {
+    expect(test.getSerializableObject()).toEqual({ a: '123.46'}) // PASS
   })
 })
+
+// region log
+console.log(test.getSerializableObject())
+// { a: '123.46'}
+// endregion log

@@ -1,50 +1,71 @@
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from "loca-boot-core"
+// region model
+class TestItem extends ModelBase {
+  @Column()
+  public msg?: string
+}
 
-describe('init', () => {
-  class Consumer extends ModelBase {
-    @Column()
-    public id?: number
+class Test extends ModelBase {
+  @Column()
+  public a?: number
 
-    @Column()
-    public userName?: string
-  }
+  @Column()
+  public b?: string
 
-  it('should create a consumer with a valid username', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'John Doe',
-    })
+  @Column()
+  public c?: boolean
 
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('John Doe')
+  @Column()
+  public d?: string[]
+
+  @Column({ model: TestItem, autowired: true })
+  public e?: TestItem[]
+
+  @Column({ model: TestItem, autowired: true })
+  public f?: TestItem
+}
+// endregion model
+
+// region instance
+const test = new Test({
+  a: 1,
+  b: "hhh",
+  c: true,
+  d: ["123", "456"],
+  e: [{ msg: "123" }, { msg: "456" }],
+  f: { msg: "message" },
+})
+// endregion instance
+
+describe("type", () => {
+  it("ModelBase未嵌套不需要传入，但是要正确的声明", () => {
+    expect(test.a).toBe(1) // PASS
+    expect(test.b).toBe("hhh") // PASS
+    expect(test.c).toBe(true) // PASS
+    expect(test.d).toEqual(["123", "456"]) // PASS
   })
-  it('should trim whitespace from the username when saving', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'Alice Smith',
-    })
-
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('Alice Smith')
-  })
-  it('should store the username as null if an empty string is provided', () => {
-    const consumer = new Consumer({
-      id: 2,
-      userName: '',
-    })
-
-    expect(consumer.id).toBe(2)
-    expect(consumer.userName).toEqual('')
-  })
-  it('should allow updating the username of an existing consumer', () => {
-    const consumer = new Consumer({
-      id: 1,
-      userName: 'John Doe',
-    })
-
-    consumer.userName = 'Jane Smith'
-
-    expect(consumer.id).toBe(1)
-    expect(consumer.userName).toBe('Jane Smith')
+  it("ModelBase嵌套需要通过model传入", () => {
+    expect(test.e).toEqual([{ msg: "123" }, { msg: "456" }]) // PASS
+    expect(test.f).toEqual({ msg: "message" }) // PASS
   })
 })
+
+// region log
+console.log(test.a)
+// 1
+
+console.log(test.b)
+// "hhh"
+
+console.log(test.c)
+// true
+
+console.log(test.d)
+// ["123", "456"]
+
+console.log(test.e)
+// [{ msg: "123" }, { msg: "456" }]
+
+console.log(test.f)
+// { msg: "message" }
+// endregion log
