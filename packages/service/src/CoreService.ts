@@ -1,4 +1,12 @@
-import { DataStreamWrapper, DataWrapper, Driver, ModelBase, ServiceResponse } from 'loca-boot-core'
+import {
+  type ModelSnakeType,
+  type ModelType,
+  DataStreamWrapper,
+  DataWrapper,
+  Driver,
+  ModelBase,
+  ServiceResponse,
+} from 'loca-boot-core'
 
 /**
  * options: {
@@ -13,11 +21,18 @@ export interface IServiceParam<T> {
   params?: ModelBase | any
   options?: any
   beforeParse?: (dto: any) => any
+  beforeDeserialize?: (data: {
+    json: any
+    snakeJson?: ModelSnakeType<ServiceResponse<T>>
+    modelJson?: ModelType<ServiceResponse<T>>
+  }) => any
   afterParse?: (serviceResponse: ServiceResponse<T>) => ServiceResponse<T>
-  wrapper?: DataWrapper |
+  afterDeserialize?: (serviceResponse: ServiceResponse<T>) => ServiceResponse<T>
+  wrapper?:
+    | DataWrapper
     // IWrapperType |
-    (new(dto: any) => T) |
-    T[]
+    | (new (dto: any) => T)
+    | T[]
 }
 
 export interface IServiceParamRequest<T> extends IServiceParam<T> {
@@ -56,13 +71,14 @@ export class CoreService {
     return this.request<T>(url, { ...data, type: 'patch' })
   }
 
-
   public async request<T extends any>(url: string, param?: IServiceParamRequest<T>) {
     let apiData
-    if (param &&
+    if (
+      param &&
       param.wrapper &&
       (param?.wrapper as any).getClassName &&
-      (param?.wrapper as any).getClassName() === DataStreamWrapper.className) {
+      (param?.wrapper as any).getClassName() === DataStreamWrapper.className
+    ) {
       param.options = param.options || {}
       param.options.responseType = param.options.responseType || (param?.wrapper as DataStreamWrapper).responseType
     }
@@ -75,19 +91,28 @@ export class CoreService {
       if (param?.beforeParse) {
         apiData = param.beforeParse(apiData)
       }
+      if (param?.beforeDeserialize) {
+        param.beforeDeserialize({
+          json: apiData,
+          snakeJson: apiData,
+          modelJson: apiData,
+        })
+      }
       let serviceResponse = new ServiceResponse<T>(apiData, param?.wrapper)
       if (param?.afterParse) {
         serviceResponse = param.afterParse.call(null, serviceResponse)
       }
-      const wrapper = (param?.wrapper as any)
-      if (param &&
-        param.wrapper &&
-        wrapper.getClassName &&
-        wrapper.getClassName() === DataStreamWrapper.className) {
-        if ((wrapper as DataStreamWrapper).autoParseJson &&
+      if (param?.afterDeserialize) {
+        serviceResponse = param.afterDeserialize.call(null, serviceResponse)
+      }
+      const wrapper = param?.wrapper as any
+      if (param && param.wrapper && wrapper.getClassName && wrapper.getClassName() === DataStreamWrapper.className) {
+        if (
+          (wrapper as DataStreamWrapper).autoParseJson &&
           // 兼容老版本没有 headers 的情况。
           serviceResponse.headers &&
-          serviceResponse.headers['content-type']?.indexOf('application/json') !== -1) {
+          serviceResponse.headers['content-type']?.indexOf('application/json') !== -1
+        ) {
           if ((wrapper as DataStreamWrapper).responseType === 'blob') {
             if (typeof serviceResponse.data === 'string') {
               try {
@@ -119,13 +144,16 @@ export class CoreService {
     }
   }
 
-  private req(url: string, data: {
-    type: 'get' | 'post' | 'del' | 'put' | 'patch',
-    params?: ModelBase | any,
-    options?: any,
-  }) {
+  private req(
+    url: string,
+    data: {
+      type: 'get' | 'post' | 'del' | 'put' | 'patch'
+      params?: ModelBase | any
+      options?: any
+    },
+  ) {
     let params = data.params
-    if (params instanceof ModelBase) {
+    if (data.params && data.params.getSerializableObject) {
       if (data.options && data.options.allowEmptyData) {
         params = data.params?.getSerializableObject()
       } else {

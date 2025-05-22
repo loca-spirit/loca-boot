@@ -22,11 +22,14 @@ export class Consumer extends ModelBase {
   @Column({ default: true })
   public list!: string[]
 
-  @Column({ model: ConsumerItem, autowired: true })
+  @Column({ model: () => ConsumerItem, autowired: true })
   public consumerList!: ConsumerItem[]
 
-  @Column()
+  @Column({ model: () => ConsumerItem })
   public consumerObject!: ConsumerItem
+
+  @Column()
+  public consumerObjectMap!: Record<string, ConsumerItem>
 
   init() {
     this.userName = this.consumerObject.id + this.consumerObject.message

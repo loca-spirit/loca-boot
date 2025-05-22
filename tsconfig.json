@@ -57,13 +57,13 @@
     "baseUrl": ".",
     "paths": {
       "loca-boot-common": [
-        "./packages/common/src"
+        "packages/common/src/index.ts"
       ],
       "loca-boot-core": [
-        "./packages/core/src"
+        "packages/core/src/index.ts"
       ],
       "loca-boot-service": [
-        "./packages/service/src"
+        "packages/service/src/index.ts"
       ]
     }
   },

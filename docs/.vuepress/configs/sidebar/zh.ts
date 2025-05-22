@@ -11,7 +11,7 @@ export const zhSideBar: SidebarOptions = {
           link: '/guide/start/',
         },
         {
-          text: '认识ModelBase',
+          text: '基本概念',
           link: '/guide/know/',
         },
         {
@@ -28,27 +28,43 @@ export const zhSideBar: SidebarOptions = {
         },
       ],
     },
-    {
-      text: '文档',
-      link: '/init/',
-      children: [
-        {
-          text: '初始化',
-          link: '/init/',
-        },
-        {
-          text: '分组',
-          link: '/group/',
-        },
-      ],
-    },
+    // {
+    //   text: '场景',
+    //   link: '/changjing/',
+    //   children: [
+    //     {
+    //       text: '初始化',
+    //       link: '/init/',
+    //     },
+    //     {
+    //       text: '分组',
+    //       link: '/group/',
+    //     },
+    //     {
+    //       text: '增量提交',
+    //       link: '/add/',
+    //     },
+    //     {
+    //       text: '全量提交',
+    //       link: '/full/',
+    //     },
+    //     {
+    //       text: '是否更新成功',
+    //       link: '/updatesuccess/',
+    //     },
+    //   ],
+    // },
     {
       text: 'Column 配置',
       link: '/column/',
       children: [
         {
-          text: 'aliasName 别名',
-          link: '/column/aliasName/',
+          text: 'type 类型',
+          link: '/column/type/',
+        },
+        {
+          text: 'model 模型',
+          link: '/column/model/',
         },
         {
           text: 'autowired 默认初始化',
@@ -59,50 +75,42 @@ export const zhSideBar: SidebarOptions = {
           link: '/column/default/',
         },
         {
-          text: 'foreign 外键',
-          link: '/column/foreign/',
+          text: 'name 字段编码',
+          link: '/column/name/',
+        },
+        {
+          text: 'aliasName 入参别名',
+          link: '/column/aliasName/',
         },
         {
           text: 'formatter 格式化',
           link: '/column/formatter/',
         },
         {
-          text: 'group 分组',
-          link: '/column/group/',
-        },
-        {
-          text: 'model 模型',
-          link: '/column/model/',
-        },
-        {
-          text: 'name 名字',
-          link: '/column/name/',
+          text: 'unformatter 反格式化',
+          link: '/column/unformatter/',
         },
         {
           text: 'primary 主键',
           link: '/column/primary/',
         },
         {
+          text: 'foreign 外键',
+          link: '/column/foreign/',
+        },
+        {
+          text: 'group 分组',
+          link: '/column/group/',
+        },
+        {
           text: 'trim 去空格',
           link: '/column/trim/',
-        },
-        {
-          text: 'type 类型',
-          link: '/column/type/',
-        },
-        {
-          text: 'unformatter 反格式化',
-          link: '/column/unformatter/',
-        },
-        {
-          text: 'default 默认值',
-          link: '/column/default/',
         },
       ],
     },
     {
       text: 'Method 方法',
-      link: '/method/',
+      link: '/method/callMethod/',
       children: [
         {
           text: 'callMethod 调用方法',
@@ -117,28 +125,24 @@ export const zhSideBar: SidebarOptions = {
           link: '/method/getChangedData/',
         },
         {
-          text: 'getChangedDataDescriptor 获取变化的普通对象数据描述',
-          link: '/method/getChangedDataDescriptor/',
+          text: 'getChangedDescriptor 获取变化的普通对象数据描述',
+          link: '/method/getChangedDescriptor/',
         },
         {
           text: 'getCleanSerializableObject 获取非空的普通对象数据',
           link: '/method/getCleanSerializableObject/',
         },
         {
-          text: 'getCleanSerializableString 获取非空的普通对象数据字符串',
-          link: '/method/getCleanSerializableString/',
-        },
-        {
           text: 'getColumnData 获取字段元数据',
           link: '/method/getColumnData/',
         },
         {
-          text: 'getSerializableData 获取普通对象数据',
-          link: '/method/getSerializableData/',
+          text: 'setColumnData 设置字段元数据',
+          link: '/method/setColumnData/',
         },
         {
-          text: 'getSerializableString 获取普通对象数据',
-          link: '/method/getSerializableString/',
+          text: 'getSerializableObject 获取普通对象数据',
+          link: '/method/getSerializableObject/',
         },
         {
           text: 'isChanged 模型是否变化',
@@ -161,8 +165,8 @@ export const zhSideBar: SidebarOptions = {
           link: '/method/saveChangedData/',
         },
         {
-          text: 'setColumnData 设置字段元数据',
-          link: '/method/setColumnData/',
+          text: 'getOriginalData 获得对象被更改前的原始数据',
+          link: '/method/getOriginalData/',
         },
         {
           text: 'setDataByOriginal 设置模型数据',
@@ -185,24 +189,6 @@ export const zhSideBar: SidebarOptions = {
         {
           text: '获取变化的数据',
           link: '/group1/',
-        },
-      ],
-    },
-    {
-      text: '场景',
-      link: '/changjing/',
-      children: [
-        {
-          text: '增量提交',
-          link: '/add/',
-        },
-        {
-          text: '全量提交',
-          link: '/full/',
-        },
-        {
-          text: '是否更新成功',
-          link: '/updatesuccess/',
         },
       ],
     },

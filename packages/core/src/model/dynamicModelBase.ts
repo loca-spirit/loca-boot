@@ -3,9 +3,9 @@ import {
   Column,
   IColumnDefined,
   IDataModel,
-  LOCA_DATA_MODEL_KEY,
 } from '../decorator'
 import { IModelOptions } from '../utils/ModelBaseUtil'
+import { __MODEL__ } from '../constant'
 
 export function genType(typeStr: string, column: IColumnDefined) {
   let designType
@@ -94,11 +94,7 @@ export function dynamicModelBase<T = ModelBase>(
     const model = {
       methods: params?.methods || {},
     } as IDataModel
-    Reflect.defineMetadata(
-      LOCA_DATA_MODEL_KEY,
-      model,
-      CustomDefinedModel.prototype.constructor
-    )
+    (CustomDefinedModel.prototype.constructor as any)[__MODEL__] = model
   }
   return CustomDefinedModel as any as new (
     dto?: any,

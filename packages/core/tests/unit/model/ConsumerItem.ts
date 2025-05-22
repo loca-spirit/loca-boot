@@ -12,6 +12,9 @@ export class ConsumerItem extends ModelBase {
   @Column()
   public message!: string
 
+  @Column()
+  public testMy!: string
+
   @Column({ trim: true })
   public name!: string
 

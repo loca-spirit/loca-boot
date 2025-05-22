@@ -19,8 +19,6 @@ const build = async (minify: boolean) => {
     plugins: [
       nodeResolve(),
       commonjs({
-        // include: 'node_modules/dayjs/**',
-        // exclude: ['@arco-design/web-vue/**']
       }),
       json(),
       esbuild({
