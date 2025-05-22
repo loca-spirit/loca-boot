@@ -40,7 +40,6 @@ export const generatePaths = (isEsBuild = false) => {
       paths = pathsEs
     }
     for (const [oldPath, newPath] of paths) {
-      // 如果遇到绝对路径是 @arco-design/web-vue 的，则替换成es目录。
       if (isEsBuild) {
         if (id === oldPath) {
           return id.replace(oldPath, newPath)

@@ -1,10 +1,5 @@
 import 'reflect-metadata'
-import { ModelBase } from '../model'
-import { LOCA_DATA_MODEL_KEY, IDataModel } from './DataModel'
-
-export const LOCA_COLUMN_KEY = Symbol('locaColumnKey')
-export const MODEL_COLUMN_KEY = Symbol('modelColumnKey')
-export const CLONE_KEY = Symbol('__CLONE__')
+import { __COLUMNS__, __MODEL__ } from '../constant'
 
 export interface IColumn {
   name?: string
@@ -13,12 +8,26 @@ export interface IColumn {
   group?: string | string[]
   model?: any
   formatter?: any
+  serialize?: (
+    data: {
+      value: any
+      key: string
+      data: any
+    },
+  ) => any
   trim?: boolean
   primary?: boolean
   foreign?: boolean
   default?: any
   autowired?: boolean
   unformatter?: any
+  deserialize?: (
+    data: {
+      value: any
+      key: string
+      data: any
+    },
+  ) => any
   extData?: any
 }
 
@@ -64,7 +73,7 @@ function genUnderlinePropName(property: string) {
 }
 
 export function generateColumnsFromData(model: any, data: any) {
-  const m = Reflect.getOwnMetadata(LOCA_DATA_MODEL_KEY, model.constructor)
+  const m = (model.constructor as any)[__MODEL__] || {}
 
   const keys = Object.keys(data)
   const columns_ = {} as { [key: string]: IColumnInner }
@@ -107,8 +116,7 @@ export function generateColumnsFromData(model: any, data: any) {
 export function Column(col?: IColumn): PropertyDecorator {
   let params = col as IColumnInner
   return (target: any, property: string | symbol) => {
-    let columns = Reflect.getOwnMetadata(LOCA_COLUMN_KEY, target)
-    columns = columns || {}
+    const columns = (target.constructor as any)[__COLUMNS__] || {}
     if (!params) {
       params = { camelCaseName: property, column: undefined, type: undefined }
     }
@@ -124,45 +132,11 @@ export function Column(col?: IColumn): PropertyDecorator {
       params.camelCaseName = property
     }
     const type = Reflect.getMetadata('design:type', target, property)
-    // @ts-ignore
-    const File = File || Object // 小程序不支持 File对象，按照Object去处理
     let childType
-    switch (type) {
-      case Array:
-        if (params.childType) {
-          childType = params.childType
-        }
-        break
-      case Object:
-        // 需要拓展能识别出来是不是{[key: ModelBase]}
-        break
-      case Number:
-        break
-      case String:
-        break
-      case Boolean:
-        break
-      case Map:
-        break
-      case WeakMap:
-        break
-      case Set:
-        break
-      case WeakSet:
-        break
-      case Symbol:
-        break
-      case Function:
-        break
-      case File:
-        break
-      default:
-        // 除了基本类型之外，其他的复杂类型（class等）都是设置为 type
-        if (params.childType) {
-          childType = params.childType
-        } else if (type?.isModelBase) {
-          childType = type
-        }
+    if (params.childType) {
+      childType = params.childType
+    } else if (type?.isModelBase) {
+      childType = type
     }
     let g: any
     if (Array.isArray(params.group)) {
@@ -178,16 +152,18 @@ export function Column(col?: IColumn): PropertyDecorator {
       aliasName: params.aliasName,
       type,
       group: g,
-      formatter: params.formatter,
       trim: params.trim,
       primary: params.primary,
       foreign: params.foreign,
       default: params.default,
       autowired: params.autowired,
+      formatter: params.formatter,
       unformatter: params.unformatter,
+      deserialize: params.deserialize,
+      serialize: params.serialize,
       childType,
       extData: params.extData,
     }
-    Reflect.defineMetadata(LOCA_COLUMN_KEY, columns, target)
+    ;(target.constructor as any)[__COLUMNS__] = columns
   }
 }

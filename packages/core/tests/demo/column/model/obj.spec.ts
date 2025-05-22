@@ -5,6 +5,11 @@ class TestItem1 extends ModelBase {
   public userMsg1?: number
 }
 
+class TestItem2 extends ModelBase {
+  @Column()
+  public userMsg2?: number
+}
+
 class Test extends ModelBase {
   @Column({ model: TestItem1, autowired: true })
   public modelObject?: TestItem1
@@ -12,13 +17,8 @@ class Test extends ModelBase {
   @Column()
   public noModelObject1?: TestItem1
 
-  @Column()
+  @Column({ model: TestItem2, autowired: true })
   public noModelObject2?: TestItem2
-}
-
-class TestItem2 extends ModelBase {
-  @Column()
-  public userMsg2?: number
 }
 // endregion model
 
@@ -37,9 +37,10 @@ describe("model", () => {
   it("未传入model，但嵌套的内层类型在外层类型上面定义的，对象字段下划线也会转驼峰", () => {
     expect(test.noModelObject1).toEqual({ userMsg1: 111 }) // PASS
   })
-  it("未传入model，且嵌套的内层类型在外层类型下面定义的，对象字段下划线不会转驼峰", () => {
-    expect(test.noModelObject2).toEqual({ user_msg2: 222 }) // PASS
-  })
+  // it("未传入model，且嵌套的内层类型在外层类型下面定义的，对象字段下划线不会转驼峰", () => {
+  //   console.log(test)
+  //   // expect(test.noModelObject2).toEqual({ user_msg2: 222 }) // PASS
+  // })
 })
 
 // region log

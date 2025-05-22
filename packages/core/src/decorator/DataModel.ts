@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import { __MODEL__ } from '../constant'
 
 export const LOCA_DATA_MODEL_KEY = Symbol('locaDataModelKey')
 
@@ -17,6 +18,6 @@ export function DataModel(params?: IDataModel): ClassDecorator {
       keepModelName: params?.keepModelName,
       enableDataState: params?.enableDataState,
     } as IDataModel
-    Reflect.defineMetadata(LOCA_DATA_MODEL_KEY, model, constructor)
+    ;(constructor as any)[__MODEL__] = model
   }
 }

@@ -52,15 +52,6 @@ const buildScssFull = async () => {
       .pipe(dest(output))
       .on('end', resolve)
   })
-  // await new Promise((resolve) => {
-  //   src([
-  //     `${root}/node_modules/@arco-design/web-vue/dist/arco.min.css`,
-  //     `${output}/index.css`,
-  //   ])
-  //     .pipe(concat(`index.css`))
-  //     .pipe(dest(output))
-  //     .on('end', resolve)
-  // })
 }
 
 /**

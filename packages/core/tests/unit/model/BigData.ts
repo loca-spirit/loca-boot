@@ -17,9 +17,9 @@ export class BigData extends ModelBase {
   @Column({ default: true })
   public list!: string[]
 
-  @Column({ model: BigDataItem, autowired: true })
+  @Column({ model: () => BigDataItem, autowired: true })
   public consumerList!: BigDataItem[]
 
-  @Column({ model: BigDataItem })
+  @Column({ model: () => BigDataItem })
   public consumerObject!: BigDataItem
 }

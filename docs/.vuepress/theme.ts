@@ -46,6 +46,15 @@ export default hopeTheme(
     markdown: {
       codeTabs: true,
       tabs: true,
+      include: true,
+      playground: {
+        presets: ['ts'],
+        config: {
+          ts: {
+            service: "https://www.typescriptlang.org/play"
+          }
+        }
+      }
     },
   },
   { custom: true },

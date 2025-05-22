@@ -32,12 +32,6 @@ td {
       //white-space: nowrap;
     }
   }
-
-  th:not(.arco-table-th),
-  td:not(.arco-table-td) {
-    padding: 0.6em 1em;
-    border: 1px solid var(--c-border-dark);
-  }
 }
 
 .page {
