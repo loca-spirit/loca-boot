@@ -1,4 +1,4 @@
-import { Column, ModelBase } from "loca-boot-core"
+import { Column, ModelBase } from 'loca-boot-core'
 // region model
 class TestItem extends ModelBase {
   @Column()
@@ -7,22 +7,23 @@ class TestItem extends ModelBase {
 class Test extends ModelBase {
   @Column()
   public str?: string
-
-  @Column({ model: TestItem })
+  @Column({
+    model: () => TestItem,
+  })
   public arr?: TestItem[]
 }
 // endregion model
 
 // region instance
 const test1 = new Test({
-  str: "str",
-  arr: ["1", "2", "3"],
+  str: 'str',
+  arr: ['1', '2', '3'],
 })
-const test2 = new TestItem(["1", "2", "3", "4", "5"])
+const test2 = new TestItem(['1', '2', '3', '4', '5'])
 // endregion instance
 
-describe("isContainsModel", () => {
-  it("isContainsModel()", () => {
+describe('isContainsModel', () => {
+  it('isContainsModel()', () => {
     expect(test1.isContainsModel(test2)).toBe(true) // PASS
   })
 })

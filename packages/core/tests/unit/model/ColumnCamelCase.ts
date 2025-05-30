@@ -4,19 +4,13 @@ import { ColumnCamelCaseItem } from './ColumnCamelCaseItem'
 export class ColumnCamelCase extends ModelBase {
   @Column()
   public userName!: string
-
   @Column({
-    default: () => {
-      return []
-    },
+    default: () => [],
   })
   public list!: string[]
-
   @Column({
-    model: ColumnCamelCaseItem,
-    default: () => {
-      return []
-    },
+    model: () => ColumnCamelCaseItem,
+    default: () => [],
   })
   public consumerList!: ColumnCamelCaseItem[]
 }

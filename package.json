@@ -10,7 +10,7 @@
     "clean-cache": "rm -rf docs/.vuepress/.cache && rm -rf docs/.vuepress/.temp && rm -rf node_modules/.vite",
     "postinstall": "patch-package",
     "v": "lerna version --no-git-tag-version --no-private",
-    "pub": "lerna publish --no-git-tag-version --no-private --registry=https://registry.npmjs.org"
+    "pub": "lerna publish --no-git-tag-version --no-private --dist-tag next --registry=https://registry.npmjs.org"
   },
   "author": "",
   "workspaces": [
@@ -80,9 +80,9 @@
     "rollup": "^2.78.1",
     "rollup-plugin-esbuild": "^4.9.3",
     "sass": "^1.82.0",
-    "ts-jest": "^28.0.8",
+    "ts-jest": "^29.3.4",
     "tslib": "^2.6.3",
-    "typescript": "^5.3.3",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.3.0",
     "unplugin-vue-define-options": "^1.5.2",
     "vite": "^5.2.11",

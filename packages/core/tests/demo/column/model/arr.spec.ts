@@ -1,4 +1,4 @@
-import { Column, ModelBase } from "loca-boot-core"
+import { Column, ModelBase } from 'loca-boot-core'
 // region model
 class TestItem extends ModelBase {
   @Column()
@@ -6,10 +6,12 @@ class TestItem extends ModelBase {
 }
 
 class Test extends ModelBase {
-  @Column({ model: TestItem, autowired: true })
+  @Column({
+    model: () => TestItem,
+    default: () => [],
+  })
   public modelArray?: TestItem[]
-
-  @Column()
+  @Column({})
   public noModelArray?: TestItem[]
 }
 // endregion model
@@ -21,11 +23,11 @@ const test = new Test({
 })
 // endregion instance
 
-describe("model", () => {
-  it("传入了model，数组字段会下划线转驼峰", () => {
+describe('model', () => {
+  it('传入了model，数组字段会下划线转驼峰', () => {
     expect(test.modelArray).toEqual([{ userMsg: 1 }]) // PASS
   })
-  it("未传入model，数组字段下划线不会转驼峰", () => {
+  it('未传入model，数组字段下划线不会转驼峰', () => {
     expect(test.noModelArray).toEqual([{ user_msg: 111 }]) // PASS
   })
 })

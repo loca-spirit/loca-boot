@@ -2,9 +2,9 @@
  * Created by shuai.meng on 2017/8/2.
  */
 import { cloneDeep } from 'lodash'
-import { __COLUMNS__, __MODEL__ } from '../constant'
-import { IColumnInner } from '../decorator'
-import { ModelBase } from '../model'
+import { __COLUMNS__, __MODEL__, __VERSION__ } from '../constant'
+import type { IColumnInner } from '../decorator/types'
+import { ModelBase } from '../model/ModelBase'
 export interface IModelOptions {
   // new 实例的时候，全局模型生效 begin 主要是动态模型会用到
   enableDataState?: boolean // 是否启用数据状态
@@ -22,7 +22,7 @@ export interface IModelOptions {
   dtoNamingMethod?: string
   group?: string // 分组 新增、更新、删除的时候，是否指定分组
   excludeGroup?: string // 排除分组，新增、更新、删除的时候，是否指定排除分组
-  __noInit?: boolean
+  // __noInit?: boolean
 }
 
 export interface IModelUpdateOptions {
@@ -131,9 +131,11 @@ export function create<T extends ModelBase>(fn_: new (dto?: any, options?: IMode
   return function createDTO(dto?: any, options?: IModelOptions) {
     const fn = getModelType(fn_)
     const t_ = new fn(dto, options)
-    if (options?.__noInit) {
-      createModelByDTO<T>(t_, (t_ as any).getColumns(), dto, options)
-    }
+    // if (options?.__noInit) {
+    //   if ((t_.constructor as any)[__VERSION__] === 'old') {
+    //     createModelByDTO<T>(t_, (t_ as any).getColumns(), dto, options)
+    //   }
+    // }
     return t_
   }
 }
@@ -204,16 +206,14 @@ export function createChildField<T extends ModelBase>(
   options?: IModelOptions,
 ) {
   const formatterValue = getFormatterValue(model, field, modelDTO)
-  if (field.type === Array) {
-    if (Array.isArray(formatterValue)) {
-      const arr: any[] = (() => {
-        return []
-      })()
-      formatterValue.forEach((itemDTO: any) => {
-        arr.push(create<T>(field.childType)(itemDTO, options))
-      })
-      return arr
-    }
+  if (Array.isArray(formatterValue)) {
+    const arr: any[] = (() => {
+      return []
+    })()
+    formatterValue.forEach((itemDTO: any) => {
+      arr.push(create<T>(field.childType)(itemDTO, options))
+    })
+    return arr
   } else {
     return create<T>(field.childType)(formatterValue, options)
   }
@@ -334,7 +334,7 @@ function initField<T extends ModelBase>(
       if (field.childType) {
         ;(model as any)[columnName] = createChildField<T>(model, field, columnName, data, options)
       } else {
-        if (field.type === Array) {
+        if (Array.isArray(getColumnDto(model, data, field))) {
           ;(model as any)[columnName] = getFormatterValue<T>(model, field, cloneDeep(data))
         } else {
           ;(model as any)[columnName] = getFormatterValue<T>(model, field, data)
@@ -352,7 +352,7 @@ function initField<T extends ModelBase>(
   } else if (flag === 'update') {
     if (typeof columnDto !== 'undefined') {
       if (field.childType) {
-        if (field.type === Array) {
+        if (Array.isArray(getColumnDto(model, data, field))) {
           updateArrField<T>(field, model, columnName, data, options)
         } else if (field.foreign) {
           updateForeign<T>(field, model, columnName, data, columnDto, options)

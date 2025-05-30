@@ -1,25 +1,30 @@
 import { Column, DataModel, ModelBase } from 'loca-boot-core'
 import { BigDataItem } from './BigDataItem'
 
+export
 @DataModel({
   enableDataState: false,
 })
-export class BigData extends ModelBase {
-  @Column({ trim: true })
+class BigData extends ModelBase {
+  @Column({
+    trim: true,
+  })
   public userName?: string
-
   @Column()
   public user_xx?: string
-
   @Column()
   public phoneNumber!: string
-
-  @Column({ default: true })
+  @Column({
+    default: () => [],
+  })
   public list!: string[]
-
-  @Column({ model: () => BigDataItem, autowired: true })
+  @Column({
+    model: () => BigDataItem,
+    default: () => [],
+  })
   public consumerList!: BigDataItem[]
-
-  @Column({ model: () => BigDataItem })
+  @Column({
+    model: () => BigDataItem,
+  })
   public consumerObject!: BigDataItem
 }

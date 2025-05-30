@@ -1,8 +1,9 @@
 import merge from 'deepmerge'
 import { getTag } from 'loca-boot-common'
 import { cloneDeep } from 'lodash'
-import { __CLONE__, __COLUMNS__, __MODEL__ } from '../constant'
-import { IColumnInner, IDataModel, generateColumnsFromData } from '../decorator'
+import { __CLONE__, __COLUMNS__, __MODEL__, __VERSION__ } from '../constant'
+import { generateColumnsFromData } from '../decorator/Column'
+import type { IColumnInner, IDataModel } from '../decorator/types'
 import { getChange } from '../utils/ChangedModelUtil'
 import { ModelTool, toRaw } from '../utils/lib'
 import {
@@ -56,7 +57,7 @@ function modelToSerializableObj<T extends ModelBase>(
         if (columns[key].childType) {
           // 如果原始数据中没有这个字段，则不存入saveData
           if (target[key]) {
-            if (columns[key].type === Array) {
+            if (Array.isArray(target[key])) {
               dto[columnName] = []
               target[key].forEach((m: any) => {
                 dto[columnName].push(modelToSerializableObj(m, param))
@@ -156,8 +157,8 @@ function callMethod(
   for (const key in columns) {
     if (columns.hasOwnProperty(key)) {
       if (columns[key].childType) {
-        if (columns[key].type === Array) {
-          target[key]?.forEach((m: any) => {
+        if (target[key] && Array.isArray(target[key])) {
+          target[key].forEach((m: any) => {
             callMethod(m, param)
           })
         } else {
@@ -260,14 +261,12 @@ export class ModelBase {
   constructor(dto?: any, options?: IModelOptions) {
     const t_ = toRaw(this)
     initModel_(t_, options)
-    let columns_ = (t_.constructor as any)[__COLUMNS__]
-    if (!columns_) {
-      columns_ = (t_ as any).getColumns({ dto })
-      ;(t_.constructor as any)[__COLUMNS__] = columns_
-    }
-    if (!options?.__noInit) {
-      createModelByDTO<typeof this>(t_, columns_, dto, options)
-    }
+    const columns__ = t_.constructor[Symbol.metadata]?.[__COLUMNS__] || (t_.constructor as any)[__COLUMNS__]
+    // if (!columns__) {
+    //   columns__ = (t_ as any).getColumns({ dto })
+    //   ;(t_.constructor as any)[__COLUMNS__] = columns__
+    // }
+    createModelByDTO<typeof this>(t_, columns__, dto, options)
   }
 
   // 为了支持deno，无法在构造函数中赋值，所以需要提供一个静态方法来创建模型，或者通过新版ModelBase的装饰器去实现，是支持new ModelBase()的。
@@ -278,9 +277,9 @@ export class ModelBase {
     options?: IModelOptions,
   ): T {
     const options_ = options || {}
-    options_.__noInit = true
+    // options_.__noInit = true
     const t_ = new this(dto, options_)
-    createModelByDTO<T>(t_, (t_ as any).getColumns(), dto, options_)
+    // createModelByDTO<T>(t_, (t_ as any).getColumns(), dto, options_)
     return t_
   }
 
@@ -759,11 +758,12 @@ export class ModelBase {
 
     // let keys = Object.keys(t_)
     // const columns_ = {} as { [key: string]: IColumnInner }
-    if (!(t_.constructor as any)[__COLUMNS__]) {
+    const columns__ = t_.constructor[Symbol.metadata]?.[__COLUMNS__] || (t_.constructor as any)[__COLUMNS__]
+    if (!columns__) {
       return {}
     }
-    if ((t_.constructor as any)[__COLUMNS__]) {
-      return merge(columns_, (t_.constructor as any)[__COLUMNS__], {
+    if (columns__) {
+      return merge(columns_, columns__, {
         clone: true,
       })
     }

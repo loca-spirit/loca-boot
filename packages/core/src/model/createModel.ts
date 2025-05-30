@@ -1,5 +1,5 @@
-import { IColumnDefined, IDataModel } from '../decorator'
-import { createModelByDTO, IModelOptions, initModel_ } from '../utils/ModelBaseUtil'
+import { IColumnDefined, IDataModel } from '../decorator/types'
+import { createModelByDTO, IModelOptions } from '../utils/ModelBaseUtil'
 import { dynamicModelBase } from './dynamicModelBase'
 type Primitive = string | number | boolean | bigint | symbol | null | undefined
 
@@ -24,9 +24,9 @@ export function createModel<T>(
   options?: IModelOptions,
 ) {
   const options_ = options || {}
-  options_.__noInit = true
+  // options_.__noInit = true
   const t_ = new model(dto, options_)
-  createModelByDTO(t_ as any, (t_ as any).getColumns(), dto, options_)
+  // createModelByDTO(t_ as any, (t_ as any).getColumns(), dto, options_)
   return t_ as T
 }
 

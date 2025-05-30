@@ -10,19 +10,19 @@
     //   So don't change the `target` field here. It has to be
     //   at least `ES2020` for dynamic `import()`s and `import.meta` to work correctly.
     // - If you are not using Vite, feel free to override the `target` field.
-    "target": "es5",
+    "target": "es6",
     "outDir": "dist",
     "declaration": true,
     "emitDeclarationOnly": true,
     "downlevelIteration": true,
     "importHelpers": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "experimentalDecorators": false,
+    "emitDecoratorMetadata": false,
     "allowSyntheticDefaultImports": true,
     "module": "ESNext",
     "moduleResolution": "Node",
     "resolveJsonModule": true,
-    "useDefineForClassFields": false,
+    "useDefineForClassFields": true,
     // Required in Vue projects
     "jsx": "preserve",
     // `"noImplicitThis": true` is part of `strict`
@@ -50,6 +50,7 @@
     "lib": [
       "es2015",
       "es2020",
+      "esnext",
       "dom",
       "dom.iterable",
       "scripthost"

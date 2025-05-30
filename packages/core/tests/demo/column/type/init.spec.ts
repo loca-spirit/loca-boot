@@ -1,4 +1,4 @@
-import { Column, ModelBase } from "loca-boot-core"
+import { Column, ModelBase } from 'loca-boot-core'
 // region model
 class TestItem extends ModelBase {
   @Column()
@@ -8,20 +8,21 @@ class TestItem extends ModelBase {
 class Test extends ModelBase {
   @Column()
   public a?: number
-
   @Column()
   public b?: string
-
   @Column()
   public c?: boolean
-
-  @Column()
+  @Column({})
   public d?: string[]
-
-  @Column({ model: TestItem, autowired: true })
+  @Column({
+    model: () => TestItem,
+    default: () => [],
+  })
   public e?: TestItem[]
-
-  @Column({ model: TestItem, autowired: true })
+  @Column({
+    model: () => TestItem,
+    autowired: true,
+  })
   public f?: TestItem
 }
 // endregion model
@@ -29,24 +30,24 @@ class Test extends ModelBase {
 // region instance
 const test = new Test({
   a: 1,
-  b: "hhh",
+  b: 'hhh',
   c: true,
-  d: ["123", "456"],
-  e: [{ msg: "123" }, { msg: "456" }],
-  f: { msg: "message" },
+  d: ['123', '456'],
+  e: [{ msg: '123' }, { msg: '456' }],
+  f: { msg: 'message' },
 })
 // endregion instance
 
-describe("type", () => {
-  it("ModelBase未嵌套不需要传入，但是要正确的声明", () => {
+describe('type', () => {
+  it('ModelBase未嵌套不需要传入，但是要正确的声明', () => {
     expect(test.a).toBe(1) // PASS
-    expect(test.b).toBe("hhh") // PASS
+    expect(test.b).toBe('hhh') // PASS
     expect(test.c).toBe(true) // PASS
-    expect(test.d).toEqual(["123", "456"]) // PASS
+    expect(test.d).toEqual(['123', '456']) // PASS
   })
-  it("ModelBase嵌套需要通过model传入", () => {
-    expect(test.e).toEqual([{ msg: "123" }, { msg: "456" }]) // PASS
-    expect(test.f).toEqual({ msg: "message" }) // PASS
+  it('ModelBase嵌套需要通过model传入', () => {
+    expect(test.e).toEqual([{ msg: '123' }, { msg: '456' }]) // PASS
+    expect(test.f).toEqual({ msg: 'message' }) // PASS
   })
 })
 

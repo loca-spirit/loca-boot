@@ -1,34 +1,31 @@
-import { Column, ModelBase } from "loca-boot-core"
+import { Column, ModelBase } from 'loca-boot-core'
 // region model
 class Test extends ModelBase {
   @Column()
   public str?: string
-
   @Column()
   public emptyStr?: string
-
-  @Column()
+  @Column({})
   public arr?: any[]
-
-  @Column()
+  @Column({})
   public emptyArr?: any[]
 }
 // endregion model
 
 // region instance
 const test = new Test({
-  str: "str",
-  emptyStr: "",
-  arr: [123, "", [], {}],
+  str: 'str',
+  emptyStr: '',
+  arr: [123, '', [], {}],
   emptyArr: [],
 })
 // endregion instance
 
-describe("getCleanSerializableObject", () => {
-  it("getCleanSerializableObject()", () => {
+describe('getCleanSerializableObject', () => {
+  it('getCleanSerializableObject()', () => {
     expect(test.getCleanSerializableObject()).toEqual({
-      str: "str",
-      arr: [123, "", [], {}],
+      str: 'str',
+      arr: [123, '', [], {}],
     }) // PASS
   })
 })

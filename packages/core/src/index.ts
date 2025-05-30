@@ -1,12 +1,12 @@
-import { ModelBase } from './model'
-
 export * from 'loca-boot-common'
-export * from './PageMemory'
-export * from './utils/modelTool'
 export * from './api'
 export * from './decorator'
 export * from './model'
+export * from './PageMemory'
+export * from './symbol-polyfill'
 export * from './utils/lib'
+export * from './utils/modelTool'
+import { ModelBase } from './model'
 
 type ElementOf<T> = T extends Array<infer E> ? E : never
 export const propertiesOf =
@@ -14,10 +14,7 @@ export const propertiesOf =
   <T extends keyof TObj>(name: T): T =>
     name
 
-export function getDataList<T = any>(
-  data: ModelBase[],
-  itemType: new (dto: any) => ElementOf<T>
-) {
+export function getDataList<T = any>(data: ModelBase[], itemType: new (dto: any) => ElementOf<T>) {
   const list: Array<ElementOf<T>> = []
   data &&
     data.forEach((item) => {
@@ -26,10 +23,7 @@ export function getDataList<T = any>(
   return list as unknown as T
 }
 
-export function getDataObj<T>(
-  data: { [key: string]: ModelBase },
-  itemType: new (dto: any) => any
-) {
+export function getDataObj<T>(data: { [key: string]: ModelBase }, itemType: new (dto: any) => any) {
   const obj: any = {}
   data &&
     Object.keys(data).forEach((property) => {

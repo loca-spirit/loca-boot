@@ -5,7 +5,6 @@ import { Driver } from './Driver'
  */
 export class BaseApi {
   public driver!: Driver
-
   constructor(adapter: Driver) {
     this.driver = adapter
   }

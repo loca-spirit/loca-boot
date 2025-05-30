@@ -1,36 +1,38 @@
 import { Column, DataModel, ModelBase } from 'loca-boot-core'
 import { ConsumerItem } from './ConsumerItem'
 
+export
 @DataModel({
   methods: {
     changeUserName: '{{$model.userName = "new Name"}}',
   },
 })
-export class Consumer extends ModelBase {
+class Consumer extends ModelBase {
   @Column()
   public id?: number
-
-  @Column({ trim: true })
+  @Column({
+    trim: true,
+  })
   public userName?: string
-
   @Column()
   public user_xx?: string
-
   @Column()
   public phoneNumber!: string
-
-  @Column({ default: true })
+  @Column({
+    default: () => [],
+  })
   public list!: string[]
-
-  @Column({ model: () => ConsumerItem, autowired: true })
+  @Column({
+    model: () => ConsumerItem,
+    default: () => [],
+  })
   public consumerList!: ConsumerItem[]
-
-  @Column({ model: () => ConsumerItem })
+  @Column({
+    model: () => ConsumerItem,
+  })
   public consumerObject!: ConsumerItem
-
   @Column()
   public consumerObjectMap!: Record<string, ConsumerItem>
-
   init() {
     this.userName = this.consumerObject.id + this.consumerObject.message
   }

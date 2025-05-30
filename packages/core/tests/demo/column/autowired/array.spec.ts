@@ -1,4 +1,4 @@
-import { Column, ModelBase } from "loca-boot-core"
+import { Column, ModelBase } from 'loca-boot-core'
 // region model
 class TestItem extends ModelBase {
   @Column()
@@ -6,11 +6,16 @@ class TestItem extends ModelBase {
 }
 class Test extends ModelBase {
   // 数组初始化
-  @Column({ model: TestItem, autowired: true })
+  @Column({
+    model: () => TestItem,
+    default: () => [],
+  })
   public initArray?: TestItem[]
 
   // 数组未进行初始化
-  @Column({ model: TestItem })
+  @Column({
+    model: () => TestItem,
+  })
   public noInitArray?: TestItem[]
 }
 // endregion model
@@ -19,11 +24,11 @@ class Test extends ModelBase {
 const test = new Test()
 // endregion instance
 
-describe("autowired", () => {
-  it("数组初始化", () => {
+describe('autowired', () => {
+  it('数组初始化', () => {
     expect(test.initArray).toEqual([]) // PASS
   })
-  it("数组未初始化", () => {
+  it('数组未初始化', () => {
     expect(test.noInitArray).toEqual(undefined) // PASS
   })
 })

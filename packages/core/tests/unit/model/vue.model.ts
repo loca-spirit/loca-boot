@@ -11,16 +11,19 @@ export class VueChildModel extends ModelBase {
 export class VueModel extends ModelBase {
   @Column()
   public id?: number
-
-  @Column({ trim: true })
+  @Column({
+    trim: true,
+  })
   public userName?: string
-
   @Column()
   public phoneNumber!: string
-
-  @Column({ autowired: true })
+  @Column({
+    default: () => [],
+  })
   public list!: string[]
-
-  @Column({ model: VueChildModel, autowired: true })
+  @Column({
+    model: () => VueChildModel,
+    default: () => [],
+  })
   public listModel!: VueChildModel[]
 }
