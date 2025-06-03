@@ -1,4 +1,4 @@
-import { Column, ModelBase } from "loca-boot-core"
+import { Column, ModelBase } from 'loca-boot-core'
 // region model
 class TestItem extends ModelBase {
   @Column()
@@ -8,7 +8,6 @@ class TestItem extends ModelBase {
 class Test extends ModelBase {
   @Column()
   public noModelArr!: TestItem[]
-
 }
 // endregion model
 
@@ -18,11 +17,12 @@ const test = new Test({
 })
 // endregion instance
 
-describe("model", () => {  it("未传入model，值不会受影响", () => {
+describe('model', () => {
+  it('未传入model，值不会受影响', () => {
     expect(test.noModelArr).toEqual([{ user_msg: 'arr' }]) // PASS
   })
-  it("未传入model，不可以调用ModelBase原型的所有方法", () => {
-      expect(test.noModelArr[0].userMsg?.getChangeData()).toBe(undefined) // PASS
+  it('未传入model，不可以调用ModelBase原型的所有方法', () => {
+    expect(test.noModelArr[0].userMsg?.getChangeData()).toBe(undefined) // PASS
   })
 })
 

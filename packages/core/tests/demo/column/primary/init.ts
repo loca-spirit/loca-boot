@@ -1,4 +1,4 @@
-import { Column, ModelBase } from "loca-boot-core"
+import { Column, ModelBase } from 'loca-boot-core'
 // region model
 class TestItem extends ModelBase {
   @Column()
@@ -11,7 +11,9 @@ class TestItem extends ModelBase {
   public name?: string
 }
 class Test extends ModelBase {
-  @Column({ model: TestItem })
+  @Column({
+    model: () => TestItem,
+  })
   public list!: TestItem[]
 }
 // endregion model
@@ -20,15 +22,15 @@ class Test extends ModelBase {
 const test = new Test({
   list: [
     {
-      id: "1",
+      id: '1',
     },
     {
-      id: "2",
-      msg: "message2",
+      id: '2',
+      msg: 'message2',
     },
     {
-      id: "4",
-      msg: "message4",
+      id: '4',
+      msg: 'message4',
     },
   ],
 })
@@ -36,15 +38,15 @@ const test = new Test({
 
 // region change
 // update id 2
-test.list[1].setColumnData("msg", undefined)
-test.list[1].name = "newName"
+test.list[1].setColumnData('msg', undefined)
+test.list[1].name = 'newName'
 // add id 3
-const cItem = new TestItem({ id: "3" })
-cItem.msg = "message3"
+const cItem = new TestItem({ id: '3' })
+cItem.msg = 'message3'
 test.list.push(cItem)
 // remove id 4
 test.list = test.list.filter((item) => {
-  if (item.id !== "4") {
+  if (item.id !== '4') {
     return true
   }
 })

@@ -1,6 +1,6 @@
 {
   "name": "loca-boot-service",
-  "version": "1.73.17",
+  "version": "1.73.15",
   "description": "loca boot service",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -15,7 +15,7 @@
   "author": "",
   "dependencies": {
     "core-js": "^3.38.1",
-    "loca-boot-core": "^1.73.17",
+    "loca-boot-core": "^1.73.15",
     "patch-package": "^6.4.7",
     "tslib": "^2.8.0"
   },

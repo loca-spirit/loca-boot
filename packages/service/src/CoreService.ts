@@ -114,13 +114,7 @@ export class CoreService {
           serviceResponse.headers['content-type']?.indexOf('application/json') !== -1
         ) {
           if ((wrapper as DataStreamWrapper).responseType === 'blob') {
-            if (typeof serviceResponse.data === 'string') {
-              try {
-                serviceResponse.data = JSON.parse(serviceResponse.data)
-              } catch (e) {
-                console.error('service_error', e)
-              }
-            }
+            serviceResponse.data = JSON.parse(serviceResponse.data as any)
           }
           if ((wrapper as DataStreamWrapper).responseType === 'arraybuffer') {
             const array = Buffer.from(serviceResponse.data as any)

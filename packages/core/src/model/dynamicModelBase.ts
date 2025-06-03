@@ -1,11 +1,8 @@
-import { ModelBase } from './ModelBase'
-import {
-  Column,
-  IColumnDefined,
-  IDataModel,
-} from '../decorator'
-import { IModelOptions } from '../utils/ModelBaseUtil'
 import { __MODEL__ } from '../constant'
+import { Column } from '../decorator/Column'
+import type { IColumnDefined, IDataModel } from '../decorator/types'
+import { IModelOptions } from '../utils/ModelBaseUtil'
+import { ModelBase } from './ModelBase'
 
 export function genType(typeStr: string, column: IColumnDefined) {
   let designType
@@ -69,7 +66,7 @@ export function dynamicModelBase<T = ModelBase>(
   columnObj: {
     [key: string]: IColumnDefined
   },
-  params?: IDataModel
+  params?: IDataModel,
 ) {
   class CustomDefinedModel extends ModelBase {
     constructor(dto?: any, options?: IModelOptions) {
@@ -82,22 +79,14 @@ export function dynamicModelBase<T = ModelBase>(
     const typeStr = column.type || 'string'
     column.name = column.name || key
     const type = genType(typeStr, column)
-    Reflect.defineMetadata(
-      'design:type',
-      type,
-      CustomDefinedModel.prototype,
-      key
-    )
+    Reflect.defineMetadata('design:type', type, CustomDefinedModel.prototype, key)
     Column(column)(CustomDefinedModel.prototype, key)
   })
   if (params?.methods) {
     const model = {
       methods: params?.methods || {},
     } as IDataModel
-    (CustomDefinedModel.prototype.constructor as any)[__MODEL__] = model
+    ;(CustomDefinedModel.prototype.constructor as any)[__MODEL__] = model
   }
-  return CustomDefinedModel as any as new (
-    dto?: any,
-    options?: IModelOptions
-  ) => Model<T>
+  return CustomDefinedModel as any as new (dto?: any, options?: IModelOptions) => Model<T>
 }

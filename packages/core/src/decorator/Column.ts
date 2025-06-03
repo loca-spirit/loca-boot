@@ -1,45 +1,6 @@
 import 'reflect-metadata'
 import { __COLUMNS__, __MODEL__ } from '../constant'
-
-export interface IColumn {
-  name?: string
-  aliasName?: string | symbol
-  childType?: any
-  group?: string | string[]
-  model?: any
-  formatter?: any
-  serialize?: (
-    data: {
-      value: any
-      key: string
-      data: any
-    },
-  ) => any
-  trim?: boolean
-  primary?: boolean
-  foreign?: boolean
-  default?: any
-  autowired?: boolean
-  unformatter?: any
-  deserialize?: (
-    data: {
-      value: any
-      key: string
-      data: any
-    },
-  ) => any
-  extData?: any
-}
-
-export interface IColumnDefined extends IColumn {
-  type?: any
-}
-
-export interface IColumnInner extends IColumn {
-  camelCaseName: string | symbol
-  type: any
-  column: any
-}
+import { IColumn, IColumnInner } from './types'
 
 export function genTypeByValue(value: any) {
   let type = Object as any
@@ -131,12 +92,19 @@ export function Column(col?: IColumn): PropertyDecorator {
       // 如果 property 自己定义的名字不符合驼峰规范则不做强制改变。
       params.camelCaseName = property
     }
-    const type = Reflect.getMetadata('design:type', target, property)
+    const designType = Reflect.getMetadata('design:type', target, property)
+    params.type = designType
+    if (designType && designType === Array) {
+      params.type = Array
+    }
+    if (params.type === 'array') {
+      params.type = Array
+    }
     let childType
     if (params.childType) {
       childType = params.childType
-    } else if (type?.isModelBase) {
-      childType = type
+    } else if (designType?.isModelBase) {
+      childType = designType
     }
     let g: any
     if (Array.isArray(params.group)) {
@@ -150,7 +118,7 @@ export function Column(col?: IColumn): PropertyDecorator {
       column: params.name,
       camelCaseName: params.camelCaseName,
       aliasName: params.aliasName,
-      type,
+      type: params.type,
       group: g,
       trim: params.trim,
       primary: params.primary,

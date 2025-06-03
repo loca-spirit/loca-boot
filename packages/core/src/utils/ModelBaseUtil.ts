@@ -3,8 +3,8 @@
  */
 import { cloneDeep } from 'lodash'
 import { __COLUMNS__, __MODEL__ } from '../constant'
-import { IColumnInner } from '../decorator'
-import { ModelBase } from '../model'
+import type { IColumnInner } from '../decorator/types'
+import { ModelBase } from '../model/ModelBase'
 export interface IModelOptions {
   // new 实例的时候，全局模型生效 begin 主要是动态模型会用到
   enableDataState?: boolean // 是否启用数据状态

@@ -9,28 +9,29 @@ import { ConsumerItem } from './ConsumerItem'
 export class Consumer extends ModelBase {
   @Column()
   public id?: number
-
-  @Column({ trim: true })
+  @Column({
+    trim: true,
+  })
   public userName?: string
-
   @Column()
   public user_xx?: string
-
   @Column()
   public phoneNumber!: string
-
-  @Column({ default: true })
+  @Column({
+    default: true,
+  })
   public list!: string[]
-
-  @Column({ model: () => ConsumerItem, autowired: true })
+  @Column({
+    model: () => ConsumerItem,
+    autowired: true,
+  })
   public consumerList!: ConsumerItem[]
-
-  @Column({ model: () => ConsumerItem })
+  @Column({
+    model: () => ConsumerItem,
+  })
   public consumerObject!: ConsumerItem
-
   @Column()
   public consumerObjectMap!: Record<string, ConsumerItem>
-
   init() {
     this.userName = this.consumerObject.id + this.consumerObject.message
   }
