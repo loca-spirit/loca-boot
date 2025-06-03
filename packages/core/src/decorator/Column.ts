@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import { __COLUMNS__, __MODEL__, __VERSION__ } from '../constant'
 import { toRaw } from '../utils/lib'
 import { createModelByDTO } from '../utils/ModelBaseUtil'
@@ -73,19 +72,13 @@ function initColumn(target: any, params: IColumnInner, property_: string | symbo
     // 如果 property 自己定义的名字不符合驼峰规范则不做强制改变。
     params.camelCaseName = property
   }
-  const designType = Reflect.getMetadata('design:type', target, property)
-  if (designType && designType === Array) {
+  // const designType = Reflect.getMetadata('design:type', target, property)
+  if (params.type === 'array') {
     params.type = Array
-  } else if (params.type === 'array') {
-    params.type = Array
-  } else if (designType) {
-    params.type = designType
   }
   let childType
   if (params.childType) {
     childType = params.childType
-  } else if (designType?.isModelBase) {
-    childType = designType
   }
   let g: any
   if (Array.isArray(params.group)) {
