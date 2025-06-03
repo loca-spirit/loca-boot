@@ -1,6 +1,6 @@
 {
   "name": "loca-boot-core",
-  "version": "1.73.16",
+  "version": "1.73.17",
   "description": "loca boot core",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -16,7 +16,7 @@
   "dependencies": {
     "core-js": "^3.38.1",
     "deepmerge": "^2.2.1",
-    "loca-boot-common": "^1.73.16",
+    "loca-boot-common": "^1.73.17",
     "lodash": "^4.17.21",
     "patch-package": "^6.4.7",
     "reflect-metadata": "^0.1.13",
