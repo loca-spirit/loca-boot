@@ -13136,7 +13136,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loca-boot-common@npm:^1.73.14, loca-boot-common@workspace:packages/common":
+"loca-boot-common@npm:^1.73.16, loca-boot-common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "loca-boot-common@workspace:packages/common"
   dependencies:
@@ -13146,14 +13146,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"loca-boot-core@npm:^1.73.14, loca-boot-core@workspace:packages/core":
+"loca-boot-core@npm:^1.73.16, loca-boot-core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "loca-boot-core@workspace:packages/core"
   dependencies:
     "@types/reflect-metadata": "npm:^0.1.0"
     core-js: "npm:^3.38.1"
     deepmerge: "npm:^2.2.1"
-    loca-boot-common: "npm:^1.73.14"
+    loca-boot-common: "npm:^1.73.16"
     lodash: "npm:^4.17.21"
     patch-package: "npm:^6.4.7"
     reflect-metadata: "npm:^0.1.13"
@@ -13166,7 +13166,7 @@ __metadata:
   resolution: "loca-boot-service@workspace:packages/service"
   dependencies:
     core-js: "npm:^3.38.1"
-    loca-boot-core: "npm:^1.73.14"
+    loca-boot-core: "npm:^1.73.16"
     patch-package: "npm:^6.4.7"
     tslib: "npm:^2.8.0"
   languageName: unknown
