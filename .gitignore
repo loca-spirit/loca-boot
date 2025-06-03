@@ -6,6 +6,7 @@ lib
 # local env files
 .env.local
 .env.*.local
+.env
 .yarn
 # Log files
 npm-debug.log*

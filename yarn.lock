@@ -6262,9 +6262,11 @@ __metadata:
     "@vuepress/plugin-slimsearch": "npm:2.0.0-rc.61"
     "@vuepress/shared": "npm:^2.0.0-rc.9"
     "@vuepress/utils": "npm:^2.0.0-rc.9"
+    basic-ftp: "npm:^5.0.5"
     components-helper: "npm:^2.0.0"
     conventional-changelog-cli: "npm:^4.1.0"
     cz-conventional-changelog: "npm:^3.3.0"
+    dotenv: "npm:^16.5.0"
     esbuild: "npm:^0.15.5"
     eslint: "npm:^9.9.1"
     eslint-plugin-prettier: "npm:^3.3.1"
@@ -6999,6 +7001,13 @@ __metadata:
     mixin-deep: "npm:^1.2.0"
     pascalcase: "npm:^0.1.1"
   checksum: 10/33b0c5d570840873cf370248e653d43e8d82ce4f03161ad3c58b7da6238583cfc65bf4bbb06b27050d6c2d8f40628777f3933f483c0a7c0274fcef4c51f70a7e
+  languageName: node
+  linkType: hard
+
+"basic-ftp@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "basic-ftp@npm:5.0.5"
+  checksum: 10/3dc56b2092b10d67e84621f5b9bbb0430469499178e857869194184d46fbdd367a9aa9fad660084388744b074b5f540e6ac8c22c0826ebba4fcc86a9d1c324e2
   languageName: node
   linkType: hard
 
@@ -8860,6 +8869,13 @@ __metadata:
   version: 16.4.7
   resolution: "dotenv@npm:16.4.7"
   checksum: 10/f13bfe97db88f0df4ec505eeffb8925ec51f2d56a3d0b6d916964d8b4af494e6fb1633ba5d09089b552e77ab2a25de58d70259b2c5ed45ec148221835fc99a0c
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.5.0":
+  version: 16.5.0
+  resolution: "dotenv@npm:16.5.0"
+  checksum: 10/e68a16834f1a41cc2dfb01563bc150668ad675e6cd09191211467b5c0806b6ecd6ec438e021aa8e01cd0e72d2b70ef4302bec7cc0fe15b6955f85230b62dc8a9
   languageName: node
   linkType: hard
 
@@ -13164,7 +13180,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loca-boot-common@npm:^2.0.0, loca-boot-common@workspace:packages/common":
+"loca-boot-common@npm:^2.0.2, loca-boot-common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "loca-boot-common@workspace:packages/common"
   dependencies:
@@ -13174,14 +13190,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"loca-boot-core@npm:^2.0.0, loca-boot-core@workspace:packages/core":
+"loca-boot-core@npm:^2.0.2, loca-boot-core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "loca-boot-core@workspace:packages/core"
   dependencies:
     "@types/reflect-metadata": "npm:^0.1.0"
     core-js: "npm:^3.38.1"
     deepmerge: "npm:^2.2.1"
-    loca-boot-common: "npm:^2.0.0"
+    loca-boot-common: "npm:^2.0.2"
     lodash: "npm:^4.17.21"
     patch-package: "npm:^6.4.7"
     reflect-metadata: "npm:^0.1.13"
@@ -13194,7 +13210,7 @@ __metadata:
   resolution: "loca-boot-service@workspace:packages/service"
   dependencies:
     core-js: "npm:^3.38.1"
-    loca-boot-core: "npm:^2.0.0"
+    loca-boot-core: "npm:^2.0.2"
     patch-package: "npm:^6.4.7"
     tslib: "npm:^2.8.0"
   languageName: unknown
