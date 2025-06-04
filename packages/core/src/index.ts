@@ -1,4 +1,4 @@
-export * from 'loca-boot-common'
+export * from '@model-base/common'
 export * from './api'
 export * from './decorator'
 export * from './model'

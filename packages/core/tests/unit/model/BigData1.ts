@@ -1,4 +1,4 @@
-import { Column, DataModel, ModelBase } from 'loca-boot-core'
+import { Column, DataModel, ModelBase } from '@model-base/core'
 import { BigDataItem1 } from './BigDataItem1'
 
 export class BigData1 extends ModelBase {

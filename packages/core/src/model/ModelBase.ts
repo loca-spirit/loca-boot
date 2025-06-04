@@ -1,9 +1,9 @@
+import { getTag } from '@model-base/common'
 import merge from 'deepmerge'
-import { getTag } from 'loca-boot-common'
 import { cloneDeep } from 'lodash'
 import { __CLONE__, __COLUMNS__, __MODEL__, __VERSION__ } from '../constant'
 import { generateColumnsFromData } from '../decorator/Column'
-import type { IColumnInner, IDataModel } from '../decorator/types'
+import { CLEAN_ENUM, IColumnInner, IDataModel } from '../decorator/types'
 import { getChange } from '../utils/ChangedModelUtil'
 import { ModelTool, toRaw } from '../utils/lib'
 import {
@@ -242,15 +242,6 @@ function getColumnsUtil(columns: { [key: string]: IColumnInner }, target: ModelB
     return setColumnToTarget(columns, target, curProto)
   }
   return setColumnToTarget(columns, target, curProto)
-}
-
-export enum CLEAN_ENUM {
-  // undefined
-  CLEAN_UNDEFINED = 'cleanUndefined',
-  // undefined or null
-  CLEAN_UNDEFINED_AND_NULL = 'cleanUndefinedAndNull',
-  // undefined or null or '' or []
-  CLEAN_DIRTY = 'cleanDirty',
 }
 
 export class ModelBase {

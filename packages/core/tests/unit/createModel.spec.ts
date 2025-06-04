@@ -1,4 +1,4 @@
-import { ModelBase, createModel } from 'loca-boot-core'
+import { ModelBase, createModel } from '@model-base/core'
 import { Consumer } from './model/Consumer'
 
 describe('create Model', () => {

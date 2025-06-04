@@ -1,4 +1,4 @@
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from '@model-base/core'
 
 export class ExtDataModelChild extends ModelBase {
   @Column({ extData: { point: true } })

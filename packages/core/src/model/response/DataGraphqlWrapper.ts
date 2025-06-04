@@ -11,7 +11,7 @@ export class DataGraphqlWrapper extends DataWrapper {
           itemType: any
           mappingType: { [key: string]: any } | any
         }
-      | any
+      | any,
   ) {
     super()
     if (data) {
@@ -33,12 +33,9 @@ export class DataGraphqlWrapper extends DataWrapper {
     let obj = dto
     if (obj) {
       Object.keys(obj).forEach((property) => {
-        const humpProp = property.replace(
-          /_(\w)/g,
-          function (all: string, letter: string) {
-            return letter.toUpperCase()
-          }
-        )
+        const humpProp = property.replace(/_(\w)/g, function (all: string, letter: string) {
+          return letter.toUpperCase()
+        })
         if (this.itemType) {
           obj = new this.itemType(dto[property])
           delete obj[property]

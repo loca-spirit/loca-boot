@@ -32,10 +32,7 @@ export class PageMemory {
       const index = cacheNode.indexOf(name)
       if (!this.isRootMenu(name)) {
         if (index === -1) {
-          if (
-            cacheNode.length === 1 &&
-            this.isMemberInChain(cacheNode[cacheNode.length - 1], name)
-          ) {
+          if (cacheNode.length === 1 && this.isMemberInChain(cacheNode[cacheNode.length - 1], name)) {
             cacheNode.splice(index, 1)
           }
           cacheNode.push(name)
@@ -65,10 +62,7 @@ export class PageMemory {
     return isLevelOne
   }
 
-  private isMemberInChain(
-    name: string | undefined,
-    parent: string | undefined
-  ) {
+  private isMemberInChain(name: string | undefined, parent: string | undefined) {
     if (!name || !parent) {
       return false
     }

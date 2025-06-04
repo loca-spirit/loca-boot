@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import { __MODEL__ } from '../constant'
 import { IDataModel } from './types'
 

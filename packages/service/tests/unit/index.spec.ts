@@ -1,4 +1,4 @@
-import { Column, createModel, ModelBase } from 'loca-boot-core'
+import { Column, createModel, ModelBase } from '@model-base/core'
 class TestChildModel extends ModelBase {
   @Column()
   id!: number

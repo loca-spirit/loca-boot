@@ -6,7 +6,7 @@ import {
   Driver,
   ModelBase,
   ServiceResponse,
-} from 'loca-boot-core'
+} from '@model-base/core'
 
 /**
  * options: {

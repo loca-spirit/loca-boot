@@ -13,10 +13,10 @@ permalink: /guide/start/
 }
 ```
 
-### 引入`loca-boot-core`，并定义模型
+### 引入`@model-base/core`，并定义模型
 
 ```ts
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from '@model-base/core'
 
 export class Consumer extends ModelBase {
   @Column()

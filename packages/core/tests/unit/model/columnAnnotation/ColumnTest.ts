@@ -1,4 +1,4 @@
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from '@model-base/core'
 import { setDefaultList } from '../../util'
 import { ColumnTestItem } from './ColumnTestItem'
 import { ColumnTestParent } from './ColumnTestParent'

@@ -1,5 +1,5 @@
 import { Consumer } from '../model/Consumer'
-import { CLEAN_ENUM } from 'loca-boot-core'
+import { CLEAN_ENUM } from '@model-base/core'
 
 describe('getChangedData test2', () => {
   it('getChangedData() has array and object', () => {

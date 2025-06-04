@@ -1,5 +1,5 @@
 {
-  "name": "@workspace/loca-boot-srcs",
+  "name": "@model-base/srcs",
   "version": "0.1.0",
   "private": true,
   "scripts": {

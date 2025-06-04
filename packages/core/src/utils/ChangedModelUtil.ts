@@ -1,5 +1,5 @@
-import type { IColumnInner } from '../decorator/types'
-import { CLEAN_ENUM, ModelBase } from '../model/ModelBase'
+import { CLEAN_ENUM, IColumnInner } from '../decorator/types'
+import { ModelBase } from '../model/ModelBase'
 import { ModelTool } from './lib'
 import { create, getModelType } from './ModelBaseUtil'
 import { setEmpty } from './setEmpty'

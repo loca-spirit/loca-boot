@@ -2,7 +2,7 @@ import { ResourceInfo } from './model/ResourceInfo'
 import { Consumer } from './model/Consumer'
 import { ConsumerItem } from './model/ConsumerItem'
 import { ColumnCamelCase } from './model/ColumnCamelCase'
-import { ModelBase } from 'loca-boot-core'
+import { ModelBase } from '@model-base/core'
 
 describe('ModelBase', () => {
   describe('construct', () => {

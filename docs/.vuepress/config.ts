@@ -8,7 +8,7 @@ export default defineUserConfig({
   title: 'ModelBase',
   description: '基于Mono-Repo的SDK模板',
   // base: (process.env.FX_BASE || '/') as any,
-  base: '/loca-boot' as any,
+  base: '/model-base' as any,
   port: 8080,
   theme: hopeTheme,
   plugins: [codeBlockPlugin],

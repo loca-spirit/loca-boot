@@ -55,7 +55,7 @@ export function genType(typeStr: string, column: IColumnDefined) {
     //   designType = File
     //   break
     default:
-      // designType = column.model
+    // designType = column.model
   }
   return designType
 }

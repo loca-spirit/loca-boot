@@ -1,5 +1,5 @@
 import { AliseName } from './model/AliseName'
-import { CLEAN_ENUM } from 'loca-boot-core'
+import { CLEAN_ENUM } from '@model-base/core'
 
 describe('Null Value', () => {
   it('null', () => {

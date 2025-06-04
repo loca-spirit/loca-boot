@@ -10,7 +10,7 @@ export class DataListWrapper extends DataWrapper {
       | {
           itemType: any
         }
-      | any
+      | any,
   ) {
     super()
     if (data) {

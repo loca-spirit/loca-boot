@@ -1,10 +1,10 @@
-import { ModelBase } from '../ModelBase'
 import { Column } from '../../decorator'
-import { DataWrapper } from './DataWrapper'
+import { ModelBase } from '../ModelBase'
+import { DataGraphqlWrapper } from './DataGraphqlWrapper'
 import { DataListWrapper } from './DataListWrapper'
 import { DataObjectWrapper } from './DataObjectWrapper'
-import { DataGraphqlWrapper } from './DataGraphqlWrapper'
 import { DataStreamWrapper } from './DataStreamWrapper'
+import { DataWrapper } from './DataWrapper'
 
 export class ServiceResponse<T = any> extends ModelBase {
   @Column()
@@ -50,30 +50,15 @@ export class ServiceResponse<T = any> extends ModelBase {
 
     // 支持：type，支持[item]
     if (wrapper) {
-      if (
-        (wrapper as any).getClassName &&
-        (wrapper as any).getClassName() === DataGraphqlWrapper.className
-      ) {
+      if ((wrapper as any).getClassName && (wrapper as any).getClassName() === DataGraphqlWrapper.className) {
         this.data = (wrapper as DataWrapper).getData(this.data) as any
-      } else if (
-        (wrapper as any).getClassName &&
-        (wrapper as any).getClassName() === DataListWrapper.className
-      ) {
+      } else if ((wrapper as any).getClassName && (wrapper as any).getClassName() === DataListWrapper.className) {
         this.data = (wrapper as DataWrapper).getData(this.data) as any
-      } else if (
-        (wrapper as any).getClassName &&
-        (wrapper as any).getClassName() === DataObjectWrapper.className
-      ) {
+      } else if ((wrapper as any).getClassName && (wrapper as any).getClassName() === DataObjectWrapper.className) {
         this.data = (wrapper as DataWrapper).getData(this.data) as any
-      } else if (
-        (wrapper as any).getClassName &&
-        (wrapper as any).getClassName() === DataStreamWrapper.className
-      ) {
+      } else if ((wrapper as any).getClassName && (wrapper as any).getClassName() === DataStreamWrapper.className) {
         // content-type 不存在或者 不包含 application/json，则按照 blob的处理方式处理。
-        if (
-          !dto?.headers?.['content-type'] ||
-          dto?.headers?.['content-type']?.indexOf('application/json') === -1
-        ) {
+        if (!dto?.headers?.['content-type'] || dto?.headers?.['content-type']?.indexOf('application/json') === -1) {
           // stream默认是没有data属性，dto需要设置到data上
           this.data = dto
           if (this.data) {

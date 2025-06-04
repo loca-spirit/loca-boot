@@ -1,5 +1,5 @@
-import { IDriver } from './IDriver'
 import { IApi } from './IApi'
+import { IDriver } from './IDriver'
 
 export class Driver implements IDriver {
   public adapter: {

@@ -58,21 +58,20 @@
  * // Check for pending invocations.
  * const status = debounced.pending() ? "Pending..." : "Ready"
  */
-import {root} from '../internal/root'
-import {isObject} from './isObject'
+import { root } from '../internal/root'
+import { isObject } from './isObject'
 
-export function debounce(func: any, wait: number, options?: {
-  trailing?: boolean,
-  maxWait?: number,
-  leading?: boolean,
-}) {
+export function debounce(
+  func: any,
+  wait: number,
+  options?: {
+    trailing?: boolean
+    maxWait?: number
+    leading?: boolean
+  },
+) {
   // tslint:disable-next-line:one-variable-per-declaration
-  let lastArgs: any[],
-    lastThis: any,
-    maxWait: number,
-    result: any,
-    timerId: any,
-    lastCallTime: number
+  let lastArgs: any[], lastThis: any, maxWait: number, result: any, timerId: any, lastCallTime: number
 
   let lastInvokeTime = 0
   let leading = false
@@ -80,7 +79,7 @@ export function debounce(func: any, wait: number, options?: {
   let trailing = true
 
   // Bypass `requestAnimationFrame` by explicitly setting `wait=0`.
-  const useRAF = (!wait && wait !== 0 && typeof root.requestAnimationFrame === 'function')
+  const useRAF = !wait && wait !== 0 && typeof root.requestAnimationFrame === 'function'
 
   if (typeof func !== 'function') {
     throw new TypeError('Expected a function')
@@ -133,9 +132,7 @@ export function debounce(func: any, wait: number, options?: {
     const timeSinceLastInvoke = time - lastInvokeTime
     const timeWaiting = wait - timeSinceLastCall
 
-    return maxing
-      ? Math.min(timeWaiting, maxWait - timeSinceLastInvoke)
-      : timeWaiting
+    return maxing ? Math.min(timeWaiting, maxWait - timeSinceLastInvoke) : timeWaiting
   }
 
   function shouldInvoke(time: number) {
@@ -145,8 +142,12 @@ export function debounce(func: any, wait: number, options?: {
     // Either this is the first call, activity has stopped and we're at the
     // trailing edge, the system time has gone backwards and we're treating
     // it as the trailing edge, or we've hit the `maxWait` limit.
-    return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
-      (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait))
+    return (
+      lastCallTime === undefined ||
+      timeSinceLastCall >= wait ||
+      timeSinceLastCall < 0 ||
+      (maxing && timeSinceLastInvoke >= maxWait)
+    )
   }
 
   function timerExpired() {

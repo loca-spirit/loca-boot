@@ -1,4 +1,4 @@
-import { Column, DataModel, dynamicModelBase, ModelBase } from 'loca-boot-core'
+import { Column, DataModel, dynamicModelBase, ModelBase } from '@model-base/core'
 
 describe('columnsInValue', () => {
   describe('keepModelName', () => {

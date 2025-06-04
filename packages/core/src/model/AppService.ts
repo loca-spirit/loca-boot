@@ -1,5 +1,5 @@
-import { ModelBase } from './ModelBase'
 import { Column } from '../decorator'
+import { ModelBase } from './ModelBase'
 
 export class AppService extends ModelBase {
   @Column()

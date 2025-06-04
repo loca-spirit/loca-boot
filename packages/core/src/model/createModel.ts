@@ -29,7 +29,7 @@ export function createModel<T>(
   if ((model as any as typeof ModelBase).isModelBase) {
     t_ = new model(dto, options_)
   } else {
-    t_ = new (model as any)()(dto, options_)
+    t_ = new ((model as any)())(dto, options_)
   }
   return t_ as T
 }

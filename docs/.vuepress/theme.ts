@@ -17,7 +17,7 @@ export default hopeTheme(
 
     logo: 'https://vuepress.vuejs.org/images/hero.png',
 
-    repo: 'https://github.com/loca-spirit/loca-boot',
+    repo: 'https://github.com/loca-spirit/model-base',
 
     footer: 'Power by <a href="" target="_blank">「 One Power tech Team 」</a>',
     displayFooter: true,

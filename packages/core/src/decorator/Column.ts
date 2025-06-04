@@ -1,6 +1,4 @@
 import { __COLUMNS__, __MODEL__, __VERSION__ } from '../constant'
-import { toRaw } from '../utils/lib'
-import { createModelByDTO } from '../utils/ModelBaseUtil'
 import { IColumn, IColumnInner } from './types'
 
 export function genTypeByValue(value: any) {

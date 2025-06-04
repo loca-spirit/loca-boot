@@ -1,3 +1,11 @@
+export enum CLEAN_ENUM {
+  // undefined
+  CLEAN_UNDEFINED = 'cleanUndefined',
+  // undefined or null
+  CLEAN_UNDEFINED_AND_NULL = 'cleanUndefinedAndNull',
+  // undefined or null or '' or []
+  CLEAN_DIRTY = 'cleanDirty',
+}
 export interface IColumn {
   name?: string
   type?: any

@@ -1,4 +1,4 @@
-import { ModelBase } from 'loca-boot-core'
+import { ModelBase } from '@model-base/core'
 
 export function setModelBaseDefault() {
   ModelBase.dtoNamingMethod = 'mix'

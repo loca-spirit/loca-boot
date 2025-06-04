@@ -42,7 +42,6 @@
     "skipLibCheck": true,
     // Contains the specified types
     "types": [
-      "reflect-metadata",
       "jest",
       "node",
       "unplugin-vue-define-options"
@@ -57,13 +56,13 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "loca-boot-common": [
+      "@model-base/common": [
         "packages/common/src/index.ts"
       ],
-      "loca-boot-core": [
+      "@model-base/core": [
         "packages/core/src/index.ts"
       ],
-      "loca-boot-service": [
+      "@model-base/service": [
         "packages/service/src/index.ts"
       ]
     }

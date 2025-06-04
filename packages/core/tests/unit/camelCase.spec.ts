@@ -1,5 +1,5 @@
 import { Consumer } from './model/Consumer'
-import { ModelBase } from 'loca-boot-core'
+import { ModelBase } from '@model-base/core'
 import { setModelBaseDefault } from './util'
 
 describe('ModelBase', () => {

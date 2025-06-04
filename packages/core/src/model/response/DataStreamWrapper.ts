@@ -78,21 +78,15 @@ export class DataStreamWrapper extends DataWrapper {
         // 默认只处理 responseType 是 blob 和 arraybuffer 的情况，以及 responseObj 是 blob 和 objectURL 的情况。
         if (this.responseType === 'blob' && this.responseObj === 'objectURL') {
           newObj = window.URL.createObjectURL(dto)
-        } else if (
-          this.responseType === 'arraybuffer' &&
-          this.responseObj === 'blob'
-        ) {
+        } else if (this.responseType === 'arraybuffer' && this.responseObj === 'blob') {
           newObj = new Blob([dto], {
             type: this.responseObjOptions.type || '',
           })
-        } else if (
-          this.responseType === 'arraybuffer' &&
-          this.responseObj === 'objectURL'
-        ) {
+        } else if (this.responseType === 'arraybuffer' && this.responseObj === 'objectURL') {
           newObj = window.URL.createObjectURL(
             new Blob([dto], {
               type: this.responseObjOptions.type || '',
-            })
+            }),
           )
         }
       } else {

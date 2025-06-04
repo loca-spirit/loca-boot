@@ -1,4 +1,4 @@
-import { Column, DataModel, ModelBase } from "loca-boot-core"
+import { Column, DataModel, ModelBase } from "@model-base/core"
 
 @DataModel({
   methods: {
