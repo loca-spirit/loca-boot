@@ -1,10 +1,9 @@
 // 将dist目录下的内容通过ftp上传到服务器
-
-const ftp = require("basic-ftp");
-const path = require("path");
-const fs = require("fs");
-const dotenv = require("dotenv");
-
+import ftp from "basic-ftp";
+import dotenv from "dotenv";
+import fs from "fs";
+import path from "path";
+import process from "process";
 // 加载环境变量
 dotenv.config();
 
@@ -15,7 +14,7 @@ const {
   FTP_PORT = "21",
   REMOTE_DIR = "/",
 } = process.env;
-console.log(FTP_HOST, FTP_USER, FTP_PASSWORD, FTP_PORT, REMOTE_DIR);
+
 async function uploadDirectory(client, localDir, remoteDir) {
   // 确保远程目录存在
   await client.ensureDir(remoteDir);
@@ -52,7 +51,6 @@ async function main() {
       port: parseInt(FTP_PORT),
       secure: false,
     };
-    console.log(params);
     await client.access(params);
 
     console.log("FTP连接成功");
