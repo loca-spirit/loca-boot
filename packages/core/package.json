@@ -1,6 +1,7 @@
 {
   "name": "@model-base/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "private": false,
   "description": "model-base core",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -14,8 +15,7 @@
   ],
   "author": "",
   "dependencies": {
-    "@model-base/common": "^1.0.0",
-    "core-js": "^3.38.1",
+    "@model-base/common": "^1.0.1",
     "deepmerge": "^2.2.1",
     "lodash": "^4.17.21",
     "patch-package": "^6.4.7",
@@ -27,5 +27,9 @@
     "dist",
     "es",
     "lib"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "7701f800128679fe19e5181dd4bfed07d47f010d"
 }

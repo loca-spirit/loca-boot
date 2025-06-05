@@ -1,13 +1,15 @@
 import { compPackage } from './paths'
 
-export const target = 'es5'
+export const target = 'es6'
 
-export const getCompPackage = () => {
+export const getCompPackage = async () => {
   const {
-    version,
-    dependencies = {},
-    peerDependencies = {},
-  } = require(compPackage)
+    default: { version, dependencies = {}, peerDependencies = {} },
+  } = await import(compPackage, {
+    assert: {
+      type: 'json',
+    },
+  })
   return {
     version,
     dependencies: Object.keys(dependencies),
@@ -15,8 +17,8 @@ export const getCompPackage = () => {
   }
 }
 
-export const generateExternal = (options: { full: boolean }) => {
-  const { dependencies, peerDependencies } = getCompPackage()
+export const generateExternal = async (options: { full: boolean }) => {
+  const { dependencies, peerDependencies } = await getCompPackage()
 
   const packages: string[] = peerDependencies
 
@@ -25,19 +27,13 @@ export const generateExternal = (options: { full: boolean }) => {
   }
 
   return (id: string) => {
-    return packages.some(
-      (pkg) => id === pkg || (options.full && id.startsWith(`${pkg}/`))
-    )
+    return packages.some((pkg) => id === pkg || (options.full && id.startsWith(`${pkg}/`)))
   }
 }
 
 export const generatePaths = (isEsBuild = false) => {
-  const pathsEs = [
-
-  ]
-  let paths = [
-
-  ]
+  const pathsEs = []
+  let paths = []
 
   return (id: string) => {
     if (isEsBuild) {

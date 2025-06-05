@@ -3489,22 +3489,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@model-base/common@npm:^1.0.0, @model-base/common@workspace:packages/common":
+"@model-base/common@npm:^1.0.1, @model-base/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@model-base/common@workspace:packages/common"
   dependencies:
-    core-js: "npm:^3.38.1"
     patch-package: "npm:^6.4.7"
     tslib: "npm:^2.8.0"
   languageName: unknown
   linkType: soft
 
-"@model-base/core@npm:^1.0.0, @model-base/core@workspace:packages/core":
+"@model-base/core@npm:^1.0.1, @model-base/core@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@model-base/core@workspace:packages/core"
   dependencies:
-    "@model-base/common": "npm:^1.0.0"
-    core-js: "npm:^3.38.1"
+    "@model-base/common": "npm:^1.0.1"
     deepmerge: "npm:^2.2.1"
     lodash: "npm:^4.17.21"
     patch-package: "npm:^6.4.7"
@@ -3516,8 +3514,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@model-base/service@workspace:packages/service"
   dependencies:
-    "@model-base/core": "npm:^1.0.0"
-    core-js: "npm:^3.38.1"
+    "@model-base/core": "npm:^1.0.1"
     patch-package: "npm:^6.4.7"
     tslib: "npm:^2.8.0"
   languageName: unknown
@@ -8254,13 +8251,6 @@ __metadata:
   dependencies:
     browserslist: "npm:^4.24.4"
   checksum: 10/2052c73e500e95420d948a0595f4055e40ca6a208cc15c7981b7f202efa851bfae3de59a13009dc367cc5fbaeb8ff84a64c7c0bfc37de4b3bd2cf6b0e14290bd
-  languageName: node
-  linkType: hard
-
-"core-js@npm:^3.38.1":
-  version: 3.42.0
-  resolution: "core-js@npm:3.42.0"
-  checksum: 10/07e10c475cdb45608559778c4d8d1561204aa57c937a3e77ebc7359a95a350f8acfdbeab59c6a6532eb3b47262be0d05aba150a00b79659a91bedda4f59d9d5f
   languageName: node
   linkType: hard
 

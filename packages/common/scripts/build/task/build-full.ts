@@ -34,7 +34,7 @@ const build = async (minify: boolean) => {
         : null,
     ],
     treeshake: true,
-    external: generateExternal({ full: false }),
+    external: await generateExternal({ full: false }),
   })
 
   await Promise.all([
