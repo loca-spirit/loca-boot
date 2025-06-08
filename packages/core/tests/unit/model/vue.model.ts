@@ -1,4 +1,4 @@
-import { Column, DataModel, ModelBase } from '@model-base/core'
+import { Column, ModelBase } from '@model-base/core'
 
 export class VueChildModel extends ModelBase {
   @Column()
