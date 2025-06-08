@@ -8,12 +8,14 @@ class TestItem extends ModelBase {
 class Test extends ModelBase {
   @Column({
     model: () => TestItem,
+    default: () => [],
   })
-  public arrAuto?: TestItem[] = []
+  public arrAuto?: TestItem[]
   @Column({
     model: () => TestItem,
+    default: () => [],
   })
-  public arrDef?: TestItem[] = []
+  public arrDef?: TestItem[]
   @Column({
     model: () => TestItem,
     autowired: true,

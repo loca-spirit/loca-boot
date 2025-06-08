@@ -1,5 +1,4 @@
-import { Column } from '../../decorator'
-import { ModelBase } from '../ModelBase'
+import { Column, createModel, ModelBase } from '@model-base/core'
 import { DataGraphqlWrapper } from './DataGraphqlWrapper'
 import { DataListWrapper } from './DataListWrapper'
 import { DataObjectWrapper } from './DataObjectWrapper'
@@ -45,9 +44,14 @@ export class ServiceResponse<T = any> extends ModelBase {
 
   public serviceError!: Error
 
-  constructor(dto?: any, wrapper?: DataWrapper | (new (dto: any) => T) | T[]) {
-    super(dto)
+  constructor(dto?: any, wrapper?: DataWrapper | (new (dto: any) => T) | T[], isInit = false) {
+    super(dto, { __isInit: isInit })
+    if (!isInit) {
+      this.parseData(dto, wrapper)
+    }
+  }
 
+  public parseData(dto?: any, wrapper?: DataWrapper | (new (dto: any) => T) | T[]) {
     // 支持：type，支持[item]
     if (wrapper) {
       if ((wrapper as any).getClassName && (wrapper as any).getClassName() === DataGraphqlWrapper.className) {
@@ -69,24 +73,18 @@ export class ServiceResponse<T = any> extends ModelBase {
           }
         }
       } else {
-        // if (Array.isArray(wrapper) && (wrapper && wrapper.length === 1)) {
-        //   this.data = new DataListWrapper({itemType: wrapper[0]}).getData(dto) as T;
-        // }
-        // const w = wrapper as IWrapperType;
-        // if (w && w.type === 'DataListWrapper') {
-        //   this.data = new DataListWrapper({itemType: w.itemType}).getData(dto);
-        // } else if (w && w.type === 'DataObjectWrapper') {
-        //   this.data = new DataObjectWrapper({itemType: w.itemType}).getData(dto);
-        // } else if (w && w.type === 'DataGraphqlWrapper') {
-        //   this.data = new DataGraphqlWrapper({itemType: w.itemType, mappingType: w.mappingType}).getData(dto);
-        // } else {
         const classType = wrapper as any
         if (classType) {
-          this.data = new classType(dto && dto.data)
+          this.data = classType.create(dto && dto.data)
         }
-        // }
       }
     }
+  }
+
+  public static createResponse<T = any>(dto?: any, wrapper?: DataWrapper | (new (dto: any) => T) | T[]) {
+    const serviceResponse = new ServiceResponse<T>(dto, wrapper, true)
+    serviceResponse.parseData(dto, wrapper)
+    return serviceResponse as ServiceResponse<T>
   }
 
   public isValid() {

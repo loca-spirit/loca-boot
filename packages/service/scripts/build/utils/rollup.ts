@@ -1,15 +1,11 @@
+import fs from 'fs'
 import { compPackage } from './paths'
 
 export const target = 'es6'
 
 export const getCompPackage = async () => {
-  const {
-    default: { version, dependencies = {}, peerDependencies = {} },
-  } = await import(compPackage, {
-    assert: {
-      type: 'json',
-    },
-  })
+  const { version, dependencies = {}, peerDependencies = {} } = JSON.parse(fs.readFileSync(compPackage, 'utf-8'))
+
   return {
     version,
     dependencies: Object.keys(dependencies),

@@ -1,17 +1,37 @@
+import { Column, ModelBase } from '@model-base/core'
 import { cloneDeep } from 'lodash'
-import { AliseName } from './model/AliseName'
+class UserModel extends ModelBase {
+  @Column()
+  public userNameA?: string
+
+  @Column({ default: 'shuai.meng' })
+  public userNameB?: string
+}
 
 describe('cloneDeep', () => {
   it('cloneDeep', () => {
-    const c = new AliseName({
-      userName1: 'shuai.meng1',
-      user_name2: 'shuai.meng2',
+    const c = new UserModel({
+      userNameA: 'shuai.meng1',
     })
     const clone_ = cloneDeep(c)
     expect(clone_.getCleanSerializableObject()).toEqual({
-      u_name1: 'shuai.meng1',
-      u_name2: 'shuai.meng2',
+      user_name_a: 'shuai.meng1',
+      user_name_b: 'shuai.meng',
     })
-    expect(clone_).toEqual({ uName1: 'shuai.meng1', uName2: 'shuai.meng2' })
+    expect(clone_).toEqual({ userNameA: 'shuai.meng1', userNameB: 'shuai.meng' })
+  })
+
+  it('cloneDeep with noDefault options', () => {
+    const c = new UserModel(
+      {
+        userNameA: 'shuai.meng1',
+      },
+      { noDefault: true },
+    )
+    const clone_ = cloneDeep(c)
+    expect(clone_.getCleanSerializableObject()).toEqual({
+      user_name_a: 'shuai.meng1',
+    })
+    expect(clone_).toEqual({ userNameA: 'shuai.meng1' })
   })
 })

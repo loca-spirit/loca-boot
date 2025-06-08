@@ -1,7 +1,6 @@
 {
   "name": "@model-base/service",
   "version": "1.0.1",
-  "private": false,
   "description": "loca boot service",
   "main": "lib/index.js",
   "module": "lib/index.js",
@@ -29,5 +28,5 @@
   "publishConfig": {
     "access": "public"
   },
-  "gitHead": "7701f800128679fe19e5181dd4bfed07d47f010d"
+  "gitHead": "aded529ed035afd303d8307bad56fe471d756be1"
 }

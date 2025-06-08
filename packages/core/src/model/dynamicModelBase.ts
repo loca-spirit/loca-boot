@@ -1,7 +1,6 @@
 import { __MODEL__ } from '../constant'
-import { Column, ColumnOld } from '../decorator/Column'
-import type { IColumnDefined, IDataModel } from '../decorator/types'
-import { createModelByDTO, IModelOptions } from '../utils/ModelBaseUtil'
+import { ColumnDefine } from '../decorator/Column'
+import type { IColumnDefined, IDataModel, IModelOptions } from '../decorator/types'
 import { ModelBase } from './ModelBase'
 
 export function genType(typeStr: string, column: IColumnDefined) {
@@ -71,7 +70,6 @@ export function dynamicModelBase<T = ModelBase>(
   class CustomDefinedModel extends ModelBase {
     constructor(dto?: any, options?: IModelOptions) {
       super(dto, options)
-      // createModelByDTO<typeof this>(this, this.getColumns(), dto, options)
     }
   }
 
@@ -80,8 +78,7 @@ export function dynamicModelBase<T = ModelBase>(
     const typeStr = column.type || 'string'
     column.name = column.name || key
     column.type = genType(typeStr, column)
-    // Reflect.defineMetadata('design:type', type, CustomDefinedModel.prototype, key)
-    ColumnOld(column)(CustomDefinedModel.prototype, key)
+    ColumnDefine(column)(CustomDefinedModel.prototype, key)
   })
   if (params?.methods) {
     const model = {

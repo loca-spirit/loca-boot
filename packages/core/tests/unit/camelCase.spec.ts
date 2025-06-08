@@ -1,24 +1,25 @@
 import { Consumer } from './model/Consumer'
-import { ModelBase } from '@model-base/core'
-import { setModelBaseDefault } from './util'
 
 describe('ModelBase', () => {
-  afterEach(() => {
-    setModelBaseDefault()
-  })
   describe('constructor', () => {
-    it('columnNamingMethod is camelCase', () => {
-      ModelBase.columnNamingMethod = 'camelCase'
-      const c = new Consumer({ user_name: 'org', phoneNumber: '031-3939234' })
+    it('serializeNamingStrategies is camelCase', () => {
+      const c = new Consumer(
+        { user_name: 'org', phoneNumber: '031-3939234' },
+        { serializeNamingStrategies: 'camelCase' },
+      )
       expect(c.getCleanSerializableObject()).toEqual({
         userName: 'org',
         phoneNumber: '031-3939234',
       })
     })
-    it('columnNamingMethod is undefined', () => {
-      ModelBase.dtoNamingMethod = 'camelCase'
-      ModelBase.columnNamingMethod = 'camelCase'
-      const c = new Consumer({ user_name: 'org', phoneNumber: '031-3939234' })
+    it('serializeNamingStrategies is undefined', () => {
+      const c = new Consumer(
+        { user_name: 'org', phoneNumber: '031-3939234' },
+        {
+          serializeNamingStrategies: 'camelCase',
+          deserializeNamingStrategies: 'camelCase',
+        },
+      )
       expect(c.getCleanSerializableObject()).toEqual({
         phoneNumber: '031-3939234',
       })
@@ -26,13 +27,12 @@ describe('ModelBase', () => {
   })
 
   describe('getChangedData', () => {
-    it('columnNamingMethod is camelCase', () => {
-      ModelBase.columnNamingMethod = 'camelCase'
-      const c = new Consumer({ userName: 'org' })
+    it('serializeNamingStrategies is camelCase', () => {
+      const c = new Consumer({ userName: 'org' }, { serializeNamingStrategies: 'camelCase' })
       c.userName = 'changed'
       expect(c.getChangedData()).toEqual({ userName: 'changed' })
     })
-    it('columnNamingMethod is undefined', () => {
+    it('serializeNamingStrategies is undefined', () => {
       const c = new Consumer({ userName: 'org' })
       c.userName = 'changed'
       expect(c.getChangedData()).toEqual({ user_name: 'changed' })
@@ -40,9 +40,8 @@ describe('ModelBase', () => {
   })
 
   describe('getSerializableObject', () => {
-    it('columnNamingMethod is camelCase', () => {
-      ModelBase.columnNamingMethod = 'camelCase'
-      const c = new Consumer({ userName: 'org' })
+    it('serializeNamingStrategies is camelCase', () => {
+      const c = new Consumer({ userName: 'org' }, { serializeNamingStrategies: 'camelCase' })
       c.userName = 'changed'
       expect(c.getSerializableObject()).toEqual({
         userName: 'changed',
@@ -60,7 +59,7 @@ describe('ModelBase', () => {
         consumer_list: [],
       })
     })
-    it('columnNamingMethod is undefined', () => {
+    it('serializeNamingStrategies is undefined', () => {
       const c = new Consumer({ userName: 'org' })
       c.userName = 'changed'
       c.phoneNumber = ''

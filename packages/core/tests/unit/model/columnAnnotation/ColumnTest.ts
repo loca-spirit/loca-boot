@@ -1,5 +1,4 @@
-import { Column, ModelBase } from '@model-base/core'
-import { setDefaultList } from '../../util'
+import { Column } from '@model-base/core'
 import { ColumnTestItem } from './ColumnTestItem'
 import { ColumnTestParent } from './ColumnTestParent'
 
@@ -13,7 +12,7 @@ export class ColumnTest extends ColumnTestParent {
   public obj!: ColumnTestItem
   @Column({
     model: () => ColumnTestItem,
-    default: setDefaultList,
+    default: () => [],
   })
   public consumerList!: ColumnTestItem[]
 }

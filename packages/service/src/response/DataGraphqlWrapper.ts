@@ -37,11 +37,11 @@ export class DataGraphqlWrapper extends DataWrapper {
           return letter.toUpperCase()
         })
         if (this.itemType) {
-          obj = new this.itemType(dto[property])
+          obj = this.itemType.create(dto[property])
           delete obj[property]
         }
         if (this.mappingType) {
-          obj[humpProp] = new this.mappingType[humpProp](dto[property])
+          obj[humpProp] = this.mappingType[humpProp].create(dto[property])
           if (humpProp !== property) {
             delete obj[property]
           }

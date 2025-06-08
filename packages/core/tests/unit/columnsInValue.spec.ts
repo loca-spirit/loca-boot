@@ -33,22 +33,13 @@ describe('columnsInValue', () => {
     })
   })
   it('emptyValue', () => {
-    const expectData1 = {
-      a: '',
-      b: '',
-    }
+    const expectData1 = {}
     const fData = new (dynamicModelBase({ a: { type: 'number' }, b: { type: 'boolean' } }))({
       a: 1,
       b: false,
     }) as any
     fData.a = null as any
     fData.b = undefined as any
-    expect(
-      fData.getChangedData({
-        emptyValue: '',
-        emptyValueScope: [Number, Boolean],
-        // clean: CLEAN_ENUM.CLEAN_UNDEFINED,
-      }),
-    ).toEqual(expectData1)
+    expect(fData.getChangedData()).toEqual(expectData1)
   })
 })

@@ -1,8 +1,8 @@
-import { ResourceInfo } from './model/ResourceInfo'
+import { ModelBase } from '@model-base/core'
+import { ColumnCamelCase } from './model/ColumnCamelCase'
 import { Consumer } from './model/Consumer'
 import { ConsumerItem } from './model/ConsumerItem'
-import { ColumnCamelCase } from './model/ColumnCamelCase'
-import { ModelBase } from '@model-base/core'
+import { ResourceInfo } from './model/ResourceInfo'
 
 describe('ModelBase', () => {
   describe('construct', () => {
@@ -14,7 +14,7 @@ describe('ModelBase', () => {
     }
 
     const instance1 = new ResourceInfo(createModelDTO)
-    
+
     it('create model', () => {
       expect(instance1.resourceId).toBe('1')
       expect(instance1.isOnline).toBe(false)
@@ -83,8 +83,7 @@ describe('ModelBase', () => {
 
   describe('getColumnNames', () => {
     it('getColumnNames: ConsumerItem[], push one item to list, then save changed.', () => {
-      ModelBase.columnNamingMethod = 'camelCase'
-      const c = new ColumnCamelCase({ userName: 'mengshuai' })
+      const c = new ColumnCamelCase({ userName: 'mengshuai' }, { serializeNamingStrategies: 'camelCase' })
       // console.log(c.getColumns())
       console.log(c.getSerializableObject())
       // expect(c.getSerializableObject()).toEqual({
@@ -92,17 +91,14 @@ describe('ModelBase', () => {
       //   list: [],
       //   consumerList: [],
       // })
-      ModelBase.columnNamingMethod = ''
     })
   })
 
   describe('getClone', () => {
     it('getClone.', () => {
-      ModelBase.columnNamingMethod = 'camelCase'
-      const c = new ColumnCamelCase({ list: [] })
+      const c = new ColumnCamelCase({ list: [] }, { serializeNamingStrategies: 'camelCase' })
       c.list.push('test')
       expect(c.getOriginalData()).toEqual({ list: [], consumerList: [] })
-      ModelBase.columnNamingMethod = ''
     })
   })
 

@@ -1,15 +1,10 @@
+import fs from 'fs'
 import { compPackage } from './paths'
 
 export const target = 'es6'
 
 export const getCompPackage = async () => {
-  const {
-    default: { version, dependencies = {}, peerDependencies = {} },
-  } = await import(compPackage, {
-    assert: {
-      type: 'json',
-    },
-  })
+  const { version, dependencies = {}, peerDependencies = {} } = JSON.parse(fs.readFileSync(compPackage, 'utf-8'))
   return {
     version,
     dependencies: Object.keys(dependencies),
@@ -39,7 +34,7 @@ export const generatePaths = (isEsBuild = false) => {
     if (isEsBuild) {
       paths = pathsEs
     }
-    for (const [oldPath, newPath] of paths) {
+    for (const [oldPath, newPath] of paths as [string, string][]) {
       if (isEsBuild) {
         if (id === oldPath) {
           return id.replace(oldPath, newPath)

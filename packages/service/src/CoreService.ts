@@ -1,12 +1,6 @@
-import {
-  type ModelSnakeType,
-  type ModelType,
-  DataStreamWrapper,
-  DataWrapper,
-  Driver,
-  ModelBase,
-  ServiceResponse,
-} from '@model-base/core'
+import { type ModelSnakeType, type ModelType, ModelBase } from '@model-base/core'
+import type { Driver } from './api/Driver'
+import { DataStreamWrapper, DataWrapper, ServiceResponse } from './response'
 
 /**
  * options: {
@@ -98,7 +92,7 @@ export class CoreService {
           modelJson: apiData,
         })
       }
-      let serviceResponse = new ServiceResponse<T>(apiData, param?.wrapper)
+      let serviceResponse = ServiceResponse.createResponse(apiData, param?.wrapper) as ServiceResponse<T>
       if (param?.afterParse) {
         serviceResponse = param.afterParse.call(null, serviceResponse)
       }
@@ -126,9 +120,9 @@ export class CoreService {
       return serviceResponse
     } catch (e: any) {
       if (e.result_code) {
-        return new ServiceResponse<T>(e)
+        return ServiceResponse.createResponse(e)
       } else {
-        const serviceResponse = new ServiceResponse<T>({
+        const serviceResponse = ServiceResponse.createResponse({
           result_code: 'service_error',
         })
         serviceResponse.serviceError = e

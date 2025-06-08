@@ -36,11 +36,11 @@ export class DataObjectWrapper extends DataWrapper {
           if (dto[property]) {
             newObj[key] = []
             dto[property].forEach((itemDto: any) => {
-              newObj[key].push(this.itemType ? new this.itemType(itemDto) : itemDto)
+              newObj[key].push(this.itemType ? this.itemType.create(itemDto) : itemDto)
             })
           }
         } else {
-          newObj[key] = this.itemType ? new this.itemType(dto[property]) : dto[property]
+          newObj[key] = this.itemType ? this.itemType.create(dto[property]) : dto[property]
         }
       })
     }

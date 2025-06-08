@@ -1,5 +1,5 @@
 ---
-permalink: /guide/changelog/
+permalink: /guide/migrate/
 ---
 
 ## 更新日志

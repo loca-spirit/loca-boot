@@ -1,8 +1,9 @@
+import { isPlainObject } from 'lodash'
+import { NAMING_STRATEGIES } from '../constant'
 import { CLEAN_ENUM, IColumnInner } from '../decorator/types'
 import { ModelBase } from '../model/ModelBase'
-import { ModelTool } from './lib'
-import { create, getModelType } from './ModelBaseUtil'
-import { setEmpty } from './setEmpty'
+import { create, getModelType } from './create'
+import { getModelProps } from './ModelBaseProps'
 
 export function getChange(
   columns: { [key: string]: IColumnInner },
@@ -15,11 +16,15 @@ export function getChange(
     descriptor?: boolean
     clean?: CLEAN_ENUM
     ignoreEmptyString?: boolean
-    emptyValue?: any
-    emptyValueScope?: any[]
     camelCase?: boolean
   },
 ) {
+  const sns =
+    (typeof params.camelCase === 'boolean'
+      ? params.camelCase
+        ? NAMING_STRATEGIES.camelCase
+        : NAMING_STRATEGIES.snakeCase
+      : null) ?? getModelProps(target, 'serializeNamingStrategies')
   const changedObj = {} as { [key: string]: any }
   const descriptorObj = {} as {
     [key: string]: {
@@ -40,25 +45,17 @@ export function getChange(
     }
   }
   Object.keys(columns).forEach((columnName) => {
-    let orgColumn = columns[columnName].column
-    if (ModelBase.columnNamingMethod === 'camelCase') {
+    let orgColumn = columns[columnName].name
+    if (sns === NAMING_STRATEGIES.camelCase) {
       orgColumn = columns[columnName].camelCaseName
     }
-    // console.log(columnName)
-    // console.log(columns[columnName].type === Number)
-    // let targetoldValue = target.getOriginalData()
     let currentValue = targetData[orgColumn]
     if (columns[columnName].trim && params.trim && typeof currentValue === 'string') {
       currentValue = (currentValue as string).trim()
     }
     let oldValue = target.getOriginalData()[orgColumn]
-    const isEmptyValueSet = setEmpty(oldValue, params.emptyValueScope, params.emptyValue, columns[columnName].type)
-    if (isEmptyValueSet) {
-      oldValue = params.emptyValue
-    } else {
-      if (columns[columnName].trim && params.trim && typeof oldValue === 'string') {
-        oldValue = (oldValue as string).trim()
-      }
+    if (columns[columnName].trim && params.trim && typeof oldValue === 'string') {
+      oldValue = (oldValue as string).trim()
     }
     // 处理删除的数据，对删除数据进行格式化，满足不同的需求
     if (
@@ -102,7 +99,7 @@ export function getChange(
       }
     } else {
       // 处理变更的数据
-      if (ModelTool.isPlainObject(oldValue)) {
+      if (isPlainObject(oldValue)) {
         const oldValueStr = JSON.stringify(oldValue)
         const currentValueStr = JSON.stringify(currentValue)
         if (oldValueStr !== currentValueStr) {
@@ -142,7 +139,7 @@ export function getChange(
         }
         const childType = getModelType(columns[columnName].childType)
 
-        if (childType && childType.prototype.getPrimaryKey) {
+        if (childType && (childType as any)?.prototype?.getPrimaryKey) {
           const hasPrimaryKey = create(childType)().getPrimaryKey().length
           if (hasPrimaryKey) {
             const matchedCurValueList = [] as any[]
@@ -226,8 +223,6 @@ export function getChange(
     if (typeof params.group !== 'undefined') {
       // 如果有分组，必须返回分组中的数据。
       // 此处的逻辑是把非当前分组的数据剔除掉。
-      // console.log('index:', orgColumn, columns[columnName].group, params.group)
-      // console.log('index:', columns[columnName].group?.indexOf(params.group as string))
       if (columns[columnName].group && columns[columnName].group?.indexOf(params.group as string) === -1) {
         if (params && params.descriptor) {
           delete descriptorObj[orgColumn]
@@ -238,8 +233,6 @@ export function getChange(
     } else if (typeof params.excludeGroup !== 'undefined') {
       // 如果有分组，必须返回分组中的数据。
       // 此处的逻辑是把非当前分组的数据剔除掉。
-      // console.log('index:', orgColumn, columns[columnName].group, params.group)
-      // console.log('index:', columns[columnName].group?.indexOf(params.group as string))
       if (columns[columnName].group && columns[columnName].group?.indexOf(params.excludeGroup as string) !== -1) {
         if (params && params.descriptor) {
           delete descriptorObj[orgColumn]
