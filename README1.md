@@ -57,7 +57,7 @@ ModelBase诞生于2017年，是一个被后端团队不断锤炼出来的一个�
 `createModel`会校验JSON数据的key必须和`Consumer`的可以保持一致，默认同时支持驼峰和下划线的key。
 
 ```typescript
-import { createModel } from 'loca-boot-core'
+import { createModel } from '@model-base/core'
 import { Consumer } from './model/Consumer'
 
 const model = createModel(Consumer,

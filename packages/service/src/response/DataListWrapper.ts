@@ -10,7 +10,7 @@ export class DataListWrapper extends DataWrapper {
       | {
           itemType: any
         }
-      | any
+      | any,
   ) {
     super()
     if (data) {
@@ -30,7 +30,7 @@ export class DataListWrapper extends DataWrapper {
     const arr = [] as any
     if (Array.isArray(dto)) {
       dto.forEach((data: any) => {
-        arr.push(new this.itemType(data))
+        arr.push(this.itemType.create(data))
       })
     }
     return arr

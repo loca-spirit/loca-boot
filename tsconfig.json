@@ -10,14 +10,13 @@
     //   So don't change the `target` field here. It has to be
     //   at least `ES2020` for dynamic `import()`s and `import.meta` to work correctly.
     // - If you are not using Vite, feel free to override the `target` field.
-    "target": "es5",
+    "target": "es6",
     "outDir": "dist",
     "declaration": true,
-    "emitDeclarationOnly": true,
-    "downlevelIteration": true,
+    "emitDeclarationOnly": false,
+    "downlevelIteration": false,
     "importHelpers": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "experimentalDecorators": false,
     "allowSyntheticDefaultImports": true,
     "module": "ESNext",
     "moduleResolution": "Node",
@@ -42,7 +41,6 @@
     "skipLibCheck": true,
     // Contains the specified types
     "types": [
-      "reflect-metadata",
       "jest",
       "node",
       "unplugin-vue-define-options"
@@ -50,19 +48,20 @@
     "lib": [
       "es2015",
       "es2020",
+      "esnext",
       "dom",
       "dom.iterable",
       "scripthost"
     ],
     "baseUrl": ".",
     "paths": {
-      "loca-boot-common": [
+      "@model-base/common": [
         "packages/common/src/index.ts"
       ],
-      "loca-boot-core": [
+      "@model-base/core": [
         "packages/core/src/index.ts"
       ],
-      "loca-boot-service": [
+      "@model-base/service": [
         "packages/service/src/index.ts"
       ]
     }

@@ -1,10 +1,9 @@
-import 'reflect-metadata'
 import { __MODEL__ } from '../constant'
 import { IDataModel } from './types'
 
-export const LOCA_DATA_MODEL_KEY = Symbol('locaDataModelKey')
+export const LOCA_DATA_MODEL_KEY = Symbol.for('locaDataModelKey')
 
-export function DataModel(params?: IDataModel): ClassDecorator {
+export function DataModel(params?: IDataModel) {
   return <TFunction extends Function>(constructor: TFunction) => {
     const model = {
       methods: params?.methods || {},

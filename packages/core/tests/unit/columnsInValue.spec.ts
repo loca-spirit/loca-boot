@@ -1,5 +1,4 @@
-import { Consumer } from './model/Consumer'
-import { ModelBase, DataModel, Column, dynamicModelBase } from 'loca-boot-core'
+import { Column, DataModel, dynamicModelBase, ModelBase } from '@model-base/core'
 
 describe('columnsInValue', () => {
   describe('keepModelName', () => {
@@ -21,17 +20,8 @@ describe('columnsInValue', () => {
         @Column()
         valData!: number
       }
-
-      const fData = new (dynamicModelBase({ a: { type: 'string' } }))({
-        a: 1,
-        b: 323,
-      })
-
-      // DataModel({ columnsInValue: true })(PrimClass)
-      const data = new PrimClass(
-        { a: 1 },
-        { keepModelName: true, columnsInValue: true }
-      ) as any
+      DataModel({ columnsInValue: true })(PrimClass)
+      const data = new PrimClass({ a: 1 }, { keepModelName: true, columnsInValue: true }) as any
       data.aData = '1232'
       data.xx_data = '1232'
       data.b = 1212
@@ -39,9 +29,17 @@ describe('columnsInValue', () => {
         x: 1,
       }
       data.d = true
-      console.log('getChangedData:', data.getChangedData())
-      console.log('getColumns:', data.getColumns())
       expect(data.getChangedData()).toEqual(expectData)
     })
+  })
+  it('emptyValue', () => {
+    const expectData1 = {}
+    const fData = new (dynamicModelBase({ a: { type: 'number' }, b: { type: 'boolean' } }))({
+      a: 1,
+      b: false,
+    }) as any
+    fData.a = null as any
+    fData.b = undefined as any
+    expect(fData.getChangedData()).toEqual(expectData1)
   })
 })

@@ -1,12 +1,13 @@
-import { Column, DataModel, ModelBase } from 'loca-boot-core'
+import { Column, DataModel, ModelBase } from '@model-base/core'
 import { ConsumerItem } from './ConsumerItem'
 
+export
 @DataModel({
   methods: {
     changeUserName: '{{$model.userName = "new Name"}}',
   },
 })
-export class Consumer extends ModelBase {
+class Consumer extends ModelBase {
   @Column()
   public id?: number
   @Column({
@@ -18,12 +19,12 @@ export class Consumer extends ModelBase {
   @Column()
   public phoneNumber!: string
   @Column({
-    default: true,
+    default: () => [],
   })
   public list!: string[]
   @Column({
     model: () => ConsumerItem,
-    autowired: true,
+    default: () => [],
   })
   public consumerList!: ConsumerItem[]
   @Column({

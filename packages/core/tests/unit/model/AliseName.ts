@@ -1,4 +1,4 @@
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from '@model-base/core'
 
 export class AliseName extends ModelBase {
   @Column({ aliasName: 'userName1' })

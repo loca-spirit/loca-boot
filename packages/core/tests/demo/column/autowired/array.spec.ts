@@ -1,4 +1,4 @@
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from '@model-base/core'
 // region model
 class TestItem extends ModelBase {
   @Column()
@@ -8,8 +8,7 @@ class Test extends ModelBase {
   // 数组初始化
   @Column({
     model: () => TestItem,
-    autowired: true,
-    type: 'array',
+    default: () => [],
   })
   public initArray?: TestItem[]
 

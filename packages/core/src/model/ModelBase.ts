@@ -1,146 +1,16 @@
 import merge from 'deepmerge'
-import { getTag } from 'loca-boot-common'
 import { cloneDeep } from 'lodash'
-import { __CLONE__, __COLUMNS__, __MODEL__ } from '../constant'
+import { getChange } from '../_utils/ChangedModelUtil'
+import { getModelProps, initModelOptions } from '../_utils/ModelBaseProps'
+import { createModelByDTO, deepCopy, extendModelByDTO, updateModelByDTO } from '../_utils/ModelBaseUtil'
+import { toRaw } from '../_utils/toRaw'
+import { __CLONE__, __COLUMNS__, __COLUMNS_CACHED__, __MODEL__, NAMING_STRATEGIES } from '../constant'
 import { generateColumnsFromData } from '../decorator/Column'
-import type { IColumnInner, IDataModel } from '../decorator/types'
-import { getChange } from '../utils/ChangedModelUtil'
-import { ModelTool, toRaw } from '../utils/lib'
-import {
-  IModelOptions,
-  createModelByDTO,
-  deepCopy,
-  extendModelByDTO,
-  getColumnByKey,
-  initModel_,
-  updateModelByDTO,
-} from '../utils/ModelBaseUtil'
-import { setEmpty } from '../utils/setEmpty'
+import { CLEAN_ENUM, IColumnInner, IDataModel, IModelOptions, ModelType } from '../decorator/types'
+import { modelToSerializableObj } from '../tools/modelToSerializableObj'
 
 export interface IDataByOriginalOption extends IModelOptions {
   keepBackUp?: boolean
-}
-
-/**
- *
- * 如果 removeUndefinedAndNullValue 设置为 true，则 undefined 和 null 的值是获取不到的，
- * 如果你设置了某个属性值为，''，这个属性是可以的值是可以获取到为 '' 的，如果你不想要这个属性的值，
- * 请设置这个属性为 undefined，或者删除掉这个属性的 key
- *
- * emptyValue: 当序列化后的值是 undefined 或者 null 的时候，可以手动指定返回值为 emptyValue 所代表的值。
- * @param this_
- * @param param
- * @return {{}}
- */
-function modelToSerializableObj<T extends ModelBase>(
-  this_: T,
-  param: {
-    clean: CLEAN_ENUM
-    group?: string
-    excludeGroup?: string
-    emptyValue?: any
-    emptyValueScope?: any[]
-    trim?: boolean
-    camelCase?: boolean
-  },
-) {
-  const dto: { [index: string]: any } = {}
-  const columns = ((this_ as any).getColumns?.() as { [key: string]: IColumnInner }) || {}
-  const target = this_ as any
-  for (const key in columns) {
-    if (columns.hasOwnProperty(key)) {
-      const columnName = getColumnByKey(this_, key, columns, param)
-      const isEmptyValueSet = setEmpty(target[key], param.emptyValueScope, param.emptyValue, columns[key].type)
-      if (isEmptyValueSet) {
-        dto[columnName] = param.emptyValue
-      } else {
-        if (columns[key].childType) {
-          // 如果原始数据中没有这个字段，则不存入saveData
-          if (target[key]) {
-            if (columns[key].type === Array) {
-              dto[columnName] = []
-              target[key].forEach((m: any) => {
-                dto[columnName].push(modelToSerializableObj(m, param))
-              })
-              if (param.clean === CLEAN_ENUM.CLEAN_DIRTY) {
-                if (dto[columnName] && dto[columnName].length === 0) {
-                  delete dto[columnName]
-                }
-              }
-            } else {
-              dto[columnName] = modelToSerializableObj(target[key], param)
-              if (param.clean === CLEAN_ENUM.CLEAN_DIRTY) {
-                if (dto[columnName] && Object.keys(dto[columnName]).length === 0) {
-                  delete dto[columnName]
-                }
-              }
-            }
-          }
-        } else {
-          let value = target[key]
-          // 处理any类型的数据，解除对普通对象的数据的引用。
-          if (
-            typeof value !== 'undefined' &&
-            value !== null &&
-            (getTag(value) == '[object Object]' || Array.isArray(value))
-          ) {
-            value = JSON.parse(JSON.stringify(value))
-          }
-          const serialize = columns[key].unformatter || columns[key].serialize
-          if (typeof serialize === 'function') {
-            value = serialize.apply(target, [
-              {
-                value: target[key],
-                key,
-                data: this_,
-                columns,
-              },
-            ])
-          }
-          if (param.clean === CLEAN_ENUM.CLEAN_DIRTY) {
-            cleanDirty(this_, key, dto, columnName, value, param)
-          } else if (param.clean === CLEAN_ENUM.CLEAN_UNDEFINED) {
-            // 默认null或者undefined的字段会包含在返回的对象中，如果需要返回对象不返回null和undefined的值，调用方法时传true
-            if (typeof target[key] !== 'undefined') {
-              dto[columnName] = value
-            }
-          } else if (param.clean === CLEAN_ENUM.CLEAN_UNDEFINED_AND_NULL) {
-            // 默认null或者undefined的字段会包含在返回的对象中，如果需要返回对象不返回null和undefined的值，调用方法时传true
-            if (typeof target[key] !== 'undefined' && target[key] !== null) {
-              dto[columnName] = value
-            }
-          } else {
-            dto[columnName] = value
-          }
-          if (columns[key].trim && param.trim && typeof dto[columnName] === 'string') {
-            dto[columnName] = (dto[columnName] as string).trim()
-          }
-        }
-      }
-
-      // 处理分组的逻辑 begin
-      if (typeof param.group !== 'undefined') {
-        // console.log('param.group', columns[key].group, param.group)
-        // 如果有分组，必须返回分组中的数据。
-        // 此处的逻辑是把非当前分组的数据剔除掉。
-        if (columns[key].group) {
-          // console.log('group', columns[key].group)
-          // console.log('param.group', param.group)
-        }
-        if (columns[key].group?.indexOf(param.group as string) === -1) {
-          // console.log('delete', columns[key].group, param.group)
-          delete dto[columnName]
-        }
-      } else if (typeof param.excludeGroup !== 'undefined') {
-        if (columns[key].group && columns[key].group?.indexOf(param.excludeGroup as string) !== -1) {
-          // console.log('delete', columns[key].group, param.group)
-          delete dto[columnName]
-        }
-      }
-      // 处理分组的逻辑 end
-    }
-  }
-  return dto
 }
 
 function callMethod(
@@ -150,15 +20,15 @@ function callMethod(
     camelCase?: boolean
   },
 ) {
-  const columns = this_.getColumns() as { [key: string]: IColumnInner }
+  const columns = this_.getColumnsCached() as { [key: string]: IColumnInner }
   const target = this_ as any
-  const dataModel: IDataModel = (target.constructor as any)[__MODEL__] || {}
-  dataModel.methods = dataModel.methods || {}
+  const modelOptions: IDataModel = (target.constructor as any)[__MODEL__] || {}
+  modelOptions.methods = modelOptions.methods || {}
   for (const key in columns) {
     if (columns.hasOwnProperty(key)) {
       if (columns[key].childType) {
-        if (columns[key].type === Array) {
-          target[key]?.forEach((m: any) => {
+        if (target[key] && Array.isArray(target[key])) {
+          target[key].forEach((m: any) => {
             callMethod(m, param)
           })
         } else {
@@ -171,9 +41,9 @@ function callMethod(
   if ((this_ as any)[param.method]) {
     ;(this_ as any)[param.method]({ data: this_ })
   }
-  if ((dataModel as any).methods[param.method] && typeof (dataModel as any).methods[param.method] === 'string') {
+  if (modelOptions?.methods[param.method] && typeof modelOptions?.methods[param.method] === 'string') {
     try {
-      const str = (dataModel as any).methods[param.method]
+      const str = modelOptions.methods[param.method]
       const reg = /^\{\{(.*)\}\}$/
       const res = str.match(reg)
       if (res.length > 1) {
@@ -183,52 +53,16 @@ function callMethod(
       // console.log(err)
     }
   }
-  if ((dataModel as any).methods[param.method]) {
-    ;(dataModel as any).methods[param.method]({ data: this_ })
-  }
-}
-
-function cleanDirty(
-  this_: any,
-  key: string,
-  dto: { [index: string]: any },
-  columnName: string,
-  value: any,
-  params: {
-    clean: CLEAN_ENUM
-    emptyValue?: any
-    camelCase?: boolean
-  },
-) {
-  const target = this_ as any
-  // 默认null或者undefined的字段会包含在返回的对象中，如果需要返回对象不返回null、空和undefined的值，调用方法时传 'cleanDirty'
-  if (typeof target[key] === 'string') {
-    if (target[key].replace(/\s/g, '') !== '') {
-      dto[columnName] = value
-    }
-  } else if (ModelTool.isPlainObject(target[key])) {
-    if (Object.keys(target[key]).length !== 0) {
-      dto[columnName] = value
-    }
-  } else if (Array.isArray(target[key])) {
-    if (target[key].length !== 0) {
-      dto[columnName] = value
-    }
-  } else {
-    if (typeof target[key] !== 'undefined' && target[key] !== null) {
-      dto[columnName] = value
-    } else {
-      if (typeof params.emptyValue !== 'undefined') {
-        dto[columnName] = params.emptyValue
-      }
-    }
+  if (modelOptions.methods[param.method]) {
+    modelOptions.methods[param.method]({ data: this_ })
   }
 }
 
 function setColumnToTarget(columns: { [key: string]: IColumnInner }, target: ModelBase, curProto: any) {
-  if ((target.constructor as any)[__COLUMNS__]) {
-    const c = (target.constructor as any)[__COLUMNS__] || {}
-    columns = merge(columns, c, { clone: true })
+  const metadata = (target.constructor as any)[Symbol.metadata] || {}
+  const columns_ = metadata[__COLUMNS__] || {}
+  if (columns_) {
+    columns = merge(columns, columns_, { clone: true })
   }
   return columns
 }
@@ -244,45 +78,52 @@ function getColumnsUtil(columns: { [key: string]: IColumnInner }, target: ModelB
   return setColumnToTarget(columns, target, curProto)
 }
 
-export enum CLEAN_ENUM {
-  // undefined
-  CLEAN_UNDEFINED = 'cleanUndefined',
-  // undefined or null
-  CLEAN_UNDEFINED_AND_NULL = 'cleanUndefinedAndNull',
-  // undefined or null or '' or []
-  CLEAN_DIRTY = 'cleanDirty',
-}
-
 export class ModelBase {
   // 做标记用，判断当前class是不是继承ModelBase
   public static isModelBase = true
-  public static columnNamingMethod: string
-  public static dtoNamingMethod: string = 'mix'
   constructor(dto?: any, options?: IModelOptions) {
     const t_ = toRaw(this)
-    initModel_(t_, options)
-    let columns_ = (t_.constructor as any)[__COLUMNS__]
-    if (!columns_) {
-      columns_ = (t_ as any).getColumns({ dto })
-      ;(t_.constructor as any)[__COLUMNS__] = columns_
+    initModelOptions(t_, options)
+    if (!options?.__isInit) {
+      createModelByDTO<typeof this>(t_, (t_ as ModelBase).getColumnsCached(), dto, options)
     }
-    if (!options?.__noInit) {
-      createModelByDTO<typeof this>(t_, columns_, dto, options)
-    }
+  }
+
+  /**
+   * @description 创建一个模型，这个模型是基于当前模型的数据创建的，不会触发 deserialize 方法，不会设置默认值。
+   * @param this
+   * @param model
+   * @param options
+   * @returns
+   */
+  public createModel<T extends ModelBase>(
+    this: new (dto: any, options?: IModelOptions) => T,
+    model: ModelType<typeof this>,
+    options?: IModelOptions,
+  ) {
+    const t_ = toRaw(this)
+    const options_ = options || {}
+    options_.__isInit = true
+    options_.__noDeserialize = true
+    options_.noDefault = true
+    const t__ = new t_(model, options_)
+    createModelByDTO<T>(t__, (t__ as ModelBase).getColumnsCached(), model, options_)
+    return t__ as T
   }
 
   // 为了支持deno，无法在构造函数中赋值，所以需要提供一个静态方法来创建模型，或者通过新版ModelBase的装饰器去实现，是支持new ModelBase()的。
   // createModel 是 create 的别名，区别是dto数据是否有严格的类型校验。
   public static create<T extends ModelBase>(
     this: new (dto: any, options?: IModelOptions) => T,
-    dto: any,
+    dto?: any,
     options?: IModelOptions,
-  ): T {
+  ) {
+    const t_ = toRaw(this)
     const options_ = options || {}
-    options_.__noInit = true
-    const t_ = new this(dto, options_)
-    createModelByDTO<T>(t_, (t_ as any).getColumns(), dto, options_)
-    return t_
+    options_.__isInit = true
+    const t__ = new t_(dto, options_)
+    createModelByDTO<T>(t__, (t__ as ModelBase).getColumnsCached(), dto, options_)
+    return t__ as T
   }
 
   /**
@@ -293,8 +134,8 @@ export class ModelBase {
       target.forEach((item) => {
         ModelBase.revertChangedDataObject(item)
       })
-    } else if (target instanceof ModelBase) {
-      ModelBase.revertChangedDataObject(target)
+    } else if (((target as any).constructor as typeof ModelBase).isModelBase) {
+      ModelBase.revertChangedDataObject(target as ModelBase)
     } else {
       Object.keys(target).forEach((key) => {
         ModelBase.revertChangedDataObject(target[key])
@@ -309,8 +150,8 @@ export class ModelBase {
       target.forEach((item) => {
         ModelBase.resetDefaultObject(item)
       })
-    } else if (target instanceof ModelBase) {
-      ModelBase.resetDefaultObject(target)
+    } else if (((target as any).constructor as typeof ModelBase).isModelBase) {
+      ModelBase.resetDefaultObject(target as ModelBase)
     } else {
       Object.keys(target).forEach((key) => {
         ModelBase.resetDefaultObject((target as any)[key])
@@ -320,20 +161,18 @@ export class ModelBase {
   }
 
   public static resetDefaultObject<T extends ModelBase>(target: T, options?: IModelOptions) {
-    target = toRaw(target)
-    if (!(this.constructor as any)[__COLUMNS__]) {
-      ;(this.constructor as any)[__COLUMNS__] = {}
-    }
-    createModelByDTO<T>(target, (target as any).getColumns(), {}, options)
-    return this
+    const target_ = toRaw(target)
+    createModelByDTO<T>(target_, (target_ as ModelBase).getColumnsCached(), {}, options)
+    return target_
   }
 
   public static revertChangedDataObject(target: ModelBase) {
     const orgTarget = target as any
     target = toRaw(target)
-    const C = Object.getPrototypeOf(target).constructor as any
-    const org = new C(target.getOriginalData())
-    const columns = (target as any).getColumns()
+    const C = Object.getPrototypeOf(target).constructor as typeof ModelBase
+    const org = C.create(target.getOriginalData(), { noDefault: true })
+    // const org = cloneDeep(target.getOriginalData())
+    const columns = (target as ModelBase).getColumns()
     // const t = target as any
     for (const key in columns) {
       orgTarget[key] = org[key]
@@ -353,10 +192,14 @@ export class ModelBase {
     data = toRaw(data)
     if (Array.isArray(data)) {
       data.forEach((d) => {
-        d.callMethod(params)
+        if (((d as any).constructor as typeof ModelBase).isModelBase) {
+          d.callMethod(params)
+        }
       })
     } else {
-      data.callMethod(params)
+      if (((data as any).constructor as typeof ModelBase).isModelBase) {
+        data.callMethod(params)
+      }
     }
   }
 
@@ -364,9 +207,13 @@ export class ModelBase {
     callMethod(toRaw(this), params)
   }
 
+  /**
+   * @description 更新当前对象的值，如果值是对象，递归进行更新，而不改变原始对象的引用。
+   * @param dto
+   */
   public update(dto: any) {
     const t_ = toRaw(this)
-    updateModelByDTO<typeof this>(t_, (t_ as any).getColumns({ dto }), dto)
+    updateModelByDTO<typeof this>(t_, (t_ as ModelBase).getColumns({ dto }), dto)
     return this
   }
 
@@ -374,9 +221,9 @@ export class ModelBase {
     type T = typeof this
     const t_ = toRaw(this)
     if (options?.keepBackUp) {
-      extendModelByDTO<T>(t_, (t_ as any).getColumns({ dto }), dto)
+      extendModelByDTO<T>(t_, (t_ as ModelBase).getColumns({ dto }), dto)
     } else {
-      createModelByDTO<T>(t_, (t_ as any).getColumns({ dto }), dto)
+      createModelByDTO<T>(t_, (t_ as ModelBase).getColumns({ dto }), dto)
     }
     return this
   }
@@ -397,12 +244,13 @@ export class ModelBase {
   public isModelEqual(targetData: ModelBase, params?: { ignoreEmptyString?: boolean }) {
     targetData = toRaw(targetData)
     const t_ = toRaw(this)
-    const columns = (t_ as any).getColumns()
+    const sns = getModelProps(t_, 'serializeNamingStrategies')
+    const columns = (t_ as ModelBase).getColumns()
     const target = t_ as ModelBase
     let flag = true
     Object.keys(columns).forEach((columnName) => {
-      let orgColumn = columns[columnName].column
-      if (ModelBase.columnNamingMethod === 'camelCase') {
+      let orgColumn = columns[columnName].name
+      if (sns === NAMING_STRATEGIES.camelCase) {
         orgColumn = columns[columnName].camelCaseName
       }
       const targetValue = (targetData as any)[orgColumn]
@@ -432,12 +280,13 @@ export class ModelBase {
   public isContainsModel(targetData: ModelBase, params?: { ignoreEmptyString?: boolean }) {
     targetData = toRaw(targetData)
     const t_ = toRaw(this)
-    const columns = (t_ as any).getColumns()
+    const sns = getModelProps(t_, 'serializeNamingStrategies')
+    const columns = (t_ as ModelBase).getColumns()
     const target = t_ as ModelBase
     let flag = true
     Object.keys(columns).forEach((columnName) => {
-      let orgColumn = columns[columnName].column
-      if (ModelBase.columnNamingMethod === 'camelCase') {
+      let orgColumn = columns[columnName].name
+      if (sns === NAMING_STRATEGIES.camelCase) {
         orgColumn = columns[columnName].camelCaseName
       }
       const targetValue = (targetData as any)[orgColumn]
@@ -482,11 +331,9 @@ export class ModelBase {
    */
   public saveChangedData(param?: { group?: string; excludeGroup?: string; enableDataState?: boolean }) {
     const t_ = toRaw(this)
-    let dto_ = {}
-    const m = (t_.constructor as any)[__MODEL__] || {}
-    const enableDataState = param?.enableDataState ?? m.enableDataState ?? true
-    if (enableDataState) {
-      dto_ = modelToSerializableObj(t_, {
+    const enableDs = getModelProps(t_, 'enableDataState', param)
+    if (enableDs) {
+      const dto_ = modelToSerializableObj(t_, {
         group: param?.group,
         excludeGroup: param?.excludeGroup,
         clean: CLEAN_ENUM.CLEAN_UNDEFINED_AND_NULL,
@@ -503,7 +350,7 @@ export class ModelBase {
    */
   public getOriginalData() {
     const t_ = toRaw(this)
-    return (t_.constructor as any)[__CLONE__].get(t_) || {}
+    return (t_.constructor as any)[__CLONE__]?.get(t_) || {}
   }
 
   /**
@@ -535,8 +382,6 @@ export class ModelBase {
     group?: string
     excludeGroup?: string
     clean?: CLEAN_ENUM
-    emptyValue?: any
-    emptyValueScope?: any[]
     camelCase?: boolean
   }) {
     const t_ = toRaw(this)
@@ -544,8 +389,6 @@ export class ModelBase {
       clean: params?.clean ?? CLEAN_ENUM.CLEAN_UNDEFINED_AND_NULL,
       group: params?.group,
       excludeGroup: params?.excludeGroup,
-      emptyValue: params?.emptyValue,
-      emptyValueScope: params?.emptyValueScope,
       camelCase: params?.camelCase,
       trim: params && params.trim,
     })
@@ -585,13 +428,10 @@ export class ModelBase {
     clean?: CLEAN_ENUM
     descriptor?: boolean
     ignoreEmptyString?: boolean
-    camelCase?: boolean
-    emptyValue?: any
-    emptyValueScope?: any[]
   }) {
     const t_ = toRaw(this)
 
-    const columns = (t_ as any).getColumns()
+    const columns = (t_ as ModelBase).getColumns()
     const target = t_ as ModelBase
     const targetData = t_.getSerializableObject(params)
     return getChange(columns, target, targetData, {
@@ -609,10 +449,9 @@ export class ModelBase {
     trim?: boolean
     clean?: CLEAN_ENUM
     ignoreEmptyString?: boolean
-    emptyValue?: any
   }) {
     const t_ = toRaw(this) as any
-    const columns = (t_ as any).getColumns()
+    const columns = (t_ as ModelBase).getColumns()
     const target = t_ as ModelBase
     const targetData = t_.getSerializableObject(params)
     return getChange(columns, target, targetData, {
@@ -632,7 +471,7 @@ export class ModelBase {
     model = toRaw(model)
     const data: { [index: string]: any } = cloneDeep(model)
     const t_ = toRaw(this)
-    const props = (t_ as any).getColumns()
+    const props = (t_ as ModelBase).getColumns()
     for (const key in props) {
       if (data.hasOwnProperty(key)) {
         // 此处应该用this，不能用toRaw后的对象，会引起vue对象丢失响应的问题。
@@ -644,6 +483,7 @@ export class ModelBase {
 
   /**
    *
+   * @deprecated 请使用mergeModel
    * @description 当前模型的key对应的值存在，就会覆盖。
    * @param model
    * @param options 待拓展
@@ -652,7 +492,7 @@ export class ModelBase {
     model = toRaw(model)
     const newModel = deepCopy(model)
     const t_ = toRaw(this)
-    const props = (t_ as any).getColumns()
+    const props = (t_ as ModelBase).getColumns()
     for (const key in props) {
       if (typeof (newModel as any)[key] !== 'undefined') {
         // 此处应该用this，不能用toRaw后的对象，会引起vue对象丢失响应的问题。
@@ -668,22 +508,22 @@ export class ModelBase {
    * @param model
    * @param options 待拓展
    */
-  public mergeModel(model: ModelBase, options?: any) {
+  public mergeModel(model: ModelType<typeof this>) {
     model = toRaw(model)
     const newModel = cloneDeep(model)
     const t_ = toRaw(this)
-    const props = (t_ as any).getColumns()
+    const props = (t_ as ModelBase).getColumns()
     for (const key in props) {
       if (typeof (newModel as any)[key] !== 'undefined') {
         // 此处应该用this，不能用toRaw后的对象，会引起vue对象丢失响应的问题。
-        if ((t_ as any)[key].getOriginalData && t_.constructor === newModel.constructor) {
+        if ((t_ as any)[key]?.getOriginalData && t_.constructor === newModel.constructor) {
           let origin = null
-          if ((t_ as any)[key].getOriginalData) {
+          if ((t_ as any)[key]?.getOriginalData) {
             origin = (t_ as any)[key].getOriginalData()
           }
           ;(this as any)[key] = (newModel as any)[key]
           if (origin !== null) {
-            ;(t_.constructor as any)[__CLONE__].set(t_, origin)
+            ;(t_[key].constructor as any)[__CLONE__].set(t_[key], origin)
           }
         } else {
           ;(this as any)[key] = (newModel as any)[key]
@@ -698,8 +538,8 @@ export class ModelBase {
    */
   public getPrimaryKey() {
     const t_ = toRaw(this)
-    const primary: any[] = []
-    const columns = (t_ as any).getColumns()
+    const primary: { primaryKey: string; primaryColumn: IColumnInner }[] = []
+    const columns = (t_ as ModelBase).getColumns()
     for (const columnName in columns) {
       if (columns.hasOwnProperty(columnName)) {
         const column = columns[columnName]
@@ -735,10 +575,12 @@ export class ModelBase {
    * @param model
    */
   public getPrimaryValueFromData(model: any) {
+    const t_ = toRaw(this)
+    const sns = getModelProps(t_, 'serializeNamingStrategies')
     const valList: any[] = []
     this.getPrimaryKey().forEach((item) => {
-      let column = item.primaryColumn.column
-      if (ModelBase.columnNamingMethod === 'camelCase') {
+      let column = item.primaryColumn.name
+      if (sns === NAMING_STRATEGIES.camelCase) {
         column = item.primaryColumn.camelCaseName
       }
       valList.push(model[column])
@@ -746,11 +588,26 @@ export class ModelBase {
     return valList
   }
 
-  public getColumns(data?: { dto?: any }) {
+  public getColumnsCached(data?: { dto?: any }) {
+    const t_ = toRaw(this)
+    const columnsCached = t_.constructor[Symbol.metadata]?.[__COLUMNS_CACHED__]
+    if (columnsCached) {
+      return columnsCached
+    } else {
+      const columns = this.getColumns(data)
+      const metadata = t_.constructor[Symbol.metadata] || {}
+      metadata[__COLUMNS_CACHED__] = columns
+      t_.constructor[Symbol.metadata] = metadata
+      ;(t_.constructor as any)[__COLUMNS_CACHED__] = columns
+      return columns
+    }
+  }
+
+  public getColumns(data?: { dto?: any }): { [key: string]: IColumnInner } {
     const t_ = toRaw(this)
     let columns_ = {} as { [key: string]: IColumnInner }
-    const m = (t_.constructor as any)[__MODEL__] || {}
-    if (m?.columnsInValue) {
+    const isColInVal = getModelProps(t_, 'columnsInValue')
+    if (isColInVal) {
       if (data?.dto) {
         columns_ = generateColumnsFromData(t_, data?.dto)
       } else {
@@ -760,11 +617,12 @@ export class ModelBase {
 
     // let keys = Object.keys(t_)
     // const columns_ = {} as { [key: string]: IColumnInner }
-    if (!(t_.constructor as any)[__COLUMNS__]) {
+    const columns__ = t_.constructor[Symbol.metadata]?.[__COLUMNS__]
+    if (!columns__) {
       return {}
     }
-    if ((t_.constructor as any)[__COLUMNS__]) {
-      return merge(columns_, (t_.constructor as any)[__COLUMNS__], {
+    if (columns__) {
+      return merge(columns_, columns__, {
         clone: true,
       })
     }

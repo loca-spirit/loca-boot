@@ -6,7 +6,7 @@ permalink: /column/autowired/
 
 ## 说明
 
-是否自动注入初始化的值，适用于 **Array** 和 **Object** ，依赖 `model` 来进行自动初始化
+是否自动注入初始化的值，适用于 **ModelBase** ，依赖 `model` 来进行自动初始化
 
 ## 案例
 

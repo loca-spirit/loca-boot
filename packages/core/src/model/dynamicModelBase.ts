@@ -1,7 +1,6 @@
 import { __MODEL__ } from '../constant'
-import { Column } from '../decorator/Column'
-import type { IColumnDefined, IDataModel } from '../decorator/types'
-import { IModelOptions } from '../utils/ModelBaseUtil'
+import { ColumnDefine } from '../decorator/Column'
+import type { IColumnDefined, IDataModel, IModelOptions } from '../decorator/types'
 import { ModelBase } from './ModelBase'
 
 export function genType(typeStr: string, column: IColumnDefined) {
@@ -12,7 +11,7 @@ export function genType(typeStr: string, column: IColumnDefined) {
       if (column.model && typeof column.model !== 'function') {
         column.model = dynamicModelBase(column.model)
       }
-      designType = Array
+      designType = 'array'
       break
     case 'object':
       // 如果model传入的是class，不需要二次转换model为dynamicModelBase了。
@@ -21,7 +20,7 @@ export function genType(typeStr: string, column: IColumnDefined) {
       }
       // 如果传入的数据是普通的Object。
       if (!column.model) {
-        designType = Object
+        // designType = Object
       }
       break
     case 'number':
@@ -33,29 +32,29 @@ export function genType(typeStr: string, column: IColumnDefined) {
     case 'boolean':
       designType = Boolean
       break
-    case 'map':
-      designType = Map
-      break
-    case 'weakMap':
-      designType = WeakMap
-      break
-    case 'set':
-      designType = Set
-      break
-    case 'weakSet':
-      designType = WeakSet
-      break
-    case 'symbol':
-      designType = Symbol
-      break
-    case 'function':
-      designType = Function
-      break
-    case 'file':
-      designType = File
-      break
+    // case 'map':
+    //   designType = Map
+    //   break
+    // case 'weakMap':
+    //   designType = WeakMap
+    //   break
+    // case 'set':
+    //   designType = Set
+    //   break
+    // case 'weakSet':
+    //   designType = WeakSet
+    //   break
+    // case 'symbol':
+    //   designType = Symbol
+    //   break
+    // case 'function':
+    //   designType = Function
+    //   break
+    // case 'file':
+    //   designType = File
+    //   break
     default:
-      designType = column.model
+    // designType = column.model
   }
   return designType
 }
@@ -78,9 +77,8 @@ export function dynamicModelBase<T = ModelBase>(
     const column = columnObj[key]
     const typeStr = column.type || 'string'
     column.name = column.name || key
-    const type = genType(typeStr, column)
-    Reflect.defineMetadata('design:type', type, CustomDefinedModel.prototype, key)
-    Column(column)(CustomDefinedModel.prototype, key)
+    column.type = genType(typeStr, column)
+    ColumnDefine(column)(CustomDefinedModel.prototype, key)
   })
   if (params?.methods) {
     const model = {

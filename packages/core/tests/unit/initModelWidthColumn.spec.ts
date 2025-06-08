@@ -1,4 +1,4 @@
-import { ModelBase, dynamicModelBase } from 'loca-boot-core'
+import { ModelBase, dynamicModelBase } from '@model-base/core'
 
 describe('ModelBase', () => {
   describe('saveChangedData', () => {

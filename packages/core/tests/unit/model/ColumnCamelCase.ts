@@ -1,20 +1,16 @@
-import { Column, DataModel, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from '@model-base/core'
 import { ColumnCamelCaseItem } from './ColumnCamelCaseItem'
 
 export class ColumnCamelCase extends ModelBase {
   @Column()
   public userName!: string
   @Column({
-    default: () => {
-      return []
-    },
+    default: () => [],
   })
   public list!: string[]
   @Column({
     model: () => ColumnCamelCaseItem,
-    default: () => {
-      return []
-    },
+    default: () => [],
   })
   public consumerList!: ColumnCamelCaseItem[]
 }

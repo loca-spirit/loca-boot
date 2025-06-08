@@ -45,8 +45,8 @@
  * // Cancel the trailing throttled invocation.
  * jQuery(window).on('popstate', throttled.cancel)
  */
-import {isObject} from './isObject'
-import {debounce} from './debounce'
+import { debounce } from './debounce'
+import { isObject } from './isObject'
 
 export function throttle(func: any, wait: number, options: any) {
   let leading = true

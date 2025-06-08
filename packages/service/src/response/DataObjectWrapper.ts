@@ -6,11 +6,7 @@ export class DataObjectWrapper extends DataWrapper {
   protected itemTypeIsArray?: boolean
   protected isPlainData?: boolean
 
-  constructor(data?: {
-    itemType: any
-    itemTypeIsArray: boolean
-    isPlainData?: boolean
-  }) {
+  constructor(data?: { itemType: any; itemTypeIsArray: boolean; isPlainData?: boolean }) {
     super()
     if (data) {
       this.isPlainData = data.isPlainData
@@ -32,26 +28,19 @@ export class DataObjectWrapper extends DataWrapper {
     const newObj = {} as any
     if (obj) {
       Object.keys(obj).forEach((property) => {
-        const humpProp = property.replace(
-          /_(\w)/g,
-          function (all: string, letter: string) {
-            return letter.toUpperCase()
-          }
-        )
+        const humpProp = property.replace(/_(\w)/g, function (all: string, letter: string) {
+          return letter.toUpperCase()
+        })
         const key = this.isPlainData ? property : humpProp
         if (this.itemTypeIsArray) {
           if (dto[property]) {
             newObj[key] = []
             dto[property].forEach((itemDto: any) => {
-              newObj[key].push(
-                this.itemType ? new this.itemType(itemDto) : itemDto
-              )
+              newObj[key].push(this.itemType ? this.itemType.create(itemDto) : itemDto)
             })
           }
         } else {
-          newObj[key] = this.itemType
-            ? new this.itemType(dto[property])
-            : dto[property]
+          newObj[key] = this.itemType ? this.itemType.create(dto[property]) : dto[property]
         }
       })
     }

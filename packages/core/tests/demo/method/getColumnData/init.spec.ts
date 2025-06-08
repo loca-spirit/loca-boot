@@ -1,34 +1,33 @@
-import { Column, ModelBase } from "loca-boot-core"
+import { Column, ModelBase } from '@model-base/core'
 // region model
 class Test extends ModelBase {
   @Column()
   public str?: string
-
-  @Column()
+  @Column({})
   public arr?: any[]
 }
 // endregion model
 
 // region instance
 const test = new Test({
-  str: "str",
-  arr: [1, "a", true],
+  str: 'str',
+  arr: [1, 'a', true],
 })
 // endregion instance
 
-describe("getColumnData", () => {
+describe('getColumnData', () => {
   it("getColumnData('str')", () => {
-    expect(test.getColumnData("str")).toBe("str") // PASS
+    expect(test.getColumnData('str')).toBe('str') // PASS
   })
   it("getColumnData('arr')", () => {
-    expect(test.getColumnData("arr")).toEqual([1, "a", true]) // PASS
+    expect(test.getColumnData('arr')).toEqual([1, 'a', true]) // PASS
   })
 })
 
 // region log
-console.log(test.getColumnData("str"))
+console.log(test.getColumnData('str'))
 // "str"
 
-console.log(test.getColumnData("arr"))
+console.log(test.getColumnData('arr'))
 // [1, "a", true]
 // endregion log

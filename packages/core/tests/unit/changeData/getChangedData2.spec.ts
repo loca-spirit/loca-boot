@@ -1,5 +1,5 @@
+import { CLEAN_ENUM } from '@model-base/core'
 import { Consumer } from '../model/Consumer'
-import { CLEAN_ENUM } from 'loca-boot-core'
 
 describe('getChangedData test2', () => {
   it('getChangedData() has array and object', () => {
@@ -8,13 +8,11 @@ describe('getChangedData test2', () => {
     }
     const c = new Consumer({ userName: 'shuai' })
     c.userName = null as any
-    expect(c.getChangedData({ clean: CLEAN_ENUM.CLEAN_UNDEFINED })).toEqual(
-      expectData
-    )
+    expect(c.getChangedData({ clean: CLEAN_ENUM.CLEAN_UNDEFINED })).toEqual(expectData)
   })
   it('getChangedData()1 CLEAN_UNDEFINED', () => {
     const expectData = {
-      id: null,
+      id: undefined,
     }
     const c = new Consumer({
       id: 1,
@@ -24,17 +22,11 @@ describe('getChangedData test2', () => {
     c.id = undefined as any
     c.userName = null as any
     c.phoneNumber = undefined as any
-    expect(
-      c.getChangedData({
-        emptyValue: null,
-        emptyValueScope: [Number, Boolean],
-        // clean: CLEAN_ENUM.CLEAN_UNDEFINED,
-      })
-    ).toEqual(expectData)
+    expect(c.getChangedData()).toEqual(expectData)
   })
   it('getChangedData()1 CLEAN_UNDEFINED_AND_NULL empty #', () => {
     const expectData = {
-      id: '#',
+      id: '',
       user_name: undefined,
       consumer_object: { message: 'message1' },
     }
@@ -46,16 +38,11 @@ describe('getChangedData test2', () => {
     c.id = '' as any
     c.userName = null as any
     c.consumerObject.id = null as any
-    expect(
-      c.getChangedData({
-        emptyValue: '#',
-      })
-    ).toEqual(expectData)
+    expect(c.getChangedData()).toEqual(expectData)
   })
   it('getChangedData()1 CLEAN_UNDEFINED_AND_NULL', () => {
     const expectData = {
-      id: '',
-      consumer_object: { id: 1, message: undefined, name: undefined },
+      consumer_object: { id: 1 },
     }
     const c = new Consumer({
       id: 1,
@@ -64,10 +51,6 @@ describe('getChangedData test2', () => {
     })
     c.id = null as any
     c.consumerObject.message = null as any
-    expect(
-      c.getChangedData({
-        emptyValue: '',
-      })
-    ).toEqual(expectData)
+    expect(c.getChangedData()).toEqual(expectData)
   })
 })

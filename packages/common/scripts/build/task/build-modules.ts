@@ -1,17 +1,10 @@
+import babel from '@rollup/plugin-babel'
+import typescript from '@rollup/plugin-typescript'
 import path from 'path'
 import { rollup } from 'rollup'
-import typescript from '@rollup/plugin-typescript'
 import esbuild from 'rollup-plugin-esbuild'
-import {
-  compRoot,
-  outputEsm,
-  outputCjs,
-  srcRoot,
-  root,
-  projectTsconfig,
-} from '../utils/paths'
-import { target, generateExternal, generatePaths } from '../utils/rollup'
-import babel from '@rollup/plugin-babel'
+import { compRoot, outputCjs, outputEsm, projectTsconfig, root, srcRoot } from '../utils/paths'
+import { generateExternal, generatePaths, target } from '../utils/rollup'
 
 export const buildModules = async () => {
   const input = [
@@ -31,30 +24,30 @@ export const buildModules = async () => {
           declaration: true,
         },
       }),
-      babel({
-        babelHelpers: 'bundled',
-        presets: [
-          [
-            '@babel/preset-env',
-            {
-              targets: {
-                ie: '11', // 目标为 IE11
-              },
-              useBuiltIns: 'usage', // 自动引入
-              corejs: 3, // 指定 core-js 版本
-            },
-          ],
-        ],
-        extensions: ['.js', '.ts'], // 处理 JS 和 TS 文件
-        exclude: /node_modules\/(?!your-es6-dependency)/, // 保留特定依赖的转换
-      }),
-      // esbuild({
-      //   target,
-      //   sourceMap: true,
+      // babel({
+      //   babelHelpers: 'bundled',
+      //   presets: [
+      //     [
+      //       '@babel/preset-env',
+      //       {
+      //         targets: {
+      //           ie: '11', // 目标为 IE11
+      //         },
+      //         useBuiltIns: 'usage', // 自动引入
+      //         corejs: 3, // 指定 core-js 版本
+      //       },
+      //     ],
+      //   ],
+      //   extensions: ['.js', '.ts'], // 处理 JS 和 TS 文件
+      //   exclude: /node_modules\/(?!your-es6-dependency)/, // 保留特定依赖的转换
       // }),
+      esbuild({
+        target,
+        sourceMap: true,
+      }),
     ],
     treeshake: false,
-    external: generateExternal({ full: true }),
+    external: await generateExternal({ full: true }),
   })
 
   await Promise.all([

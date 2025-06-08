@@ -1,7 +1,7 @@
 {
-  "name": "loca-boot-core",
-  "version": "1.73.15",
-  "description": "loca boot core",
+  "name": "@model-base/core",
+  "version": "1.0.1",
+  "description": "model-base core",
   "main": "lib/index.js",
   "module": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,12 +14,10 @@
   ],
   "author": "",
   "dependencies": {
-    "core-js": "^3.38.1",
+    "@model-base/common": "^1.0.1",
     "deepmerge": "^2.2.1",
-    "loca-boot-common": "^1.73.15",
     "lodash": "^4.17.21",
     "patch-package": "^6.4.7",
-    "reflect-metadata": "^0.1.13",
     "tslib": "^2.8.0"
   },
   "engineStrict": true,
@@ -29,7 +27,8 @@
     "es",
     "lib"
   ],
-  "devDependencies": {
-    "@types/reflect-metadata": "^0.1.0"
-  }
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "aded529ed035afd303d8307bad56fe471d756be1"
 }

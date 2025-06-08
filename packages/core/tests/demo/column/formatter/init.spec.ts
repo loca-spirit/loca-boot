@@ -1,17 +1,12 @@
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, IColumnDeserialize, IColumnSerialize, ModelBase } from '@model-base/core'
 // region fn
-interface formatter {
-  value: any // 当前值
-  key: string // 当前key
-  data: any // 所有数据
+
+function deserializeData(data: IColumnDeserialize) {
+  return data.value?.toFixed(2).toString()
 }
 
-function deserializeData({ value, key, data }: formatter) {
-  return value?.toFixed(2).toString()
-}
-
-function serializeData({ value, key, data }: formatter) {
-  return parseFloat(value)
+function serializeData(data: IColumnSerialize) {
+  return parseFloat(data.value)
 }
 // endregion fn
 

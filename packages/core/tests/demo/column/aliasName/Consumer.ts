@@ -1,4 +1,4 @@
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from '@model-base/core'
 // region model
 export class Consumer extends ModelBase {
   @Column({ aliasName: 'user_age' })

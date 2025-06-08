@@ -26,6 +26,10 @@ export const zhSideBar: SidebarOptions = {
           text: '更新日志',
           link: '/guide/changelog/',
         },
+        {
+          text: '迁移说明',
+          link: '/guide/migrate/',
+        },
       ],
     },
     // {

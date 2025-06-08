@@ -1,13 +1,10 @@
+import fs from 'fs'
 import { compPackage } from './paths'
 
-export const target = 'es5'
+export const target = 'es6'
 
-export const getCompPackage = () => {
-  const {
-    version,
-    dependencies = {},
-    peerDependencies = {},
-  } = require(compPackage)
+export const getCompPackage = async () => {
+  const { version, dependencies = {}, peerDependencies = {} } = JSON.parse(fs.readFileSync(compPackage, 'utf-8'))
   return {
     version,
     dependencies: Object.keys(dependencies),
@@ -15,8 +12,8 @@ export const getCompPackage = () => {
   }
 }
 
-export const generateExternal = (options: { full: boolean }) => {
-  const { dependencies, peerDependencies } = getCompPackage()
+export const generateExternal = async (options: { full: boolean }) => {
+  const { dependencies, peerDependencies } = await getCompPackage()
 
   const packages: string[] = peerDependencies
 
@@ -25,25 +22,19 @@ export const generateExternal = (options: { full: boolean }) => {
   }
 
   return (id: string) => {
-    return packages.some(
-      (pkg) => id === pkg || (options.full && id.startsWith(`${pkg}/`))
-    )
+    return packages.some((pkg) => id === pkg || (options.full && id.startsWith(`${pkg}/`)))
   }
 }
 
 export const generatePaths = (isEsBuild = false) => {
-  const pathsEs = [
-
-  ]
-  let paths = [
-
-  ]
+  const pathsEs = []
+  let paths = []
 
   return (id: string) => {
     if (isEsBuild) {
       paths = pathsEs
     }
-    for (const [oldPath, newPath] of paths) {
+    for (const [oldPath, newPath] of paths as [string, string][]) {
       if (isEsBuild) {
         if (id === oldPath) {
           return id.replace(oldPath, newPath)

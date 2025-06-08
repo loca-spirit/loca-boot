@@ -1,4 +1,4 @@
-import { Column, DataModel, ModelBase } from 'loca-boot-core'
+import { Column, DataModel, ModelBase } from '@model-base/core'
 import { BigDataItem1 } from './BigDataItem1'
 
 export class BigData1 extends ModelBase {
@@ -16,7 +16,7 @@ export class BigData1 extends ModelBase {
   public list!: string[]
   @Column({
     model: () => BigDataItem1,
-    autowired: true,
+    default: () => [],
   })
   public consumerList!: BigDataItem1[]
   @Column({

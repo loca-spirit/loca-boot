@@ -53,7 +53,7 @@ describe('xingneng', () => {
               { id: 5, message: '3' },
             ],
           },
-          { current: { enableDataState: false } }
+          { current: { enableDataState: false } },
         )
       }
       const date2 = new Date()

@@ -1,4 +1,4 @@
-import { Column, DataModel, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from '@model-base/core'
 
 export class VueChildModel extends ModelBase {
   @Column()
@@ -18,12 +18,12 @@ export class VueModel extends ModelBase {
   @Column()
   public phoneNumber!: string
   @Column({
-    autowired: true,
+    default: () => [],
   })
   public list!: string[]
   @Column({
     model: () => VueChildModel,
-    autowired: true,
+    default: () => [],
   })
   public listModel!: VueChildModel[]
 }

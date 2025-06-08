@@ -1,4 +1,4 @@
-import { Column, ModelBase } from 'loca-boot-core'
+import { Column, ModelBase } from '@model-base/core'
 // region model
 class TestItem extends ModelBase {
   @Column()
@@ -12,11 +12,11 @@ class Test extends ModelBase {
   public b?: string
   @Column()
   public c?: boolean
-  @Column()
+  @Column({})
   public d?: string[]
   @Column({
     model: () => TestItem,
-    autowired: true,
+    default: () => [],
   })
   public e?: TestItem[]
   @Column({

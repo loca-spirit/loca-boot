@@ -1,5 +1,5 @@
 import { Consumer } from '../model/Consumer'
-import { dynamicModelBase } from 'loca-boot-core'
+import { dynamicModelBase } from '@model-base/core'
 
 describe('inject dataModel callMethod', () => {
   describe('method: changeUserName', () => {
