@@ -1,4 +1,4 @@
-import { Column, createModel, ModelBase } from '@model-base/core'
+import { type IModelOptions, Column, ModelBase } from '@model-base/core'
 import { DataGraphqlWrapper } from './DataGraphqlWrapper'
 import { DataListWrapper } from './DataListWrapper'
 import { DataObjectWrapper } from './DataObjectWrapper'
@@ -44,9 +44,9 @@ export class ServiceResponse<T = any> extends ModelBase {
 
   public serviceError!: Error
 
-  constructor(dto?: any, wrapper?: DataWrapper | (new (dto: any) => T) | T[], isInit = false) {
-    super(dto, { __isInit: isInit })
-    if (!isInit) {
+  constructor(dto?: any, options?: IModelOptions, wrapper?: DataWrapper | (new (dto: any) => T) | T[]) {
+    super(dto, options)
+    if (!options?.__isInit) {
       this.parseData(dto, wrapper)
     }
   }
@@ -74,19 +74,17 @@ export class ServiceResponse<T = any> extends ModelBase {
         }
       } else {
         const classType = wrapper as any
-        if (classType) {
+        if (classType && classType.isModelBase) {
           this.data = classType.create(dto && dto.data)
         }
       }
     }
   }
 
-  public static createResponse<T = any>(dto?: any, wrapper?: DataWrapper | (new (dto: any) => T) | T[]) {
-    // const serviceResponse = new ServiceResponse<T>(dto, wrapper, true)
-    // 强制调用create，仅仅为了初始化column上面的字段，其余逻辑都在parseData中处理。
-    const serviceResponse = (ServiceResponse as any).create(dto)
-    serviceResponse.parseData(dto, wrapper)
-    return serviceResponse as ServiceResponse<T>
+  public static create(dto?: any, wrapper?: any, ...rest: any) {
+    const t_ = super.create<any>(dto, {}, wrapper)
+    t_.parseData(dto, wrapper)
+    return t_
   }
 
   public isValid() {

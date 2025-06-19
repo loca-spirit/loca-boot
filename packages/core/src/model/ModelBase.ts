@@ -81,7 +81,7 @@ function getColumnsUtil(columns: { [key: string]: IColumnInner }, target: ModelB
 export class ModelBase {
   // 做标记用，判断当前class是不是继承ModelBase
   public static isModelBase = true
-  constructor(dto?: any, options?: IModelOptions) {
+  constructor(dto?: any, options?: IModelOptions, ...rest: any) {
     const t_ = toRaw(this)
     initModelOptions(t_, options)
     if (!options?.__isInit) {
@@ -114,14 +114,15 @@ export class ModelBase {
   // 为了支持deno，无法在构造函数中赋值，所以需要提供一个静态方法来创建模型，或者通过新版ModelBase的装饰器去实现，是支持new ModelBase()的。
   // createModel 是 create 的别名，区别是dto数据是否有严格的类型校验。
   public static create<T extends ModelBase>(
-    this: new (dto: any, options?: IModelOptions) => T,
+    this: new (dto: any, options?: IModelOptions, ...res: any) => T,
     dto?: any,
     options?: IModelOptions,
+    ...rest: any
   ) {
     const t_ = toRaw(this)
     const options_ = options || {}
     options_.__isInit = true
-    const t__ = new t_(dto, options_)
+    const t__ = new t_(dto, options_, rest)
     createModelByDTO<T>(t__, (t__ as ModelBase).getColumnsCached(), dto, options_)
     return t__ as T
   }

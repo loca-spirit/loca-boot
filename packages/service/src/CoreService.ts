@@ -94,7 +94,7 @@ export class CoreService {
           modelJson: apiData,
         })
       }
-      let serviceResponse = this.serviceResponseType.createResponse(apiData, param?.wrapper) as ServiceResponse<T>
+      let serviceResponse = this.serviceResponseType.create(apiData, {}, param?.wrapper) as ServiceResponse<T>
       if (param?.afterParse) {
         serviceResponse = param.afterParse.call(null, serviceResponse)
       }
@@ -122,9 +122,9 @@ export class CoreService {
       return serviceResponse
     } catch (e: any) {
       if (e.result_code) {
-        return ServiceResponse.createResponse(e)
+        return this.serviceResponseType.create(e)
       } else {
-        const serviceResponse = this.serviceResponseType.createResponse({
+        const serviceResponse = this.serviceResponseType.create({
           result_code: 'service_error',
         })
         serviceResponse.serviceError = e

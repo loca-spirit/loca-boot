@@ -40,12 +40,6 @@ export class AppServiceResponse<T = any> extends ServiceResponse {
 
   public serviceError!: Error
 
-  public static createResponse<T = any>(dto?: any, wrapper?: DataWrapper | (new (dto: any) => T) | T[]) {
-    const serviceResponse = new AppServiceResponse<T>(dto, wrapper, true)
-    serviceResponse.parseData(dto, wrapper)
-    return serviceResponse as AppServiceResponse<T>
-  }
-
   public isValid() {
     return String(this.resultCode) === '0'
   }

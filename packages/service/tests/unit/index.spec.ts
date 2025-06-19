@@ -86,6 +86,7 @@ describe('extendModel', () => {
     }
     const model = new ServiceResponse(
       dto,
+      {},
       new DataListWrapper({
         itemType: TestModel,
       }),
