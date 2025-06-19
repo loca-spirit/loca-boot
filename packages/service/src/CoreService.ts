@@ -35,9 +35,11 @@ export interface IServiceParamRequest<T> extends IServiceParam<T> {
 
 export class CoreService {
   public driver!: Driver
+  public serviceResponseType!: typeof ServiceResponse
 
-  constructor(adapter: Driver) {
+  constructor(adapter: Driver, serviceResponseType: typeof ServiceResponse) {
     this.driver = adapter
+    this.serviceResponseType = serviceResponseType || ServiceResponse
   }
 
   public get<T>(url: string, data?: IServiceParam<T>) {
@@ -92,7 +94,7 @@ export class CoreService {
           modelJson: apiData,
         })
       }
-      let serviceResponse = ServiceResponse.createResponse(apiData, param?.wrapper) as ServiceResponse<T>
+      let serviceResponse = this.serviceResponseType.createResponse(apiData, param?.wrapper) as ServiceResponse<T>
       if (param?.afterParse) {
         serviceResponse = param.afterParse.call(null, serviceResponse)
       }
@@ -122,7 +124,7 @@ export class CoreService {
       if (e.result_code) {
         return ServiceResponse.createResponse(e)
       } else {
-        const serviceResponse = ServiceResponse.createResponse({
+        const serviceResponse = this.serviceResponseType.createResponse({
           result_code: 'service_error',
         })
         serviceResponse.serviceError = e
