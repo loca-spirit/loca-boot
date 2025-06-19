@@ -84,7 +84,7 @@ export class ServiceResponse<T = any> extends ModelBase {
   public static createResponse<T = any>(dto?: any, wrapper?: DataWrapper | (new (dto: any) => T) | T[]) {
     // const serviceResponse = new ServiceResponse<T>(dto, wrapper, true)
     // 强制调用create，仅仅为了初始化column上面的字段，其余逻辑都在parseData中处理。
-    const serviceResponse = (ServiceResponse as any).create(dto, wrapper)
+    const serviceResponse = (ServiceResponse as any).create(dto)
     serviceResponse.parseData(dto, wrapper)
     return serviceResponse as ServiceResponse<T>
   }
