@@ -1,7 +1,7 @@
 import { Column } from '@model-base/core'
-import { DataWrapper, ServiceResponse } from '@model-base/service'
+import { ServiceResponse } from '@model-base/service'
 
-export class AppServiceResponse<T = any> extends ServiceResponse {
+export class AppServiceResponse extends ServiceResponse {
   @Column()
   public serverTime!: number
 
@@ -36,7 +36,7 @@ export class AppServiceResponse<T = any> extends ServiceResponse {
   public encryptType!: number
 
   @Column({ name: 'data', aliasName: 'resultData' })
-  public data!: T
+  public data!: any
 
   public serviceError!: Error
 

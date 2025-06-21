@@ -1,6 +1,6 @@
 import { type ModelSnakeType, type ModelType, ModelBase } from '@model-base/core'
 import type { Driver } from './api/Driver'
-import { DataStreamWrapper, DataWrapper, ServiceResponse } from './response'
+import { type Wrapper } from './response'
 
 /**
  * options: {
@@ -11,120 +11,98 @@ import { DataStreamWrapper, DataWrapper, ServiceResponse } from './response'
  * },
  * wrapper: 解析返回数据
  */
-export interface IServiceParam<T> {
+export type WrapperConstructor<Sub extends Wrapper> = Sub['data']
+
+export type WrapperType<K> = K extends Wrapper
+  ? WrapperConstructor<K>
+  : K extends typeof ModelBase
+  ? InstanceType<K>
+  : any
+
+export interface IServiceParam<T, K> {
   params?: ModelBase | any
   options?: any
   beforeParse?: (dto: any) => any
-  beforeDeserialize?: (data: {
-    json: any
-    snakeJson?: ModelSnakeType<ServiceResponse<T>>
-    modelJson?: ModelType<ServiceResponse<T>>
-  }) => any
-  afterParse?: (serviceResponse: ServiceResponse<T>) => ServiceResponse<T>
-  afterDeserialize?: (serviceResponse: ServiceResponse<T>) => ServiceResponse<T>
-  wrapper?:
-    | DataWrapper
-    // IWrapperType |
-    | (new (dto: any) => T)
-    | T[]
+  beforeDeserialize?: (data: { json: any; snakeJson?: ModelSnakeType<T>; modelJson?: ModelType<T> }) => any
+  afterParse?: (serviceResponse: T) => T
+  afterDeserialize?: (serviceResponse: T) => T
+  wrapper?: K
 }
 
-export interface IServiceParamRequest<T> extends IServiceParam<T> {
+export interface IServiceParamRequest<T, K> extends IServiceParam<T, K> {
   type?: 'get' | 'post' | 'del' | 'put' | 'patch'
 }
 
-export class CoreService {
+export class CoreService<T, R> {
   public driver!: Driver
-  public serviceResponseType!: typeof ServiceResponse
+  public serviceResponseType!: new (...args: any[]) => R
 
-  constructor(adapter: Driver, serviceResponseType: typeof ServiceResponse) {
+  constructor(adapter: Driver, serviceResponseType: new (...args: any[]) => R) {
     this.driver = adapter
-    this.serviceResponseType = serviceResponseType || ServiceResponse
+    this.serviceResponseType = serviceResponseType
   }
 
-  public get<T>(url: string, data?: IServiceParam<T>) {
+  public get<K>(url: string, data?: IServiceParam<T, K>) {
     data = data || {}
-    return this.request<T>(url, { ...data, type: 'get' })
+    return this.request(url, { ...data, type: 'get' }) as any as Omit<R, 'data'> & { data: WrapperType<K> }
   }
 
-  public post<T>(url: string, data?: IServiceParam<T>) {
+  public post<K>(url: string, data?: IServiceParam<T, K>) {
     data = data || {}
-    return this.request<T>(url, { ...data, type: 'post' })
+    return this.request(url, { ...data, type: 'post' }) as any as Omit<R, 'data'> & { data: WrapperType<K> }
   }
 
-  public del<T>(url: string, data?: IServiceParam<T>) {
+  public del<K>(url: string, data?: IServiceParam<T, K>) {
     data = data || {}
-    return this.request<T>(url, { ...data, type: 'del' })
+    return this.request(url, { ...data, type: 'del' }) as any as Omit<R, 'data'> & { data: WrapperType<K> }
   }
 
-  public put<T>(url: string, data?: IServiceParam<T>) {
+  public put<K>(url: string, data?: IServiceParam<T, K>) {
     data = data || {}
-    return this.request<T>(url, { ...data, type: 'put' })
+    return this.request(url, { ...data, type: 'put' }) as any as Omit<R, 'data'> & { data: WrapperType<K> }
   }
 
-  public patch<T>(url: string, data?: IServiceParam<T>) {
+  public patch<K>(url: string, data?: IServiceParam<T, K>) {
     data = data || {}
-    return this.request<T>(url, { ...data, type: 'patch' })
+    return this.request(url, { ...data, type: 'patch' }) as any as Omit<R, 'data'> & { data: WrapperType<K> }
   }
 
-  public async request<T extends any>(url: string, param?: IServiceParamRequest<T>) {
-    let apiData
-    if (
-      param &&
-      param.wrapper &&
-      (param?.wrapper as any).getClassName &&
-      (param?.wrapper as any).getClassName() === DataStreamWrapper.className
-    ) {
-      param.options = param.options || {}
-      param.options.responseType = param.options.responseType || (param?.wrapper as DataStreamWrapper).responseType
+  public async request<T, K>(url: string, param_?: IServiceParamRequest<T, K>) {
+    const p = param_ || {}
+    let apiData: any
+    const wrapper = p?.wrapper as Wrapper
+    if ((wrapper as Wrapper).constructor.prototype.constructor.isDataWrapper) {
+      p.params = wrapper.processParams?.(p.params)
     }
     try {
       apiData = await this.req(url, {
-        type: param?.type || 'get',
-        params: param?.params,
-        options: param?.options,
+        type: p?.type || 'get',
+        params: p?.params,
+        options: p?.options,
       })
-      if (param?.beforeParse) {
-        apiData = param.beforeParse(apiData)
+      if (p?.beforeParse) {
+        apiData = p.beforeParse(apiData)
       }
-      if (param?.beforeDeserialize) {
-        param.beforeDeserialize({
+      if (p?.beforeDeserialize) {
+        p.beforeDeserialize({
           json: apiData,
           snakeJson: apiData,
           modelJson: apiData,
         })
       }
-      let serviceResponse = this.serviceResponseType.create(apiData, {}, param?.wrapper) as ServiceResponse<T>
-      if (param?.afterParse) {
-        serviceResponse = param.afterParse.call(null, serviceResponse)
+      let serviceResponse = (this.serviceResponseType as any).create(apiData, {}, p?.wrapper)
+      if (p?.afterParse) {
+        serviceResponse = p.afterParse.call(null, serviceResponse as any) as any as R
       }
-      if (param?.afterDeserialize) {
-        serviceResponse = param.afterDeserialize.call(null, serviceResponse)
-      }
-      const wrapper = param?.wrapper as any
-      if (param && param.wrapper && wrapper.getClassName && wrapper.getClassName() === DataStreamWrapper.className) {
-        if (
-          (wrapper as DataStreamWrapper).autoParseJson &&
-          // 兼容老版本没有 headers 的情况。
-          serviceResponse.headers &&
-          serviceResponse.headers['content-type']?.indexOf('application/json') !== -1
-        ) {
-          if ((wrapper as DataStreamWrapper).responseType === 'blob') {
-            serviceResponse.data = JSON.parse(serviceResponse.data as any)
-          }
-          if ((wrapper as DataStreamWrapper).responseType === 'arraybuffer') {
-            const array = Buffer.from(serviceResponse.data as any)
-            const enc = new TextDecoder('utf-8')
-            serviceResponse.data = JSON.parse(enc.decode(array))
-          }
-        }
+      if (p?.afterDeserialize) {
+        serviceResponse = p.afterDeserialize.call(null, serviceResponse as any) as any as R
       }
       return serviceResponse
     } catch (e: any) {
       if (e.result_code) {
-        return this.serviceResponseType.create(e)
+        return (this.serviceResponseType as any).create(e)
       } else {
-        const serviceResponse = this.serviceResponseType.create({
+        const serviceResponse = (this.serviceResponseType as any).create({
           result_code: 'service_error',
         })
         serviceResponse.serviceError = e

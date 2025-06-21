@@ -1,5 +1,5 @@
 import { Column, createModel, ModelBase, serialize } from '@model-base/core'
-import { DataListWrapper } from '@model-base/service'
+import { ArrayWrapper, CoreService, RecordArrayWrapper, RecordWrapper, ServiceResponse } from '@model-base/service'
 import { AppServiceResponse } from './AppServiceResponse'
 
 class TestChildModel extends ModelBase {
@@ -67,7 +67,7 @@ describe('extendModel', () => {
     expect(model.listModelChild.id).toBe(4)
     expect(model.listModelChild.name).toBe('test4')
   })
-  it('response wrapper', () => {
+  it('response wrapper', async () => {
     const dto = {
       data: [
         {
@@ -89,10 +89,36 @@ describe('extendModel', () => {
     const model = new AppServiceResponse(
       dto,
       {},
-      new DataListWrapper({
-        itemType: TestModel,
+      new ArrayWrapper<TestModel>({
+        model: TestModel,
       }),
     )
+    const fetch1 = new CoreService({} as any, ServiceResponse)
+    const res122 = await fetch1.get('', {
+      wrapper: TestModel,
+    })
+    res122.data
+
+    const fetch = new CoreService({} as any, AppServiceResponse)
+
+    const res1 = await fetch.get('', {
+      wrapper: TestModel,
+    })
+    res1.data
+
+    const res12 = await fetch.get('', {
+      wrapper: new RecordWrapper<TestModel[]>({
+        model: TestModel,
+      }),
+    })
+    res12.data
+
+    const res = await fetch.get('', {
+      wrapper: new RecordArrayWrapper<TestModel>({
+        model: TestModel,
+      }),
+    })
+    res.data
     expect(serialize(model.data)).toEqual(dto.data)
   })
 })

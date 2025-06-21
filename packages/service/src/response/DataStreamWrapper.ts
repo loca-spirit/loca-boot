@@ -1,7 +1,7 @@
-import { DataWrapper } from './DataWrapper'
+import { type ServiceResponse } from './ServiceResponse'
+import { Wrapper } from './Wrapper'
 
-export class DataStreamWrapper extends DataWrapper {
-  static className = 'DataStreamWrapper'
+export class DataStreamWrapper extends Wrapper {
   public dataType?: 'blob' | 'stream' | 'objectURL'
   public responseType?: 'blob' | 'arraybuffer' | 'json' | 'document' | 'text'
   public responseObj?: 'blob' | 'objectURL' | 'arraybuffer'
@@ -67,37 +67,63 @@ export class DataStreamWrapper extends DataWrapper {
     this.dataType = this.dataType || 'stream'
   }
 
-  public getClassName() {
-    return DataStreamWrapper.className
+  public processParams(params?: any) {
+    params = params || {}
+    params.options = params.options || {}
+    params.options.responseType = params.options.responseType || this.responseType
+    return params
   }
 
-  public getData(dto: any) {
-    let newObj = dto
-    if (dto) {
-      if (this.responseType) {
-        // 默认只处理 responseType 是 blob 和 arraybuffer 的情况，以及 responseObj 是 blob 和 objectURL 的情况。
-        if (this.responseType === 'blob' && this.responseObj === 'objectURL') {
-          newObj = window.URL.createObjectURL(dto)
-        } else if (this.responseType === 'arraybuffer' && this.responseObj === 'blob') {
-          newObj = new Blob([dto], {
-            type: this.responseObjOptions.type || '',
-          })
-        } else if (this.responseType === 'arraybuffer' && this.responseObj === 'objectURL') {
-          newObj = window.URL.createObjectURL(
-            new Blob([dto], {
+  public processData(response: ServiceResponse, res: any) {
+    const dto = res
+    // content-type 不存在或者 不包含 application/json，则按照 blob的处理方式处理。
+    if (!res?.headers?.['content-type'] || res?.headers?.['content-type']?.indexOf('application/json') === -1) {
+      let newObj = dto
+      if (dto) {
+        if (this.responseType) {
+          // 默认只处理 responseType 是 blob 和 arraybuffer 的情况，以及 responseObj 是 blob 和 objectURL 的情况。
+          if (this.responseType === 'blob' && this.responseObj === 'objectURL') {
+            newObj = window.URL.createObjectURL(dto)
+          } else if (this.responseType === 'arraybuffer' && this.responseObj === 'blob') {
+            newObj = new Blob([dto], {
               type: this.responseObjOptions.type || '',
-            }),
-          )
+            })
+          } else if (this.responseType === 'arraybuffer' && this.responseObj === 'objectURL') {
+            newObj = window.URL.createObjectURL(
+              new Blob([dto], {
+                type: this.responseObjOptions.type || '',
+              }),
+            )
+          }
+        } else {
+          if (this.dataType === 'blob') {
+            newObj = new Blob([dto])
+          }
+          if (this.dataType === 'objectURL') {
+            newObj = window.URL.createObjectURL(new Blob([dto]))
+          }
         }
+        response.resultCode = response.resultCode || 'success'
       } else {
-        if (this.dataType === 'blob') {
-          newObj = new Blob([dto])
-        }
-        if (this.dataType === 'objectURL') {
-          newObj = window.URL.createObjectURL(new Blob([dto]))
-        }
+        response.resultCode = 'stream_is_empty'
+      }
+      // stream默认是没有data属性，dto需要设置到data上
+      response.data = newObj
+    }
+    if (
+      this.autoParseJson &&
+      // 兼容老版本没有 headers 的情况。
+      response.headers &&
+      response.headers['content-type']?.indexOf('application/json') !== -1
+    ) {
+      if (this.responseType === 'blob') {
+        response.data = JSON.parse(response.data as any)
+      }
+      if (this.responseType === 'arraybuffer') {
+        const array = Buffer.from(response.data as any)
+        const enc = new TextDecoder('utf-8')
+        response.data = JSON.parse(enc.decode(array))
       }
     }
-    return newObj
   }
 }

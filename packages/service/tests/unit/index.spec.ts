@@ -1,5 +1,5 @@
 import { Column, createModel, ModelBase, serialize } from '@model-base/core'
-import { DataListWrapper, DataObjectWrapper, ServiceResponse } from '@model-base/service'
+import { ArrayWrapper, ServiceResponse } from '@model-base/service'
 class TestChildModel extends ModelBase {
   @Column()
   id!: number
@@ -84,14 +84,10 @@ describe('extendModel', () => {
         },
       ],
     }
-    const model = new ServiceResponse(
-      dto,
-      {},
-      new DataListWrapper({
-        itemType: TestModel,
-      }),
-    )
-
+    const model = new ServiceResponse(dto, {}, new ArrayWrapper<TestModel[]>(TestModel))
     expect(serialize(model.data)).toEqual(dto.data)
+
+    const model1 = new ServiceResponse(dto, {}, new ArrayWrapper<TestModel[]>({ model: TestModel }))
+    expect(serialize(model1.data)).toEqual(dto.data)
   })
 })

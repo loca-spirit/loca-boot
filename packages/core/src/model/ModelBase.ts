@@ -124,7 +124,7 @@ export class ModelBase {
     options_.__isInit = true
     const t__ = new t_(dto, options_, rest)
     createModelByDTO<T>(t__, (t__ as ModelBase).getColumnsCached(), dto, options_)
-    return t__ as T
+    return t__
   }
 
   /**

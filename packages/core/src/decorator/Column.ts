@@ -193,13 +193,13 @@ export function Column(col?: IColumn): PropertyDecorator {
       const property = context as string | symbol
       const metadata = (target.constructor as any)[Symbol.metadata] || {}
       const columns = metadata[__COLUMNS__] || {}
-      metadata[__COLUMNS__] = initColumn<T>(target, property, columns, params)
+      metadata[__COLUMNS__] = initColumn(target, property, columns, params)
       ;(target.constructor as any)[Symbol.metadata] = metadata
     } else {
       const property = (context as ClassFieldDecoratorContext<typeof target, any>).name
       const metadata = (context as any).metadata || {}
       const columns = metadata[__COLUMNS__] || {}
-      metadata[__COLUMNS__] = initColumn<T>(metadata, property, columns, params)
+      metadata[__COLUMNS__] = initColumn(metadata, property, columns, params)
       ;(context as any).metadata = metadata
       // 新版本装饰器和旧版本统一，都不支持属性直接设置默认值。
       // return function (this: any, value: any) {

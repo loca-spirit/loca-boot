@@ -99,8 +99,8 @@ export function modelToSerializableObj<T extends ModelBase>(
         if (typeof serialize === 'function') {
           const paramsSerialize: IColumnSerialize<T> = {
             value: target[key],
-            serializeName: serializeName,
-            deserializeName: key,
+            name: serializeName,
+            property: key,
             deserializeData: target,
             column: columns[key],
           }
